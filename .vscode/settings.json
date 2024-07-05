@@ -1,0 +1,10 @@
+{
+    "editor.codeActionsOnSave": {
+        "source.fixAll.eslint": "explicit",
+    },
+	"javascript.validate.enable": false,
+	"eslint.validate": ["javascript", "typsecript"],
+	"cSpell.words": [
+		"tseslint"
+	]
+}

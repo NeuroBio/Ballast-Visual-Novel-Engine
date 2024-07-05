@@ -1,0 +1,1 @@
+const lol = 'string'
