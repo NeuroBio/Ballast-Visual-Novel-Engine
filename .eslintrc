@@ -55,5 +55,13 @@
 		"max-len": ["error", { "code": 180 }],
 		"no-nested-ternary": "error",
 		"padded-blocks": ["error", "never"]
-	}
+	},
+	"overrides": [
+		{
+			"files": ["test/unit/fakes"],
+			"rules": {
+				"eslint@typescript-eslint/no-explicit-any": "off"
+			}
+		}
+	]
   }
