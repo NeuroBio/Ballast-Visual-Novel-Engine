@@ -2,7 +2,7 @@
   "type": "module",
   "scripts": {
     "test": "jasmine --config=test/unit/jasmine.json",
-    "lint": "eslint --fix"
+    "lint": "npx eslint --fix"
   },
   "devDependencies": {
     "@eslint/js": "^9.6.0",
