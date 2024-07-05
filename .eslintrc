@@ -1,7 +1,9 @@
 {
 	"env": {
 		"node": true,
-		"es2022": true
+		"es6": true,
+		"es2022": true,
+		"amd": true
 	},
 	"root": true,
 	"parser": "@typescript-eslint/parser",
