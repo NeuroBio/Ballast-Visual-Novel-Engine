@@ -6,5 +6,5 @@
 	"eslint.validate": ["javascript", "typsecript"],
 	"cSpell.words": [
 		"tseslint"
-	]
+	],
 }
