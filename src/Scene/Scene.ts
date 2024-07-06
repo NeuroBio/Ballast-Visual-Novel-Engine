@@ -23,7 +23,9 @@ export class Scene {
 	}
 
 	// restart()
-	// start()
+	start (): string {
+		return this.#currentBeatKey;
+	}
 
 	// play (): void {
 	// 	this.#currentBeat.play();

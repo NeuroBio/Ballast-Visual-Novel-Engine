@@ -1,3 +1,6 @@
+import { Beat } from '../Beat/Beat';
+import { BeatFactory } from '../Beat/BeatFactory';
+import { BeatFinder } from '../Beat/BeatFinder';
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterFinder } from '../Chapter/ChapterFinder';
 import { Scene } from '../Scene/Scene';
@@ -6,6 +9,7 @@ import { SceneFinder } from '../Scene/SceneFinder';
 interface EngineParams {
 	chapterFinder: ChapterFinder;
 	sceneFinder: SceneFinder;
+	beatFinder: BeatFinder;
 }
 interface LoadChapterParams {
 	chapterKey: string
@@ -14,13 +18,16 @@ interface LoadChapterParams {
 export class Engine {
 	#chapterFinder: ChapterFinder;
 	#sceneFinder: SceneFinder;
+	#beatFinder: BeatFinder;
 
 	#currentChapter: Chapter;
 	#currentScene: Scene;
+	#currentBeat: Beat;
 
 	constructor (params: EngineParams) {
 		this.#chapterFinder = params.chapterFinder || new ChapterFinder();
 		this.#sceneFinder = params.sceneFinder || new SceneFinder();
+		this.#beatFinder = params.beatFinder || new BeatFactory();
 	}
 
 	getChapters () {
@@ -36,15 +43,10 @@ export class Engine {
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = this.#sceneFinder.byKey(sceneKey);
 
-		// const beatKey = this.#currentScene.start();
+		const beatKey = this.#currentScene.start();
+		this.#currentBeat = this.#beatFinder.byKey(beatKey);
 
-
-		// Chapter loads Scene by optional key
-		// Scene plays first beat
-
-		// updates character states as needed
-		// returns UI display data
-		// MVP: text + key to display
+		return this.#currentBeat.play();
 	}
 
 	advanceScene () {

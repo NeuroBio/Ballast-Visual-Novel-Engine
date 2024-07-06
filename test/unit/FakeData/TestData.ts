@@ -18,5 +18,16 @@ export const SceneData = [
 			'lastBeat',
 		],
 	},
+];
 
+export const BeatData = [
+	{
+		key: 'firstBeat',
+		text: 'test text',
+		nextBeat: 'beat key',
+	},
+	{
+		key: 'lastBeat',
+		text: 'final test text',
+	},
 ];
