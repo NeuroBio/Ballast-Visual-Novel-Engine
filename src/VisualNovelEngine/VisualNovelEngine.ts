@@ -1,8 +1,6 @@
 export class VisualNovelEngine {
 	#player;
 	#currentChapter;
-	#currentScene;
-	#characters;
 
 	getChapters () {
 		// requires player
