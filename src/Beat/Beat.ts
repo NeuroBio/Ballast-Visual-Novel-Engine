@@ -1,32 +1,33 @@
 import { Character } from '../Character/Character';
 export const NARRATOR = 'Narrator';
 
-interface BeatParams {
+export interface BeatParams {
 	character?: Character;
-	text: string;
-	beats?: Beat[];
 }
 
-export class Beat {
+export interface SimpleBeatDisplay {
 	text: string;
-	speaker: string;
-	nextBeat?: Beat;
+	nextBeat: string;
+}
+
+export interface ChoiceBeatDisplay {
+	choices: SimpleBeatDisplay[];
+}
+
+export interface FinalBeatDisplay {
+	choice: string;
+}
+
+
+export abstract class Beat {
+	protected speaker: string;
+	protected character?: Character;
 
 	constructor (params: BeatParams) {
-		const { character, text, beats } = params;
-		this.text = text;
+		const { character } = params;
+		this.character = character;
 		this.speaker = character?.name || NARRATOR;
-
-		if (beats) {
-			this.nextBeat = beats[0];
-		}
 	}
 
-	play (): string {
-		return `${this.speaker}: ${this.text}`;
-	}
-
-	next (): Beat | void {
-		return this.nextBeat;
-	}
+	abstract play (): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
 }
