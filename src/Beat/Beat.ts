@@ -15,7 +15,7 @@ export interface ChoiceBeatDisplay {
 }
 
 export interface FinalBeatDisplay {
-	choice: string;
+	text: string;
 }
 
 

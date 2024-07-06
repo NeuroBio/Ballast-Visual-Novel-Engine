@@ -3,7 +3,7 @@ import { Beat, ChoiceBeatDisplay, SimpleBeatDisplay } from './Beat';
 
 interface ChoiceOption {
 	beat: SimpleBeatDisplay;
-	allow?: (character: Character) => boolean;
+	condition?: (character: Character) => boolean;
 }
 
 interface ChoiceBeatParams {
@@ -27,20 +27,20 @@ export class ChoiceBeat extends Beat {
 			throw new Error('When there is only one choice, data should be formatted as a simple beat, not a choice beat.');
 		}
 
-		const choicesHaveRequirements = choices.filter(x => x.allow);
+		const choicesHaveRequirements = choices.filter(x => x.condition);
 		if (choicesHaveRequirements.length > 0 && !this.character) {
-			throw new Error('Cannot check for allowed choices without a Character.');
+			throw new Error('Cannot check for conditional choices without a Character.');
 		}
 
 		if (choicesHaveRequirements.length === choices.length && !defaultBehavior) {
-			throw new Error('When all choices are optional, a Default Behavior is required.');
+			throw new Error('When all choices are conditional, a Default Behavior is required.');
 		}
 	}
 
 	play (): ChoiceBeatDisplay | SimpleBeatDisplay {
 		const choices: SimpleBeatDisplay[] = [];
 		this.#choices.forEach((choice) => {
-			const includeChoice = choice.allow ? choice.allow(this.character!) : true;
+			const includeChoice = choice.condition ? choice.condition(this.character!) : true;
 			if (includeChoice) {
 				choices.push(choice.beat);
 			}

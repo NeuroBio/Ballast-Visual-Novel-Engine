@@ -15,8 +15,8 @@ describe(`ChoiceBeat.play`, () => {
 	});
 	describe(`beat has two choices with a condition, character is set and all conditions met`, () => {
 		it(`returns all three choice beats`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, allow: () => true };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, allow: () => true };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: () => true };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => true };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
 			const character = new Fakes.Character('name');
@@ -27,8 +27,8 @@ describe(`ChoiceBeat.play`, () => {
 	});
 	describe(`beat has two choices with a condition, character is set and second condition not met`, () => {
 		it(`returns first and last choice beats`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, allow: () => true };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, allow: () => false };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: () => true };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => false };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
 			const character = new Fakes.Character('name');
@@ -39,8 +39,8 @@ describe(`ChoiceBeat.play`, () => {
 	});
 	describe(`beat has two choices with conditions, character is set and no condition is met`, () => {
 		it(`returns last choice beat as a simple beat display`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, allow: () => false };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, allow: () => false };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: () => false };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => false };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
@@ -52,9 +52,9 @@ describe(`ChoiceBeat.play`, () => {
 	});
 	describe(`beat has all choices with conditions, character is set and no condition is met`, () => {
 		it(`returns default behavior as a simple beat display`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, allow: () => false };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, allow: () => false };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' }, allow: () => false };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: () => false };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => false };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: () => false };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
 			const character = new Fakes.Character('name');

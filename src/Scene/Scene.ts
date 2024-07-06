@@ -1,20 +1,21 @@
-import { Beat, BeatParams } from '../Beat/Beat';
+import { Beat } from '../Beat/Beat';
 
 interface SceneParams {
-	beatData: { [id: string]: BeatParams };
-	firstBeat: string;
+	beatData: { [id: string]: Beat };
+	firstBeatKey: string;
 }
 
 export class Scene {
-	#beatData: { [id: string]: BeatParams };
+	#beatData: { [id: string]: Beat };
 	#currentBeatKey: string;
 	#currentBeat: Beat;
 
 	constructor (params: SceneParams) {
 		const { beatData, firstBeatKey } = params;
+
 		this.#beatData = beatData;
 		this.#currentBeatKey = firstBeatKey;
-		this.#currentBeat = new Beat(this.#beatData[this.#currentBeatKey]);
+		this.#currentBeat = this.#beatData[this.#currentBeatKey];
 	}
 
 	play (): void {
@@ -23,13 +24,7 @@ export class Scene {
 
 	next (selectedBeat?: string): void {
 		if (selectedBeat) {
-			this.#currentBeat = new Beat(this.#beatData[selectedBeat]);
-		} else {
-			this.end();
+			this.#currentBeat = this.#beatData[selectedBeat];
 		}
-	}
-
-	end (): void {
-
 	}
 }
