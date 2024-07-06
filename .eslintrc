@@ -58,9 +58,9 @@
 	},
 	"overrides": [
 		{
-			"files": ["test/unit/fakes"],
+			"files": ["test/unit/**/*"],
 			"rules": {
-				"eslint@typescript-eslint/no-explicit-any": "off"
+				"@typescript-eslint/no-explicit-any": "off"
 			}
 		}
 	]

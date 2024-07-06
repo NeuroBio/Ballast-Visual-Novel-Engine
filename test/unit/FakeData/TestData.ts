@@ -3,7 +3,7 @@ export const ChapterData = [
 		key: 'firstChapter',
 		name: 'Chapter Name',
 		locked: false,
-		firstScene: 'sceneKey',
+		firstSceneKey: 'sceneKey',
 		scenes: ['sceneKey'],
 	},
 ];
@@ -14,7 +14,8 @@ export const SceneData = [
 		key: 'sceneKey',
 		firstBeatKey: 'firstBeat',
 		beats: [
-			{},
+			'firstBeat',
+			'lastBeat',
 		],
 	},
 

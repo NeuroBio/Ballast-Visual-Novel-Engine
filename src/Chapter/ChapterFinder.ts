@@ -3,13 +3,8 @@ import { Chapter } from './Chapter';
 
 
 export class ChapterFinder {
-	#chapterCache: { [chapterKey: string]: Chapter} = {};
-
-	byKey (chapterKey: string) {
-		if (!this.#chapterCache[chapterKey]) {
-			this.#chapterCache[chapterKey] = new Chapter(ChapterData[0]);
-		}
-
-		return this.#chapterCache[chapterKey];
+	byKey (chapterKey: string): Chapter {
+		const data = ChapterData.find((x) => (x.key === chapterKey));
+		return new Chapter(data!);
 	}
 }

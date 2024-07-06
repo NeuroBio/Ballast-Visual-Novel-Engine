@@ -1,30 +1,37 @@
-import { Beat } from '../Beat/Beat';
-
 interface SceneParams {
-	beatData: { [id: string]: Beat };
+	beats: string[];
 	firstBeatKey: string;
+	name: string;
+	key: string;
 }
 
 export class Scene {
-	#beatData: { [id: string]: Beat };
+	#beats: string[];
+	#firstBeatKey: string;
 	#currentBeatKey: string;
-	#currentBeat: Beat;
+	#name: string;
+	#key: string;
 
 	constructor (params: SceneParams) {
-		const { beatData, firstBeatKey } = params;
+		const { beats, firstBeatKey, name, key } = params;
 
-		this.#beatData = beatData;
+		this.#key = key;
+		this.#name = name;
+		this.#beats = beats;
+		this.#firstBeatKey = firstBeatKey;
 		this.#currentBeatKey = firstBeatKey;
-		this.#currentBeat = this.#beatData[this.#currentBeatKey];
 	}
 
-	play (): void {
-		this.#currentBeat.play();
-	}
+	// restart()
+	// start()
 
-	next (selectedBeat?: string): void {
-		if (selectedBeat) {
-			this.#currentBeat = this.#beatData[selectedBeat];
-		}
-	}
+	// play (): void {
+	// 	this.#currentBeat.play();
+	// }
+
+	// next (selectedBeat?: string): void {
+	// 	if (selectedBeat) {
+	// 		this.#currentBeat = this.#beatData[selectedBeat];
+	// 	}
+	// }
 }
