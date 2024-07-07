@@ -3,12 +3,12 @@ import { Beat } from './Beat';
 import { BeatFactory } from './BeatFactory';
 
 interface BeatFinderParams {
-	beatFactory: BeatFactory,
+	beatFactory?: BeatFactory,
 }
 
 export class BeatFinder {
 	#beatFactory: BeatFactory;
-	constructor (params: BeatFinderParams) {
+	constructor (params: BeatFinderParams = {}) {
 		this.#beatFactory = params.beatFactory || new BeatFactory();
 	}
 

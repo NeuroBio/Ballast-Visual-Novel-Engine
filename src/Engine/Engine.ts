@@ -1,5 +1,4 @@
 import { Beat } from '../Beat/Beat';
-import { BeatFactory } from '../Beat/BeatFactory';
 import { BeatFinder } from '../Beat/BeatFinder';
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterFinder } from '../Chapter/ChapterFinder';
@@ -7,14 +6,17 @@ import { Scene } from '../Scene/Scene';
 import { SceneFinder } from '../Scene/SceneFinder';
 
 interface EngineParams {
-	chapterFinder: ChapterFinder;
-	sceneFinder: SceneFinder;
-	beatFinder: BeatFinder;
+	chapterFinder?: ChapterFinder;
+	sceneFinder?: SceneFinder;
+	beatFinder?: BeatFinder;
 }
 interface LoadChapterParams {
 	chapterKey: string
 }
 
+interface AdvanceSceneParams {
+	beatKey: string;
+}
 export class Engine {
 	#chapterFinder: ChapterFinder;
 	#sceneFinder: SceneFinder;
@@ -24,10 +26,10 @@ export class Engine {
 	#currentScene: Scene;
 	#currentBeat: Beat;
 
-	constructor (params: EngineParams) {
+	constructor (params: EngineParams = {}) {
 		this.#chapterFinder = params.chapterFinder || new ChapterFinder();
 		this.#sceneFinder = params.sceneFinder || new SceneFinder();
-		this.#beatFinder = params.beatFinder || new BeatFactory();
+		this.#beatFinder = params.beatFinder || new BeatFinder();
 	}
 
 	getChapters () {
@@ -49,10 +51,10 @@ export class Engine {
 		return this.#currentBeat.play();
 	}
 
-	advanceScene () {
-		// required beat key
-
-		// Scene.play(beatKey)
+	advanceScene (params: AdvanceSceneParams) {
+		const { beatKey } = params;
+		this.#currentBeat = this.#beatFinder.byKey(beatKey);
+		return this.#currentBeat.play();
 
 		// If the next beat is not present
 		// unlock next scene (is any)

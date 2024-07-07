@@ -1,5 +1,5 @@
-import { Engine } from '../../../../src/Engine/Engine';
-import { Fakes } from '../../fakes/index';
+import { Engine } from '../../../../../src/Engine/Engine';
+import { Fakes } from '../../../fakes/index';
 
 describe(`Engine.startChapter`, () => {
 	let chapterFinderFake: any, sceneFinderFake: any, beatFinderFake: any;
@@ -16,19 +16,19 @@ describe(`Engine.startChapter`, () => {
 	describe(`loading chapter for the first time`, () => {
 		const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
 			beatKey = 'beatKey', beat = new Fakes.Beat(),
-			result = { result: 'result' };
-		let response: any;
+			playResponse = { result: 'result' };
+		let result: any;
 		beforeAll(() => {
 			const engine = _createEngine();
 			const chapter = new Fakes.Chapter();
 			chapter.start.mockReturnValueOnce(sceneKey);
 			const scene = new Fakes.Scene();
 			scene.start.mockReturnValueOnce(beatKey);
-			beat.play.mockReturnValueOnce(result);
+			beat.play.mockReturnValueOnce(playResponse);
 			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 			sceneFinderFake.byKey.mockReturnValueOnce(scene);
 			beatFinderFake.byKey.mockReturnValueOnce(beat);
-			response = engine.startChapter({ chapterKey });
+			result = engine.startChapter({ chapterKey });
 		});
 		it(`calls chapterFinder with correct key`, () => {
 			expect(chapterFinderFake.byKey).toHaveBeenCalledWith(chapterKey);
@@ -43,7 +43,7 @@ describe(`Engine.startChapter`, () => {
 			expect(beat.play).toHaveBeenCalled();
 		});
 		it(`returns the beat data for display`, () => {
-			expect(response).toEqual(result);
+			expect(result).toEqual(playResponse);
 		});
 	});
 });

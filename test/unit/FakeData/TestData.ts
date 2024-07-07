@@ -24,7 +24,7 @@ export const BeatData = [
 	{
 		key: 'firstBeat',
 		text: 'test text',
-		nextBeat: 'beat key',
+		nextBeat: 'lastBeat',
 	},
 	{
 		key: 'lastBeat',
