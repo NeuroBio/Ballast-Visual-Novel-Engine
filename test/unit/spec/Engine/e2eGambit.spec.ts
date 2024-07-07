@@ -4,18 +4,21 @@ import { Engine } from '../../../../src/Engine/Engine';
 describe(`playing through the test data`, () => {
 	const engine = new Engine();
 	const chapterKey = 'firstChapter';
-	const results: any = {};
+	const results: any[] = [];
 	it(`plays the first beat`, () => {
-		results[1] = engine.startChapter({ chapterKey });
-		expect(results[1]).toEqual({
+		results.push(engine.startChapter({ chapterKey }));
+		expect(results[0]).toEqual({
 			nextBeat: 'lastBeat',
-			text: `${NARRATOR}: test text`,
+			text: `${NARRATOR}: This is the opening beat.`,
 		});
 	});
 	it(`plays the second beat`, () => {
-		results[2] = engine.advanceScene({ beatKey: results[1].nextBeat });
-		expect(results[2]).toEqual({
-			text: `${NARRATOR}: final test text`,
+		results.push(engine.advanceScene({ beatKey: results[0].nextBeat }));
+		expect(results[1]).toEqual({
+			text: `${NARRATOR}: This is the closing beat.`,
 		});
+	});
+	it(`console logs the results for posterity`, () => {
+		results.forEach((result: any) => console.log(result.text));
 	});
 });

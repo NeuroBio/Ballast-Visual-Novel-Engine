@@ -23,11 +23,11 @@ export const SceneData = [
 export const BeatData = [
 	{
 		key: 'firstBeat',
-		text: 'test text',
+		text: 'This is the opening beat.',
 		nextBeat: 'lastBeat',
 	},
 	{
 		key: 'lastBeat',
-		text: 'final test text',
+		text: 'This is the closing beat.',
 	},
 ];
