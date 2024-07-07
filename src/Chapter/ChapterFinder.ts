@@ -31,11 +31,13 @@ export class ChapterFinder {
 			throw new Error('Requested chapter was not found.');
 		}
 
-		if (data.locked) {
+		const chapter = new Chapter(data);
+
+		if (chapter.isLocked()) {
 			throw new Error('This chapter has not yet been unlocked.');
 		}
 
-		return new Chapter(data);
+		return chapter;
 	}
 
 	async #refreshData (key?: string) {

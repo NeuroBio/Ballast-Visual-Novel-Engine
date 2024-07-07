@@ -27,5 +27,13 @@ export class Chapter {
 	start () {
 		return this.#currentSceneKey;
 	}
+
+	unlock () {
+		this.#locked = false;
+	}
+
+	isLocked () {
+		return this.#locked;
+	}
 	// load()
 }

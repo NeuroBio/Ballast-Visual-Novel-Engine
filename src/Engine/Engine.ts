@@ -50,21 +50,11 @@ export class Engine {
 		const { beatKey } = params;
 
 		return this.#currentScene.next(beatKey);
-
-		// If the next beat is not present
-		// unlock next scene (is any)
-		// if final scene, unlock next chapter (if any)
-
-		// returns UI display data
-		// MVP: text + key to display
-
-		// let the UI deal with the rest
 	}
 
 	advanceChapter () {
-		// required scene key
-		// Chapter.next(sceneKey)
-		// Scene plays first beat
+		// check if scene's current beat is a final beat
+		// id so, load up the next scene and play the next beat
 	}
 
 	// needs to make a server call

@@ -8,38 +8,42 @@ describe(`playing through the test data`, () => {
 		sceneDataFetcher: () => Promise.resolve(SceneData),
 	});
 	const chapterKey = 'firstChapter';
-	const results: any[] = [];
+	let priorResult: any;
+	const result = {
+		get: () => priorResult,
+		set (newResult: any) {
+			console.debug(newResult.message || newResult.choices || newResult);
+			priorResult = newResult;
+		},
+	};
 	it(`plays the first beat`, async () => {
 		const start = await engine.startChapter({ chapterKey });
-		results.push(start);
-		expect(results[0]).toEqual({
+		result.set(start);
+		expect(result.get()).toEqual({
 			nextBeat: BeatData[0].nextBeat,
 			text: `${NARRATOR}: ${BeatData[0].text}`,
 		});
 	});
 	it(`plays the second beat`, () => {
-		results.push(engine.advanceScene({ beatKey: results[0].nextBeat }));
-		expect(results[1]).toEqual({
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({
 			nextBeat: BeatData[1].nextBeat,
 			text: `${NARRATOR}: ${BeatData[1].text}`,
 		});
 	});
 	it(`plays the third beat`, () => {
-		results.push(engine.advanceScene({ beatKey: results[1].nextBeat }));
-		expect(results[2]).toEqual({ choices: BeatData[2].choices });
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({ choices: BeatData[2].choices });
 	});
 	it(`plays the beat from choice 2`, () => {
-		results.push(engine.advanceScene({ beatKey: results[2].choices[1].nextBeat }));
-		expect(results[3]).toEqual({
+		result.set(engine.advanceScene({ beatKey: result.get().choices[1].nextBeat }));
+		expect(result.get()).toEqual({
 			nextBeat: BeatData[4].nextBeat,
 			text: `${NARRATOR}: ${BeatData[4].text}`,
 		});
 	});
 	it(`plays the final beat`, () => {
-		results.push(engine.advanceScene({ beatKey: results[3].nextBeat }));
-		expect(results[4]).toEqual({ text: `${NARRATOR}: ${BeatData[6].text}` });
-	});
-	it(`console logs the results for posterity`, () => {
-		results.forEach((result: any) => console.debug(result.choices || result));
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({ text: `${NARRATOR}: ${BeatData[6].text}` });
 	});
 });
