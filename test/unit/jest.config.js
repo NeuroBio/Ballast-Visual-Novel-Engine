@@ -5,9 +5,6 @@ module.exports = {
 	moduleFileExtensions: ['js', 'ts'],
 	preset: 'ts-jest',
 	testEnvironment: 'node',
-	// transform: {
-	// 	'^.+\\.js$': './babelTransformer',
-	// 	'node_modules/variables/.+\\.(j|t)sx?$': 'jest-ts',
-	// },
+	reporters: ['jest-standard-reporter'],
 	verbose: false,
 };

@@ -25,6 +25,6 @@ describe(`playing through the test data`, () => {
 		});
 	});
 	it(`console logs the results for posterity`, () => {
-		results.forEach((result: any) => console.log(result.text));
+		results.forEach((result: any) => console.debug(result.text));
 	});
 });
