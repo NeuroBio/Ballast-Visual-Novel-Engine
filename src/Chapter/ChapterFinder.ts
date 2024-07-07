@@ -15,6 +15,7 @@ interface ChapterFinderParams {
 export class ChapterFinder {
 	#fetchData: (key?: string) => Promise<ChapterDto[]>;
 	#cache: { [key: string]: ChapterDto} = {};
+
 	constructor (params: ChapterFinderParams) {
 		const { dataFetcher } = params;
 		this.#fetchData = dataFetcher;
