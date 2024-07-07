@@ -1,18 +1,23 @@
 import { Scene } from '../../../../../src/Scene/Scene';
 import { Fakes } from '../../../fakes/index';
 
-describe(`Scene.start`, () => {
-	it(`plays the current beat`, () => {
+describe(`Scene.next`, () => {
+	it(`plays the next beat`, () => {
 		const firstBeatKey = 'firstBeat';
+		const secondBeatKey = 'secondBeat';
 		const firstBeat = new Fakes.SimpleBeat({});
+		const secondBeat = new Fakes.SimpleBeat({});
 		const beatResponse = { text: 'test', nextBeat: 'secondBeat' };
-		firstBeat.play.mockReturnValueOnce(beatResponse);
+		secondBeat.play.mockReturnValueOnce(beatResponse);
 		const scene = new Scene({
-			beats: { [firstBeatKey]: firstBeat },
+			beats: {
+				[firstBeatKey]: firstBeat,
+				[secondBeatKey]: secondBeat,
+			},
 			firstBeatKey,
 			name: 'Scene Name',
 			key: 'sceneKey',
 		});
-		expect(scene.start()).toEqual(beatResponse);
+		expect(scene.next(secondBeatKey)).toEqual(beatResponse);
 	});
 });
