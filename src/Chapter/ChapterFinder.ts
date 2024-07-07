@@ -21,15 +21,23 @@ export class ChapterFinder {
 	}
 
 	byKey (chapterKey: string): Chapter {
-		if (!this.#cache) {
-			this.refreshData();
+		if (!this.#cache || !this.#cache[chapterKey]) {
+			this.#refreshData();
 		}
 
 		const data = this.#cache[chapterKey];
-		return new Chapter(data!);
+		if (!data) {
+			throw new Error('Requested chapter was not found.');
+		}
+
+		if (data.locked) {
+			throw new Error('This chapter has not yet been unlocked.');
+		}
+
+		return new Chapter(data);
 	}
 
-	refreshData () {
+	#refreshData () {
 		const rawData = this.#fetchData();
 		this.#cache = rawData.reduce((keyed: { [key: string]: ChapterDto}, data) => {
 			keyed[data.key] = data;
