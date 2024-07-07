@@ -1,4 +1,5 @@
 import { Engine } from '../../../../../src/Engine/Engine';
+import { ChapterData } from '../../../FakeData/TestData';
 import { Fakes } from '../../../fakes/index';
 
 describe(`Engine.advanceScene`, () => {
@@ -8,6 +9,7 @@ describe(`Engine.advanceScene`, () => {
 		sceneFinderFake = new Fakes.SceneFinder();
 		beatFinderFake = new Fakes.BeatFinder();
 		return new Engine({
+			chapterDataFetcher: () => ChapterData,
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 			beatFinder: beatFinderFake,

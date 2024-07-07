@@ -1,7 +1,7 @@
 import { Beat } from '../Beat/Beat';
 import { BeatFinder } from '../Beat/BeatFinder';
 import { Chapter } from '../Chapter/Chapter';
-import { ChapterFinder } from '../Chapter/ChapterFinder';
+import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
 import { Scene } from '../Scene/Scene';
 import { SceneFinder } from '../Scene/SceneFinder';
 
@@ -9,6 +9,7 @@ interface EngineParams {
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
 	beatFinder?: BeatFinder;
+	chapterDataFetcher: () => ChapterDto[];
 }
 interface LoadChapterParams {
 	chapterKey: string
@@ -26,12 +27,14 @@ export class Engine {
 	#currentScene: Scene;
 	#currentBeat: Beat;
 
-	constructor (params: EngineParams = {}) {
-		this.#chapterFinder = params.chapterFinder || new ChapterFinder();
+	constructor (params: EngineParams) {
+		const { chapterDataFetcher } = params;
+		this.#chapterFinder = params.chapterFinder || new ChapterFinder({ dataFetcher: chapterDataFetcher });
 		this.#sceneFinder = params.sceneFinder || new SceneFinder();
 		this.#beatFinder = params.beatFinder || new BeatFinder();
 	}
 
+	// needs to make a server call
 	getChapters () {
 		// requires player
 
@@ -47,7 +50,6 @@ export class Engine {
 
 		const beatKey = this.#currentScene.start();
 		this.#currentBeat = this.#beatFinder.byKey(beatKey);
-
 		return this.#currentBeat.play();
 	}
 
@@ -72,6 +74,7 @@ export class Engine {
 		// Scene plays first beat
 	}
 
+	// needs to make a server call
 	saveGame () {
 		// save allowed/completed chapters
 		// save completed scenes

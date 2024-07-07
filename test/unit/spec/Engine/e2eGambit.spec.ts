@@ -1,8 +1,9 @@
 import { NARRATOR } from '../../../../src/Beat/Beat';
 import { Engine } from '../../../../src/Engine/Engine';
+import { ChapterData } from '../../FakeData/TestData';
 
 describe(`playing through the test data`, () => {
-	const engine = new Engine();
+	const engine = new Engine({ chapterDataFetcher: () => ChapterData });
 	const chapterKey = 'firstChapter';
 	const results: any[] = [];
 	it(`plays the first beat`, () => {
