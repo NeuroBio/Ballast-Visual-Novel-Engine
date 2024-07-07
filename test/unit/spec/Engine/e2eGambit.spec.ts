@@ -1,6 +1,6 @@
 import { NARRATOR } from '../../../../src/Beat/Beat';
 import { Engine } from '../../../../src/Engine/Engine';
-import { ChapterData, SceneData } from '../../FakeData/TestData';
+import { BeatData, ChapterData, SceneData } from '../../FakeData/TestData';
 
 describe(`playing through the test data`, () => {
 	const engine = new Engine({
@@ -13,14 +13,15 @@ describe(`playing through the test data`, () => {
 		const start = await engine.startChapter({ chapterKey });
 		results.push(start);
 		expect(results[0]).toEqual({
-			nextBeat: 'lastBeat',
-			text: `${NARRATOR}: This is the opening beat.`,
+			nextBeat: BeatData[0].nextBeat,
+			text: `${NARRATOR}: ${BeatData[0].text}`,
 		});
 	});
 	it(`plays the second beat`, () => {
 		results.push(engine.advanceScene({ beatKey: results[0].nextBeat }));
 		expect(results[1]).toEqual({
-			text: `${NARRATOR}: This is the closing beat.`,
+			nextBeat: BeatData[1].nextBeat,
+			text: `${NARRATOR}: ${BeatData[1].text}`,
 		});
 	});
 	it(`console logs the results for posterity`, () => {
