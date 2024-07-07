@@ -1,5 +1,5 @@
 import { Engine } from '../../../../../src/Engine/Engine';
-import { ChapterData } from '../../../FakeData/TestData';
+import { ChapterData, SceneData } from '../../../FakeData/TestData';
 import { Fakes } from '../../../fakes/index';
 import { Scene } from '../../../fakes/Scene';
 
@@ -14,6 +14,7 @@ describe(`Engine.advanceScene`, () => {
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
 		const engine = new Engine({
 			chapterDataFetcher: () => Promise.resolve(ChapterData),
+			sceneDataFetcher: () => Promise.resolve(SceneData),
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 		});

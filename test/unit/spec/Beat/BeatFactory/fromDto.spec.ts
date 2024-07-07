@@ -8,6 +8,7 @@ describe('BeatFactory.fromDto', () => {
 		it(`returns a Choice Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
+				key: 'beatKey',
 				choices: [
 					{
 						text: 'text for this choice',
@@ -26,6 +27,7 @@ describe('BeatFactory.fromDto', () => {
 		it(`returns a Choice Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
+				key: 'beatKey',
 				characterKey: 'character key',
 				choices: [
 					{
@@ -49,6 +51,7 @@ describe('BeatFactory.fromDto', () => {
 		it(`returns a Simple Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
+				key: 'beatKey',
 				text: 'test text',
 				nextBeat: 'beat key',
 			});
@@ -59,6 +62,7 @@ describe('BeatFactory.fromDto', () => {
 		it(`returns a Simple Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
+				key: 'beatKey',
 				text: 'test text',
 				characterKey: 'character key',
 				nextBeat: 'beat key',
@@ -70,6 +74,7 @@ describe('BeatFactory.fromDto', () => {
 		it(`returns a Final Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
+				key: 'beatKey',
 				text: 'test text',
 			});
 			expect(result instanceof FinalBeat).toBe(true);
@@ -79,6 +84,7 @@ describe('BeatFactory.fromDto', () => {
 		it(`returns a Final Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
+				key: 'beatKey',
 				text: 'test text',
 				characterKey: 'character key',
 			});

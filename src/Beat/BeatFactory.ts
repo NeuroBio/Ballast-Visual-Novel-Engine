@@ -16,6 +16,7 @@ interface Choice {
 }
 
 export interface BeatDto {
+	key: string;
 	characterKey?: string;
 	choices?: Choice[];
 	defaultBehavior?: SimpleBeatDisplay;

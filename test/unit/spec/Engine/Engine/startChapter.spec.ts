@@ -1,5 +1,5 @@
 import { Engine } from '../../../../../src/Engine/Engine';
-import { ChapterData } from '../../../FakeData/TestData';
+import { ChapterData, SceneData } from '../../../FakeData/TestData';
 import { Fakes } from '../../../fakes/index';
 
 describe(`Engine.startChapter`, () => {
@@ -9,6 +9,7 @@ describe(`Engine.startChapter`, () => {
 		sceneFinderFake = new Fakes.SceneFinder();
 		return new Engine({
 			chapterDataFetcher: () => Promise.resolve(ChapterData),
+			sceneDataFetcher: () => Promise.resolve(SceneData),
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 		});

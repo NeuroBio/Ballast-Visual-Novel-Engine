@@ -17,6 +17,7 @@ describe(`Scene.next`, () => {
 			firstBeatKey,
 			name: 'Scene Name',
 			key: 'sceneKey',
+			locked: false,
 		});
 		expect(scene.next(secondBeatKey)).toEqual(beatResponse);
 	});

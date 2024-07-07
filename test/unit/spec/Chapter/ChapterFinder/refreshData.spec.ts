@@ -1,5 +1,0 @@
-describe(`ChapterFinder.refresh`, () => {
-	it(``, () => {
-
-	});
-});

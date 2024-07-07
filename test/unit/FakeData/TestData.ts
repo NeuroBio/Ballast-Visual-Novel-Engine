@@ -25,6 +25,7 @@ export const SceneData = [
 		name: 'scene name',
 		key: 'sceneKey',
 		firstBeatKey: 'firstBeat',
+		locked: false,
 		beats: BeatData,
 	},
 ];

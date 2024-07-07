@@ -1,9 +1,12 @@
 import { NARRATOR } from '../../../../src/Beat/Beat';
 import { Engine } from '../../../../src/Engine/Engine';
-import { ChapterData } from '../../FakeData/TestData';
+import { ChapterData, SceneData } from '../../FakeData/TestData';
 
 describe(`playing through the test data`, () => {
-	const engine = new Engine({ chapterDataFetcher: () => Promise.resolve(ChapterData) });
+	const engine = new Engine({
+		chapterDataFetcher: () => Promise.resolve(ChapterData),
+		sceneDataFetcher: () => Promise.resolve(SceneData),
+	});
 	const chapterKey = 'firstChapter';
 	const results: any[] = [];
 	it(`plays the first beat`, async () => {

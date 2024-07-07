@@ -1,10 +1,11 @@
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
 import { Scene } from '../Scene/Scene';
-import { SceneFinder } from '../Scene/SceneFinder';
+import { SceneDto, SceneFinder } from '../Scene/SceneFinder';
 
 interface EngineParams {
 	chapterDataFetcher: () => Promise<ChapterDto[]>;
+	sceneDataFetcher: () => Promise<SceneDto[]>;
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
 }
@@ -23,9 +24,9 @@ export class Engine {
 	#currentScene: Scene;
 
 	constructor (params: EngineParams) {
-		const { chapterDataFetcher } = params;
+		const { chapterDataFetcher, sceneDataFetcher } = params;
 		this.#chapterFinder = params.chapterFinder || new ChapterFinder({ dataFetcher: chapterDataFetcher });
-		this.#sceneFinder = params.sceneFinder || new SceneFinder();
+		this.#sceneFinder = params.sceneFinder || new SceneFinder({ dataFetcher: sceneDataFetcher });
 	}
 
 	// needs to make a server call
@@ -40,7 +41,7 @@ export class Engine {
 		this.#currentChapter = await this.#chapterFinder.byKey(chapterKey);
 
 		const sceneKey = this.#currentChapter.start();
-		this.#currentScene = this.#sceneFinder.byKey(sceneKey);
+		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
 
 		return this.#currentScene.start();
 	}

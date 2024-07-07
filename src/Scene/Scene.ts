@@ -5,6 +5,7 @@ interface SceneParams {
 	firstBeatKey: string;
 	name: string;
 	key: string;
+	locked: boolean;
 }
 
 export class Scene {
@@ -13,13 +14,15 @@ export class Scene {
 	#currentBeatKey: string;
 	#name: string;
 	#key: string;
+	#locked: boolean;
 
 	constructor (params: SceneParams) {
-		const { beats, firstBeatKey, name, key } = params;
+		const { beats, firstBeatKey, name, key, locked } = params;
 
 		this.#key = key;
 		this.#name = name;
 		this.#beats = beats;
+		this.#locked = locked;
 		this.#firstBeatKey = firstBeatKey;
 		this.#currentBeatKey = firstBeatKey;
 	}
