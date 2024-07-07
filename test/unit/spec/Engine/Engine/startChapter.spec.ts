@@ -8,7 +8,7 @@ describe(`Engine.startChapter`, () => {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		return new Engine({
-			chapterDataFetcher: () => ChapterData,
+			chapterDataFetcher: () => Promise.resolve(ChapterData),
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 		});
@@ -17,14 +17,14 @@ describe(`Engine.startChapter`, () => {
 		const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
 			scene = new Fakes.Scene(), startResponse = { result: 'result' };
 		let result: any;
-		beforeAll(() => {
+		beforeAll(async () => {
 			const engine = _createEngine();
 			const chapter = new Fakes.Chapter();
 			chapter.start.mockReturnValueOnce(sceneKey);
 			scene.start.mockReturnValueOnce(startResponse);
 			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 			sceneFinderFake.byKey.mockReturnValueOnce(scene);
-			result = engine.startChapter({ chapterKey });
+			result = await engine.startChapter({ chapterKey });
 		});
 		it(`calls chapterFinder with correct key`, () => {
 			expect(chapterFinderFake.byKey).toHaveBeenCalledWith(chapterKey);

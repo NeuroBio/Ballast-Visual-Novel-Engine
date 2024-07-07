@@ -9,31 +9,31 @@ describe(`ChapterFinder.byKey`, () => {
 	});
 
 	describe(`loading valid chapter`, () => {
-		it(`loads chapter from data`, () => {
+		it(`loads chapter from data`, async () => {
 			const chapterKey = 'firstChapter';
 			const chapterFinder = new ChapterFinder({
-				dataFetcher: () => ChapterData,
+				dataFetcher: () => Promise.resolve(ChapterData),
 			});
-			const chapter = chapterFinder.byKey(chapterKey);
+			const chapter = await chapterFinder.byKey(chapterKey);
 			expect(chapter instanceof Chapter).toBe(true);
 		});
 	});
 	describe(`chapter is not found`, () => {
-		it(`throws and error`, () => {
+		it(`throws and error`, async () => {
 			const chapterKey = 'lockedChapter';
 			const chapterFinder = new ChapterFinder({
-				dataFetcher: () => ([]),
+				dataFetcher: () => Promise.resolve([]),
 			});
-			expect(() => {
-				chapterFinder.byKey(chapterKey);
-			}).toThrow(Error.NOT_FOUND);
+			await expect(async () => {
+				await chapterFinder.byKey(chapterKey);
+			}).rejects.toThrow(Error.NOT_FOUND);
 		});
 	});
 	describe(`chapter is locked`, () => {
-		it(`throws and error`, () => {
+		it(`throws and error`, async () => {
 			const chapterKey = 'lockedChapter';
 			const chapterFinder = new ChapterFinder({
-				dataFetcher: () => ([{
+				dataFetcher: () => Promise.resolve([{
 					key: chapterKey,
 					name: 'Chapter Name',
 					locked: true,
@@ -41,9 +41,9 @@ describe(`ChapterFinder.byKey`, () => {
 					scenes: ['sceneKey'],
 				}]),
 			});
-			expect(() => {
-				chapterFinder.byKey(chapterKey);
-			}).toThrow(Error.LOCKED);
+			await expect(async () => {
+				await chapterFinder.byKey(chapterKey);
+			}).rejects.toThrow(Error.LOCKED);
 		});
 	});
 });

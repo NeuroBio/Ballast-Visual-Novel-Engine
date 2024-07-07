@@ -5,7 +5,7 @@ import { Scene } from '../../../fakes/Scene';
 
 describe(`Engine.advanceScene`, () => {
 	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene;
-	function _createEngine (): Engine {
+	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		const chapter = new Fakes.Chapter();
@@ -13,19 +13,19 @@ describe(`Engine.advanceScene`, () => {
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
 		const engine = new Engine({
-			chapterDataFetcher: () => ChapterData,
+			chapterDataFetcher: () => Promise.resolve(ChapterData),
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 		});
-		engine.startChapter({ chapterKey: '' });
+		await engine.startChapter({ chapterKey: '' });
 		return engine;
 	}
 	describe(`playing a beat with a next beat`, () => {
 		const beatKey = 'beatKey', playResponse = { result: 'result' };
 		let result: any;
 
-		beforeAll(() => {
-			const engine = _createEngine();
+		beforeAll(async () => {
+			const engine = await _createEngine();
 			scene.next.mockReturnValueOnce(playResponse);
 			result = engine.advanceScene({ beatKey });
 		});

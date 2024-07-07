@@ -3,11 +3,12 @@ import { Engine } from '../../../../src/Engine/Engine';
 import { ChapterData } from '../../FakeData/TestData';
 
 describe(`playing through the test data`, () => {
-	const engine = new Engine({ chapterDataFetcher: () => ChapterData });
+	const engine = new Engine({ chapterDataFetcher: () => Promise.resolve(ChapterData) });
 	const chapterKey = 'firstChapter';
 	const results: any[] = [];
-	it(`plays the first beat`, () => {
-		results.push(engine.startChapter({ chapterKey }));
+	it(`plays the first beat`, async () => {
+		const start = await engine.startChapter({ chapterKey });
+		results.push(start);
 		expect(results[0]).toEqual({
 			nextBeat: 'lastBeat',
 			text: `${NARRATOR}: This is the opening beat.`,

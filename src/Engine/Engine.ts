@@ -4,9 +4,9 @@ import { Scene } from '../Scene/Scene';
 import { SceneFinder } from '../Scene/SceneFinder';
 
 interface EngineParams {
+	chapterDataFetcher: () => Promise<ChapterDto[]>;
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
-	chapterDataFetcher: () => ChapterDto[];
 }
 interface LoadChapterParams {
 	chapterKey: string
@@ -35,9 +35,9 @@ export class Engine {
 		// returns array of relevant chapters based on unknown criteria
 	}
 
-	startChapter (params: LoadChapterParams) {
+	async startChapter (params: LoadChapterParams) {
 		const { chapterKey } = params;
-		this.#currentChapter = this.#chapterFinder.byKey(chapterKey);
+		this.#currentChapter = await this.#chapterFinder.byKey(chapterKey);
 
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = this.#sceneFinder.byKey(sceneKey);
