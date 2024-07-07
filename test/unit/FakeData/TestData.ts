@@ -8,18 +8,6 @@ export const ChapterData = [
 	},
 ];
 
-export const SceneData = [
-	{
-		name: 'scene name',
-		key: 'sceneKey',
-		firstBeatKey: 'firstBeat',
-		beats: [
-			'firstBeat',
-			'lastBeat',
-		],
-	},
-];
-
 export const BeatData = [
 	{
 		key: 'firstBeat',
@@ -31,3 +19,13 @@ export const BeatData = [
 		text: 'This is the closing beat.',
 	},
 ];
+
+export const SceneData = [
+	{
+		name: 'scene name',
+		key: 'sceneKey',
+		firstBeatKey: 'firstBeat',
+		beats: BeatData,
+	},
+];
+

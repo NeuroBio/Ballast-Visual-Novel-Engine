@@ -1,12 +1,14 @@
+import { Beat, ChoiceBeatDisplay, FinalBeatDisplay, SimpleBeatDisplay } from '../Beat/Beat';
+
 interface SceneParams {
-	beats: string[];
+	beats: { [key: string]: Beat};
 	firstBeatKey: string;
 	name: string;
 	key: string;
 }
 
 export class Scene {
-	#beats: string[];
+	#beats: { [key: string]: Beat};
 	#firstBeatKey: string;
 	#currentBeatKey: string;
 	#name: string;
@@ -23,9 +25,15 @@ export class Scene {
 	}
 
 	// restart()
-	start (): string {
-		return this.#currentBeatKey;
+	start (): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay {
+		return this.#beats[this.#currentBeatKey].play();
 	}
+
+	next (beatKey: string): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay {
+		this.#currentBeatKey = beatKey;
+		return this.#beats[this.#currentBeatKey].play();
+	}
+
 
 	// play (): void {
 	// 	this.#currentBeat.play();

@@ -1,6 +1,5 @@
-import { Beat } from './Beat';
+import { SimpleBeat } from './Beat';
 import { BeatFactory } from './BeatFactory';
-import { BeatFinder } from './BeatFinder';
 import { Chapter } from './Chapter';
 import { ChapterFinder } from './ChapterFinder';
 import { Character } from './Character';
@@ -13,7 +12,6 @@ export const Fakes = {
 	ChapterFinder,
 	SceneFinder,
 	Scene,
-	Beat,
+	SimpleBeat,
 	BeatFactory,
-	BeatFinder,
 };

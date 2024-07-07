@@ -1,35 +1,36 @@
 import { Engine } from '../../../../../src/Engine/Engine';
 import { ChapterData } from '../../../FakeData/TestData';
 import { Fakes } from '../../../fakes/index';
+import { Scene } from '../../../fakes/Scene';
 
 describe(`Engine.advanceScene`, () => {
-	let chapterFinderFake: any, sceneFinderFake: any, beatFinderFake: any;
+	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene;
 	function _createEngine (): Engine {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
-		beatFinderFake = new Fakes.BeatFinder();
-		return new Engine({
+		const chapter = new Fakes.Chapter();
+		scene = new Fakes.Scene();
+		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
+		sceneFinderFake.byKey.mockReturnValueOnce(scene);
+		const engine = new Engine({
 			chapterDataFetcher: () => ChapterData,
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
-			beatFinder: beatFinderFake,
 		});
+		engine.startChapter({ chapterKey: '' });
+		return engine;
 	}
 	describe(`playing a beat with a next beat`, () => {
-		const beatKey = 'beatKey', playResponse = { result: 'result' }, beat = new Fakes.Beat();
+		const beatKey = 'beatKey', playResponse = { result: 'result' };
 		let result: any;
 
 		beforeAll(() => {
 			const engine = _createEngine();
-			beat.play.mockReturnValueOnce(playResponse);
-			beatFinderFake.byKey.mockReturnValueOnce(beat);
+			scene.next.mockReturnValueOnce(playResponse);
 			result = engine.advanceScene({ beatKey });
 		});
-		it(`loads the correct beat`, () => {
-			expect(beatFinderFake.byKey).toHaveBeenCalledWith(beatKey);
-		});
-		it(`plays the beat`, () => {
-			expect(beat.play).toHaveBeenCalled();
+		it(`plays the scene's next beat`, () => {
+			expect(scene.next).toHaveBeenCalled();
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(playResponse);
