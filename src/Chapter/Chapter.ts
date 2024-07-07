@@ -23,17 +23,20 @@ export class Chapter {
 		this.#currentSceneKey = firstSceneKey;
 	}
 
-	// restart() { return this.#firstScene}
-	start () {
-		return this.#currentSceneKey;
+	restart () {
+		return this.#firstSceneKey;
 	}
 
-	unlock () {
-		this.#locked = false;
+	start () {
+		return this.#currentSceneKey;
 	}
 
 	isLocked () {
 		return this.#locked;
 	}
-	// load()
+
+	// reload (params: UserData) {
+	// 	// unlock
+	// 	// change current scene
+	// }
 }

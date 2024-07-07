@@ -29,6 +29,11 @@ export class Engine {
 		this.#sceneFinder = params.sceneFinder || new SceneFinder({ dataFetcher: sceneDataFetcher });
 	}
 
+	async loadSavedData () {
+		// get the data
+		// store it in local cache
+	}
+
 	// needs to make a server call
 	getChapters () {
 		// requires player
@@ -42,25 +47,28 @@ export class Engine {
 
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
-
 		return this.#currentScene.start();
 	}
 
 	advanceScene (params: AdvanceSceneParams) {
 		const { beatKey } = params;
-
 		return this.#currentScene.next(beatKey);
 	}
 
-	advanceChapter () {
-		// check if scene's current beat is a final beat
-		// id so, load up the next scene and play the next beat
+	async advanceChapter () {
+		// const sceneKey = this.#currentScene.advance();
+		// this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
+		// return this.#currentScene.start();
 	}
 
-	// needs to make a server call
+
 	saveGame () {
 		// save allowed/completed chapters
 		// save completed scenes
 		// save character states
+	}
+
+	async storeSavedData () {
+		// save data for reals
 	}
 }

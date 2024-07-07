@@ -12,7 +12,7 @@ export interface SceneDto {
 }
 
 interface SceneFinderParams {
-	dataFetcher: () => Promise<SceneDto[]>;
+	dataFetcher: (key?: string) => Promise<SceneDto[]>;
 }
 
 export class SceneFinder {
