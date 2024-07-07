@@ -1,6 +1,6 @@
 {
     "scripts": {
-        "test": "jest --config \"test/unit/jest.config.js\"",
+        "test": "jest --config \"test/jest.config.js\"",
         "lint": "npx eslint --fix"
     },
     "devDependencies": {

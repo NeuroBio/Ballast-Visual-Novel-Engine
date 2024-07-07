@@ -43,17 +43,17 @@ export const BeatData: BeatDto[] = [
 	},
 	{
 		key: 'downStream1',
-		text: 'This is downstream of beat 1.',
+		text: 'This is downstream of choice 1.',
 		nextBeat: 'lastBeat',
 	},
 	{
 		key: 'downStream2',
-		text: 'This is downstream of beat 2.',
+		text: 'This is downstream of choice 2.',
 		nextBeat: 'lastBeat',
 	},
 	{
 		key: 'downStream3',
-		text: 'This is downstream of beat 3.',
+		text: 'This is downstream of choice 3.',
 		nextBeat: 'lastBeat',
 	},
 	{

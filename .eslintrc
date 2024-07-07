@@ -58,7 +58,7 @@
 	},
 	"overrides": [
 		{
-			"files": ["test/unit/**/*"],
+			"files": ["test/**/*"],
 			"rules": {
 				"@typescript-eslint/no-explicit-any": "off"
 			}
