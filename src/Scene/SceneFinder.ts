@@ -16,8 +16,8 @@ interface SceneFinderParams {
 }
 
 export class SceneFinder {
-	#fetchData: () => Promise<SceneDto[]>;
-	#cache: { [key: string]: SceneDto};
+	#fetchData: (key?: string) => Promise<SceneDto[]>;
+	#cache: { [key: string]: SceneDto} = {};
 
 	constructor (params: SceneFinderParams) {
 		const { dataFetcher } = params;
@@ -26,7 +26,7 @@ export class SceneFinder {
 
 	async byKey (sceneKey: string): Promise<Scene> {
 		if (!this.#cache || !this.#cache[sceneKey]) {
-			await this.#refreshData();
+			await this.#refreshData(sceneKey);
 		}
 
 		const data = this.#cache[sceneKey];
@@ -45,11 +45,12 @@ export class SceneFinder {
 		return new Scene({ ...data, beats });
 	}
 
-	async #refreshData () {
-		const rawData = await this.#fetchData();
-		this.#cache = rawData.reduce((keyed: { [key: string]: SceneDto}, data) => {
+	async #refreshData (key?: string) {
+		const rawData = await this.#fetchData(key);
+		const refreshedData = rawData.reduce((keyed: { [key: string]: SceneDto}, data) => {
 			keyed[data.key] = data;
 			return keyed;
 		}, {});
+		this.#cache = { ...this.#cache, ...refreshedData };
 	}
 }
