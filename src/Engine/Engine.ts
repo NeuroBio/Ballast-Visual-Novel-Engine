@@ -4,8 +4,9 @@ import { Scene } from '../Scene/Scene';
 import { SceneDto, SceneFinder } from '../Scene/SceneFinder';
 
 interface EngineParams {
-	chapterDataFetcher: () => Promise<ChapterDto[]>;
-	sceneDataFetcher: () => Promise<SceneDto[]>;
+	chapterDataFetcher: (key?: string) => Promise<ChapterDto[]>;
+	sceneDataFetcher: (key?: string) => Promise<SceneDto[]>;
+	// savedDataFetcher: () => Promise<any>;
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
 }

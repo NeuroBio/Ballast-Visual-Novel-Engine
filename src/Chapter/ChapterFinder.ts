@@ -5,7 +5,7 @@ export interface ChapterDto {
 	name: string,
 	locked: boolean,
 	firstSceneKey: string,
-	scenes: string[],
+	sceneKeys: string[],
 }
 
 interface ChapterFinderParams {

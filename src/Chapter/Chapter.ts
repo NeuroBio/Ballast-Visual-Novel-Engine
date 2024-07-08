@@ -1,5 +1,5 @@
 interface ChapterParams {
-	scenes: string[];
+	sceneKeys: string[];
 	locked: boolean;
 	firstSceneKey: string;
 	name: string;
@@ -8,16 +8,16 @@ interface ChapterParams {
 export class Chapter {
 	#key: string;
 	#name: string;
-	#scenes: string[];
+	#sceneKeys: string[];
 	#locked: boolean;
 	#firstSceneKey: string;
 	#currentSceneKey: string;
 
 	constructor (params: ChapterParams) {
-		const { key, name, scenes, locked, firstSceneKey } = params;
+		const { key, name, sceneKeys, locked, firstSceneKey } = params;
 		this.#key = key;
 		this.#name = name;
-		this.#scenes = scenes;
+		this.#sceneKeys = sceneKeys;
 		this.#locked = locked;
 		this.#firstSceneKey = firstSceneKey;
 		this.#currentSceneKey = firstSceneKey;
@@ -38,5 +38,9 @@ export class Chapter {
 	// reload (params: UserData) {
 	// 	// unlock
 	// 	// change current scene
+	// }
+
+	// advanceToNextScene () {
+
 	// }
 }

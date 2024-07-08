@@ -1,5 +1,6 @@
 import { BeatDto } from '../../../src/Beat/BeatFactory';
 import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
+import { SavedDataDto } from '../../../src/SavedData/SaveDataRepo';
 import { SceneDto } from '../../../src/Scene/SceneFinder';
 
 export const ChapterData: ChapterDto[] = [
@@ -8,7 +9,14 @@ export const ChapterData: ChapterDto[] = [
 		name: 'Chapter Name',
 		locked: false,
 		firstSceneKey: 'sceneKey',
-		scenes: ['sceneKey'],
+		sceneKeys: ['sceneKey'],
+	},
+	{
+		key: 'secondChapter',
+		name: 'Another Chapter Name',
+		locked: false,
+		firstSceneKey: 'sceneKey',
+		sceneKeys: ['sceneKey'],
 	},
 ];
 
@@ -70,5 +78,18 @@ export const SceneData: SceneDto[] = [
 		locked: false,
 		beats: BeatData,
 	},
+	{
+		name: 'another scene name',
+		key: 'secondSceneKey',
+		firstBeatKey: 'firstBeat',
+		locked: false,
+		beats: BeatData,
+	},
 ];
 
+export const SavedData: SavedDataDto = {
+	currentChapterKey: 'secondChapter',
+	currentSceneKey: 'secondSceneKey',
+	achievementKeys: [],
+	completeChapterKeys: [],
+};
