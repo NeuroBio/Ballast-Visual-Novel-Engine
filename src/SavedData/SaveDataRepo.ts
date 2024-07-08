@@ -1,5 +1,7 @@
 // import { SavedData } from './SavedData';
 
+import { SavedData } from './SavedData';
+
 export interface SavedDataDto {
 	currentChapterKey: string;
 	currentSceneKey: string;
@@ -8,25 +10,42 @@ export interface SavedDataDto {
 }
 
 interface SavedDataRepoParams {
-	fetchData: () => Promise<SavedDataDto>;
+	findData: () => Promise<SavedDataDto | undefined>;
+	createData?: () => Promise<SavedDataDto>;
 	saveData: (saveData: SavedDataDto) => Promise<void>;
 }
 
 export class SavedDataRepo {
-	#fetchData: () => Promise<SavedDataDto>;
-	#saveData: (saveData: SavedDataDto) => Promise<void>;
+	#findData: () => Promise<SavedDataDto | undefined>;
+	#createData: () => Promise<SavedDataDto>;
+	#createDataDefault = () => {
+		return Promise.resolve({
+			currentChapterKey: '',
+			currentSceneKey: '',
+			achievementKeys: [],
+			completeChapterKeys: [],
+		});
+	};
+	#upsertData: (saveData: SavedDataDto) => Promise<void>;
 
 	constructor (params: SavedDataRepoParams) {
-		const { fetchData, saveData } = params;
-		this.#fetchData = fetchData;
-		this.#saveData = saveData;
+		const { findData, saveData, createData } = params;
+		this.#findData = findData;
+		this.#upsertData = saveData;
+		this.#createData = createData || this.#createDataDefault;
 	}
 
-	// find (): SavedData {
+	async findOrCreate (): Promise<SavedData> {
+		let data = await this.#findData();
+		if (!data) {
+			data = await this.#createData();
+		}
 
-	// }
+		return new SavedData(data);
+	}
 
-	// upsert (saveData: SavedData): void {
-
-	// }
+	async upsert (saveData: SavedData): Promise<void> {
+		const dto = saveData.toDto();
+		await this.#upsertData(dto);
+	}
 }

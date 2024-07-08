@@ -38,7 +38,7 @@ describe(`ChapterFinder.byKey`, () => {
 					name: 'Chapter Name',
 					locked: true,
 					firstSceneKey: 'sceneKey',
-					scenes: ['sceneKey'],
+					sceneKeys: ['sceneKey'],
 				}]),
 			});
 			await expect(async () => {

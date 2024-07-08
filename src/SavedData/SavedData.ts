@@ -1,3 +1,5 @@
+import { SavedDataDto } from './SaveDataRepo';
+
 interface SavedDataParams {
 	currentChapterKey: string;
 	currentSceneKey: string;
@@ -38,4 +40,13 @@ export class SavedData {
 	// getCompletedChapters () {
 
 	// }
+
+	toDto (): SavedDataDto {
+		return {
+			currentChapterKey: this.#currentChapterKey,
+			currentSceneKey: this.#currentSceneKey,
+			achievementKeys: [...this.#achievementKeys],
+			completeChapterKeys: [...this.#completeChapterKeys],
+		};
+	}
 }

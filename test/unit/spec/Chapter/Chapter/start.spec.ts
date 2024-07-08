@@ -7,7 +7,7 @@ describe(`Chapter.start`, () => {
 			const chapter = new Chapter({
 				name: 'chapter name',
 				key: 'chapterKey',
-				scenes: [firstSceneKey, 'anotherScene'],
+				sceneKeys: [firstSceneKey, 'anotherScene'],
 				locked: false,
 				firstSceneKey,
 			});

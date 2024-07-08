@@ -87,7 +87,7 @@ export const SceneData: SceneDto[] = [
 	},
 ];
 
-export const SavedData: SavedDataDto = {
+export const SavedDataData: SavedDataDto = {
 	currentChapterKey: 'secondChapter',
 	currentSceneKey: 'secondSceneKey',
 	achievementKeys: [],

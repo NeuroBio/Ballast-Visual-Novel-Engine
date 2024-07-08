@@ -7,7 +7,7 @@ describe(`Chapter.isLocked`, () => {
 			const chapter = new Chapter({
 				name: 'chapter name',
 				key: 'chapterKey',
-				scenes: [firstSceneKey, 'anotherScene'],
+				sceneKeys: [firstSceneKey, 'anotherScene'],
 				locked: true,
 				firstSceneKey,
 			});
@@ -21,7 +21,7 @@ describe(`Chapter.isLocked`, () => {
 			const chapter = new Chapter({
 				name: 'chapter name',
 				key: 'chapterKey',
-				scenes: [firstSceneKey, 'anotherScene'],
+				sceneKeys: [firstSceneKey, 'anotherScene'],
 				locked: false,
 				firstSceneKey,
 			});
