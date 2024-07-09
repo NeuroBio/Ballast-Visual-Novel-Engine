@@ -12,7 +12,7 @@ describe(`ChapterFinder.byKey`, () => {
 		it(`loads chapter from data`, async () => {
 			const chapterKey = 'firstChapter';
 			const chapterFinder = new ChapterFinder({
-				dataFetcher: () => Promise.resolve(ChapterData),
+				findData: () => Promise.resolve(ChapterData),
 			});
 			const chapter = await chapterFinder.byKey(chapterKey);
 			expect(chapter instanceof Chapter).toBe(true);
@@ -22,7 +22,7 @@ describe(`ChapterFinder.byKey`, () => {
 		it(`throws and error`, async () => {
 			const chapterKey = 'lockedChapter';
 			const chapterFinder = new ChapterFinder({
-				dataFetcher: () => Promise.resolve([]),
+				findData: () => Promise.resolve([]),
 			});
 			await expect(async () => {
 				await chapterFinder.byKey(chapterKey);
@@ -33,7 +33,7 @@ describe(`ChapterFinder.byKey`, () => {
 		it(`throws and error`, async () => {
 			const chapterKey = 'lockedChapter';
 			const chapterFinder = new ChapterFinder({
-				dataFetcher: () => Promise.resolve([{
+				findData: () => Promise.resolve([{
 					key: chapterKey,
 					name: 'Chapter Name',
 					locked: true,

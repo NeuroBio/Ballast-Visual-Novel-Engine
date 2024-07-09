@@ -8,8 +8,8 @@ describe(`Engine.startChapter`, () => {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		return new Engine({
-			chapterDataFetcher: () => Promise.resolve(ChapterData),
-			sceneDataFetcher: () => Promise.resolve(SceneData),
+			findChapterData: () => Promise.resolve(ChapterData),
+			findSceneData: () => Promise.resolve(SceneData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
 			chapterFinder: chapterFinderFake,

@@ -13,8 +13,8 @@ describe(`Engine.advanceScene`, () => {
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
 		const engine = new Engine({
-			chapterDataFetcher: () => Promise.resolve(ChapterData),
-			sceneDataFetcher: () => Promise.resolve(SceneData),
+			findChapterData: () => Promise.resolve(ChapterData),
+			findSceneData: () => Promise.resolve(SceneData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
 			chapterFinder: chapterFinderFake,

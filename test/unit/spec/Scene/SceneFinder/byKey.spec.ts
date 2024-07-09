@@ -12,7 +12,7 @@ describe(`SceneFinder.byKey`, () => {
 		it(`loads Scene from data`, async () => {
 			const sceneKey = 'sceneKey';
 			const sceneFinder = new SceneFinder({
-				dataFetcher: () => Promise.resolve(SceneData),
+				findData: () => Promise.resolve(SceneData),
 			});
 			const scene = await sceneFinder.byKey(sceneKey);
 			expect(scene instanceof Scene).toBe(true);
@@ -22,7 +22,7 @@ describe(`SceneFinder.byKey`, () => {
 		it(`throws an error`, async () => {
 			const sceneKey = 'missingSceneKey';
 			const sceneFinder = new SceneFinder({
-				dataFetcher: () => Promise.resolve([]),
+				findData: () => Promise.resolve([]),
 			});
 			await expect(async () => {
 				await sceneFinder.byKey(sceneKey);
@@ -33,7 +33,7 @@ describe(`SceneFinder.byKey`, () => {
 		it(`throws an error`, async () => {
 			const sceneKey = 'lockedSceneKey';
 			const sceneFinder = new SceneFinder({
-				dataFetcher: () => Promise.resolve([{
+				findData: () => Promise.resolve([{
 					name: 'locked scene',
 					key: sceneKey,
 					firstBeatKey: sceneKey,

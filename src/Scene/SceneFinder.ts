@@ -12,16 +12,16 @@ export interface SceneDto {
 }
 
 interface SceneFinderParams {
-	dataFetcher: (key?: string) => Promise<SceneDto[]>;
+	findData: (key?: string) => Promise<SceneDto[]>;
 }
 
 export class SceneFinder {
-	#fetchData: (key?: string) => Promise<SceneDto[]>;
+	#findData: (key?: string) => Promise<SceneDto[]>;
 	#cache: { [key: string]: SceneDto} = {};
 
 	constructor (params: SceneFinderParams) {
-		const { dataFetcher } = params;
-		this.#fetchData = dataFetcher;
+		const { findData } = params;
+		this.#findData = findData;
 	}
 
 	async byKey (sceneKey: string): Promise<Scene> {
@@ -46,7 +46,7 @@ export class SceneFinder {
 	}
 
 	async #refreshData (key?: string) {
-		const rawData = await this.#fetchData(key);
+		const rawData = await this.#findData(key);
 		const refreshedData = rawData.reduce((keyed: { [key: string]: SceneDto}, data) => {
 			keyed[data.key] = data;
 			return keyed;

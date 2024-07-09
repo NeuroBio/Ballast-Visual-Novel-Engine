@@ -5,8 +5,8 @@ import { Scene } from '../Scene/Scene';
 import { SceneDto, SceneFinder } from '../Scene/SceneFinder';
 
 interface EngineParams {
-	chapterDataFetcher: (key?: string) => Promise<ChapterDto[]>;
-	sceneDataFetcher: (key?: string) => Promise<SceneDto[]>;
+	findChapterData: (key?: string) => Promise<ChapterDto[]>;
+	findSceneData: (key?: string) => Promise<SceneDto[]>;
 	findSavedData: () => Promise<SavedDataDto>;
 	createSavedData?: () => Promise<SavedDataDto>;
 	saveSavedData: (saveData: SavedDataDto) => Promise<void>;
@@ -31,9 +31,9 @@ export class Engine {
 	#currentScene: Scene;
 
 	constructor (params: EngineParams) {
-		const { chapterDataFetcher, sceneDataFetcher, findSavedData, createSavedData, saveSavedData } = params;
-		this.#chapterFinder = params.chapterFinder || new ChapterFinder({ dataFetcher: chapterDataFetcher });
-		this.#sceneFinder = params.sceneFinder || new SceneFinder({ dataFetcher: sceneDataFetcher });
+		const { findChapterData, findSceneData, findSavedData, createSavedData, saveSavedData } = params;
+		this.#chapterFinder = params.chapterFinder || new ChapterFinder({ findData: findChapterData });
+		this.#sceneFinder = params.sceneFinder || new SceneFinder({ findData: findSceneData });
 		this.#savedDataRepo = params.savedDataRepo || new SavedDataRepo({
 			findData: findSavedData,
 			createData: createSavedData,

@@ -9,16 +9,16 @@ export interface ChapterDto {
 }
 
 interface ChapterFinderParams {
-	dataFetcher: (key?: string) => Promise<ChapterDto[]>;
+	findData: (key?: string) => Promise<ChapterDto[]>;
 }
 
 export class ChapterFinder {
-	#fetchData: (key?: string) => Promise<ChapterDto[]>;
+	#findData: (key?: string) => Promise<ChapterDto[]>;
 	#cache: { [key: string]: ChapterDto} = {};
 
 	constructor (params: ChapterFinderParams) {
-		const { dataFetcher } = params;
-		this.#fetchData = dataFetcher;
+		const { findData } = params;
+		this.#findData = findData;
 	}
 
 	async byKey (chapterKey: string): Promise<Chapter> {
@@ -41,7 +41,7 @@ export class ChapterFinder {
 	}
 
 	async #refreshData (key?: string) {
-		const rawData = await this.#fetchData(key);
+		const rawData = await this.#findData(key);
 		const refreshedData = rawData.reduce((keyed: { [key: string]: ChapterDto}, data) => {
 			keyed[data.key] = data;
 			return keyed;
