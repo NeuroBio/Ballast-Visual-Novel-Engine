@@ -1,6 +1,7 @@
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
 import { SavedDataDto, SavedDataRepo } from '../SavedData/SaveDataRepo';
+import { SavedData } from '../SavedData/SavedData';
 import { Scene } from '../Scene/Scene';
 import { SceneDto, SceneFinder } from '../Scene/SceneFinder';
 
@@ -10,7 +11,6 @@ interface EngineParams {
 	findSavedData: () => Promise<SavedDataDto>;
 	createSavedData?: () => Promise<SavedDataDto>;
 	saveSavedData: (saveData: SavedDataDto) => Promise<void>;
-	// savedDataFetcher: () => Promise<any>;
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
 	savedDataRepo?: SavedDataRepo;
@@ -27,6 +27,7 @@ export class Engine {
 	#sceneFinder: SceneFinder;
 	#savedDataRepo: SavedDataRepo;
 
+	#currentSave: SavedData;
 	#currentChapter: Chapter;
 	#currentScene: Scene;
 
@@ -42,8 +43,7 @@ export class Engine {
 	}
 
 	async loadSavedData () {
-		// get the data
-		// store it in local cache
+		this.#currentSave = await this.#savedDataRepo.findOrCreate();
 	}
 
 	// needs to make a server call

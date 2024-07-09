@@ -16,7 +16,7 @@ describe(`SavedDataRepo.upsert`, () => {
 			currentChapterKey: 'chap',
 			currentSceneKey: 'scene',
 			achievementKeys: [],
-			completeChapterKeys: ['chap'],
+			completedChapterKeys: ['chap'],
 		});
 
 		savedDataRepo.upsert(savedData);

@@ -8,7 +8,7 @@ export interface SavedDataDto {
 	currentChapterKey: string;
 	currentSceneKey: string;
 	achievementKeys: string[];
-	completeChapterKeys: string[];
+	completedChapterKeys: string[];
 }
 
 interface SavedDataRepoParams {
@@ -27,7 +27,7 @@ export class SavedDataRepo {
 			currentChapterKey: '',
 			currentSceneKey: '',
 			achievementKeys: [],
-			completeChapterKeys: [],
+			completedChapterKeys: [],
 		});
 	};
 	#upsertData: (saveData: SavedDataDto) => Promise<void>;

@@ -6,15 +6,15 @@ describe(`SaveData.toDto`, () => {
 		const priorSceneKey = 'firstScene';
 		const currentChapterKey = 'current chapter';
 		const currentSceneKey = 'current scene';
-		const achievementKeys = ['achieve 2', 'achieve 2'];
-		const completeChapterKeys = [currentChapterKey, 'another chapter'];
+		const achievementKeys = ['achieve 1', 'achieve 2'];
+		const completedChapterKeys = [ priorChapterKey ];
 		const savedDataParams = {
 			priorChapterKey,
 			priorSceneKey,
 			currentChapterKey,
 			currentSceneKey,
 			achievementKeys,
-			completeChapterKeys,
+			completedChapterKeys,
 		};
 		const savedData = new SavedData({
 			priorChapterKey,
@@ -22,12 +22,12 @@ describe(`SaveData.toDto`, () => {
 			currentChapterKey,
 			currentSceneKey,
 			achievementKeys,
-			completeChapterKeys,
+			completedChapterKeys,
 		});
 
 		const dto = savedData.toDto();
 		expect(dto).toEqual(savedDataParams);
 		expect(dto.achievementKeys).not.toBe(achievementKeys);
-		expect(dto.completeChapterKeys).not.toBe(completeChapterKeys);
+		expect(dto.completedChapterKeys).not.toBe(completedChapterKeys);
 	});
 });

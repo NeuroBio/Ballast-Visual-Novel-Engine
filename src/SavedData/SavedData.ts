@@ -6,7 +6,7 @@ interface SavedDataParams {
 	currentChapterKey: string;
 	currentSceneKey: string;
 	achievementKeys: string[];
-	completeChapterKeys: string[];
+	completedChapterKeys: string[];
 }
 
 export class SavedData {
@@ -15,17 +15,17 @@ export class SavedData {
 	#currentChapterKey: string;
 	#currentSceneKey: string;
 	#achievementKeys: string[];
-	#completeChapterKeys: string[];
+	#completedChapterKeys: string[];
 
 	constructor (params: SavedDataParams) {
 		const { priorChapterKey, priorSceneKey, currentChapterKey, currentSceneKey,
-			achievementKeys, completeChapterKeys } = params;
+			achievementKeys, completedChapterKeys } = params;
 		this.#priorChapterKey = priorChapterKey;
 		this.#priorSceneKey = priorSceneKey;
 		this.#currentChapterKey = currentChapterKey;
 		this.#currentSceneKey = currentSceneKey;
 		this.#achievementKeys = achievementKeys;
-		this.#completeChapterKeys = completeChapterKeys;
+		this.#completedChapterKeys = completedChapterKeys;
 	}
 
 	get achievementKeys () {
@@ -33,7 +33,7 @@ export class SavedData {
 	}
 
 	get completedChaptersKeys () {
-		return [...this.#completeChapterKeys];
+		return [...this.#completedChapterKeys];
 	}
 
 	get currentChapterKey () {
@@ -48,7 +48,8 @@ export class SavedData {
 		this.#currentChapterKey = newChapterKey;
 	}
 
-	completeChapter () {
+	completedChapter () {
+		this.#completedChapterKeys.push(this.#currentChapterKey);
 		this.#priorChapterKey = this.#currentChapterKey;
 		this.#currentChapterKey = '';
 		this.#priorSceneKey = this.currentSceneKey;
@@ -78,7 +79,7 @@ export class SavedData {
 			currentChapterKey: this.#currentChapterKey,
 			currentSceneKey: this.#currentSceneKey,
 			achievementKeys: [...this.#achievementKeys],
-			completeChapterKeys: [...this.#completeChapterKeys],
+			completedChapterKeys: [...this.#completedChapterKeys],
 		};
 	}
 }

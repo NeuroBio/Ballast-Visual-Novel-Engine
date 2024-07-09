@@ -93,5 +93,5 @@ export const SavedDataData: SavedDataDto = {
 	currentChapterKey: 'secondChapter',
 	currentSceneKey: 'secondSceneKey',
 	achievementKeys: [],
-	completeChapterKeys: ['firstChapter'],
+	completedChapterKeys: ['firstChapter'],
 };

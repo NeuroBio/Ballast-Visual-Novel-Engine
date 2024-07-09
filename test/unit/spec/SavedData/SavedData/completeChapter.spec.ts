@@ -6,23 +6,24 @@ describe(`SaveData.startNewChapter`, () => {
 		const priorSceneKey = 'firstScene';
 		const currentChapterKey = 'current chapter';
 		const currentSceneKey = 'current scene';
-		const achievementKeys = ['achieve 2', 'achieve 2'];
-		const completeChapterKeys = [currentChapterKey, 'another chapter'];
+		const achievementKeys = ['achieve 1', 'achieve 2'];
+		const completedChapterKeys = [ priorChapterKey ];
 		const savedData = new SavedData({
 			priorChapterKey,
 			priorSceneKey,
 			currentChapterKey,
 			currentSceneKey,
 			achievementKeys,
-			completeChapterKeys,
+			completedChapterKeys,
 		});
 
-		savedData.completeChapter();
+		savedData.completedChapter();
 		expect(savedData.toDto()).toEqual(expect.objectContaining({
 			priorChapterKey: currentChapterKey,
 			priorSceneKey: currentSceneKey,
 			currentChapterKey: '',
 			currentSceneKey: '',
+			completedChapterKeys: [ priorChapterKey, currentChapterKey ],
 		}));
 	});
 });

@@ -8,14 +8,14 @@ describe(`SaveData.startNewChapter`, () => {
 		const nextChapterKey = 'another chapter';
 		const currentSceneKey = 'current scene';
 		const achievementKeys = ['achieve 2', 'achieve 2'];
-		const completeChapterKeys = [currentChapterKey, 'another chapter'];
+		const completedChapterKeys = [currentChapterKey, 'another chapter'];
 		const savedData = new SavedData({
 			priorChapterKey,
 			priorSceneKey,
 			currentChapterKey,
 			currentSceneKey,
 			achievementKeys,
-			completeChapterKeys,
+			completedChapterKeys,
 		});
 
 		savedData.startNewChapter(nextChapterKey);
