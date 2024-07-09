@@ -4,10 +4,11 @@ import { Fakes } from '../../../fakes/index';
 import { Scene } from '../../../fakes/Scene';
 
 describe(`Engine.advanceScene`, () => {
-	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene;
+	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene, savedDataRepoFake: any;
 	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
+		savedDataRepoFake = new Fakes.SavedDataRepo();
 		const chapter = new Fakes.Chapter();
 		scene = new Fakes.Scene();
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
@@ -19,6 +20,7 @@ describe(`Engine.advanceScene`, () => {
 			saveSavedData: () => Promise.resolve(),
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
+			savedDataRepo: savedDataRepoFake,
 		});
 		await engine.startChapter({ chapterKey: '' });
 		return engine;

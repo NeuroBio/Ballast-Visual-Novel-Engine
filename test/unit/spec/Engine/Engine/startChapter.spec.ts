@@ -3,10 +3,11 @@ import { ChapterData, SavedDataData, SceneData } from '../../../FakeData/TestDat
 import { Fakes } from '../../../fakes/index';
 
 describe(`Engine.startChapter`, () => {
-	let chapterFinderFake: any, sceneFinderFake: any;
+	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any;
 	function _createEngine (): Engine {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
+		savedDataRepoFake = new Fakes.SavedDataRepo();
 		return new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
@@ -14,6 +15,7 @@ describe(`Engine.startChapter`, () => {
 			saveSavedData: () => Promise.resolve(),
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
+			savedDataRepo: savedDataRepoFake,
 		});
 	}
 	describe(`loading chapter for the first time`, () => {
