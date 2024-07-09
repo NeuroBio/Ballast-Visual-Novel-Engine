@@ -3,6 +3,8 @@
 import { SavedData } from './SavedData';
 
 export interface SavedDataDto {
+	priorChapterKey: string;
+	priorSceneKey: string;
 	currentChapterKey: string;
 	currentSceneKey: string;
 	achievementKeys: string[];
@@ -20,6 +22,8 @@ export class SavedDataRepo {
 	#createData: () => Promise<SavedDataDto>;
 	#createDataDefault = () => {
 		return Promise.resolve({
+			priorChapterKey: '',
+			priorSceneKey: '',
 			currentChapterKey: '',
 			currentSceneKey: '',
 			achievementKeys: [],

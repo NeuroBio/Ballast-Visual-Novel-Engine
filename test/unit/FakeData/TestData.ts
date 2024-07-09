@@ -88,8 +88,10 @@ export const SceneData: SceneDto[] = [
 ];
 
 export const SavedDataData: SavedDataDto = {
+	priorChapterKey: 'firstChapter',
+	priorSceneKey: 'firstSceneKey',
 	currentChapterKey: 'secondChapter',
 	currentSceneKey: 'secondSceneKey',
 	achievementKeys: [],
-	completeChapterKeys: [],
+	completeChapterKeys: ['firstChapter'],
 };
