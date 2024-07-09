@@ -3,6 +3,11 @@ import { ChapterData, SavedDataData, SceneData } from '../../../FakeData/TestDat
 import { Fakes } from '../../../fakes/index';
 
 describe(`Engine.startChapter`, () => {
+	const Error = Object.freeze({
+		NOT_FOUND: 'Requested chapter was not found.',
+		LOCKED: 'This chapter has not yet been unlocked.',
+	});
+
 	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any;
 	function _createEngine (): Engine {
 		chapterFinderFake = new Fakes.ChapterFinder();
@@ -18,7 +23,29 @@ describe(`Engine.startChapter`, () => {
 			savedDataRepo: savedDataRepoFake,
 		});
 	}
-	describe(`loading chapter for the first time`, () => {
+
+	describe(`chapter is not found`, () => {
+		it(`throws and error`, async () => {
+			const chapterKey = 'noChapter';
+			const engine = _createEngine();
+			await expect(async () => {
+				await engine.startChapter({ chapterKey });
+			}).rejects.toThrow(Error.NOT_FOUND);
+		});
+	});
+	describe(`chapter is locked`, () => {
+		it(`throws and error`, async () => {
+			const chapterKey = 'lockedChapter';
+			const engine = _createEngine();
+			const chapter = new Fakes.Chapter();
+			chapter.isLocked.mockReturnValueOnce(true);
+			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
+			await expect(async () => {
+				await engine.startChapter({ chapterKey });
+			}).rejects.toThrow(Error.LOCKED);
+		});
+	});
+	describe(`loading valid chapter for the first time`, () => {
 		const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
 			scene = new Fakes.Scene(), startResponse = { result: 'result' };
 		let result: any;

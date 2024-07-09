@@ -21,23 +21,13 @@ export class ChapterFinder {
 		this.#findData = findData;
 	}
 
-	async byKey (chapterKey: string): Promise<Chapter> {
+	async byKey (chapterKey: string): Promise<Chapter | undefined> {
 		if (!this.#cache[chapterKey]) {
 			await this.#refreshData();
 		}
 
 		const dto = this.#cache[chapterKey];
-		if (!dto) {
-			throw new Error('Requested chapter was not found.');
-		}
-
-		const chapter = new Chapter(dto);
-
-		if (chapter.isLocked()) {
-			throw new Error('This chapter has not yet been unlocked.');
-		}
-
-		return chapter;
+		return dto ? new Chapter(dto) : undefined;
 	}
 
 	async all (): Promise<Chapter[]> {

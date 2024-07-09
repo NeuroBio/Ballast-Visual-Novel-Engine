@@ -22,6 +22,12 @@ interface LoadChapterParams {
 interface AdvanceSceneParams {
 	beatKey: string;
 }
+
+interface getChaptersParams {
+	excludeLocked: boolean;
+	excludeUnlocked: boolean;
+}
+
 export class Engine {
 	#chapterFinder: ChapterFinder;
 	#sceneFinder: SceneFinder;
@@ -47,19 +53,31 @@ export class Engine {
 	}
 
 	// needs to make a server call
-	getChapters () {
+	getChapters (params: getChaptersParams) {
+		return this.#chapterFinder.all();
 		// requires player
-
-		// returns array of relevant chapters based on unknown criteria
 	}
 
 	async startChapter (params: LoadChapterParams) {
 		const { chapterKey } = params;
-		this.#currentChapter = await this.#chapterFinder.byKey(chapterKey);
+		this.#currentChapter = await this.#findChapterElseThrow(chapterKey);
 
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
 		return this.#currentScene.start();
+	}
+
+	async #findChapterElseThrow (chapterKey: string): Promise<Chapter> {
+		const chapter = await this.#chapterFinder.byKey(chapterKey);
+		if (!chapter) {
+			throw new Error('Requested chapter was not found.');
+		}
+
+		if (chapter.isLocked()) {
+			throw new Error('This chapter has not yet been unlocked.');
+		}
+
+		return chapter;
 	}
 
 	advanceScene (params: AdvanceSceneParams) {
