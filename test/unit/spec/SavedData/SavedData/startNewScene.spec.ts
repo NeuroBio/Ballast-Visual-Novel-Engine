@@ -1,10 +1,11 @@
 import { SavedData } from '../../../../../src/SavedData/SavedData';
 
-describe(`SaveData.startNewChapter`, () => {
-	it(`updates the current and prior chapters and scenes`, () => {
+describe(`SaveData.startNewScene`, () => {
+	it(`updates the current and prior scenes`, () => {
 		const priorChapterKey = 'firstChapter';
 		const priorSceneKey = 'firstScene';
 		const currentChapterKey = 'current chapter';
+		const nextSceneKey = 'another scene';
 		const currentSceneKey = 'current scene';
 		const achievementKeys = ['achieve 2', 'achieve 2'];
 		const completeChapterKeys = [currentChapterKey, 'another chapter'];
@@ -17,12 +18,10 @@ describe(`SaveData.startNewChapter`, () => {
 			completeChapterKeys,
 		});
 
-		savedData.completeChapter();
+		savedData.startNewScene(nextSceneKey);
 		expect(savedData.toDto()).toEqual(expect.objectContaining({
-			priorChapterKey: currentChapterKey,
 			priorSceneKey: currentSceneKey,
-			currentChapterKey: '',
-			currentSceneKey: '',
+			currentSceneKey: nextSceneKey,
 		}));
 	});
 });

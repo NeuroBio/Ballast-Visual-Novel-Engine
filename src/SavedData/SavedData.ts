@@ -56,9 +56,10 @@ export class SavedData {
 	}
 
 
-	// startNewScene () {
-
-	// }
+	startNewScene (newSceneKey: string) {
+		this.#priorSceneKey = this.#currentSceneKey;
+		this.#currentSceneKey = newSceneKey;
+	}
 
 	// completeScene () {
 	// super back and forth on whether I need this
