@@ -26,18 +26,26 @@ export class ChapterFinder {
 			await this.#refreshData();
 		}
 
-		const data = this.#cache[chapterKey];
-		if (!data) {
+		const dto = this.#cache[chapterKey];
+		if (!dto) {
 			throw new Error('Requested chapter was not found.');
 		}
 
-		const chapter = new Chapter(data);
+		const chapter = new Chapter(dto);
 
 		if (chapter.isLocked()) {
 			throw new Error('This chapter has not yet been unlocked.');
 		}
 
 		return chapter;
+	}
+
+	async all (): Promise<Chapter[]> {
+		if (Object.keys(this.#cache).length < 1) {
+			await this.#refreshData();
+		}
+
+		return Object.values(this.#cache).map((dto) => new Chapter(dto));
 	}
 
 	async #refreshData (key?: string) {
