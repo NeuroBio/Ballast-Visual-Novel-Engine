@@ -3,6 +3,7 @@ import { BeatFactory } from './BeatFactory';
 import { Chapter } from './Chapter';
 import { ChapterFinder } from './ChapterFinder';
 import { Character } from './Character';
+import { SavedData } from './SavedData';
 import { SavedDataRepo } from './SavedDataRepo';
 import { Scene } from './Scene';
 import { SceneFinder } from './SceneFinder';
@@ -16,4 +17,5 @@ export const Fakes = {
 	SimpleBeat,
 	BeatFactory,
 	SavedDataRepo,
+	SavedData,
 };

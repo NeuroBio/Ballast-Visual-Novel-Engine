@@ -1,3 +1,5 @@
+import { SavedData } from '../SavedData/SavedData';
+
 interface ChapterParams {
 	sceneKeys: string[];
 	locked: boolean;
@@ -35,10 +37,10 @@ export class Chapter {
 		return this.#locked;
 	}
 
-	// reload (params: UserData) {
-	// 	// unlock
-	// 	// change current scene
-	// }
+	reload (params: SavedData) {
+		// unlock
+		// change current scene
+	}
 
 	// advanceToNextScene () {
 

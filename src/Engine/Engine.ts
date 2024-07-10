@@ -52,7 +52,6 @@ export class Engine {
 		this.#currentSave = await this.#savedDataRepo.findOrCreate();
 	}
 
-	// needs to make a server call
 	async getChapters (params: getChaptersParams = {}) {
 		const { excludeLocked, excludeUnlocked } = params;
 		let chapters = await this.#chapterFinder.all();

@@ -33,11 +33,7 @@ describe(`Engine.getChapters`, () => {
 	describe(`requesting only locked chapters`, () => {
 		it(`returns all locked chapters`, async () => {
 			const engine = _createEngine();
-			const chapterResponse = ChapterData.map((dto) => {
-				const chapter = new Chapter(dto);
-				chapter.isLocked.mockReturnValue(dto.locked);
-				return chapter;
-			});
+			const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
 			chapterFinderFake.all.mockReturnValueOnce(chapterResponse);
 
 			const chapters = await engine.getChapters({ excludeUnlocked: true });
@@ -48,11 +44,7 @@ describe(`Engine.getChapters`, () => {
 	describe(`requesting only unlocked chapters`, () => {
 		it(`returns all locked chapters`, async () => {
 			const engine = _createEngine();
-			const chapterResponse = ChapterData.map((dto) => {
-				const chapter = new Chapter(dto);
-				chapter.isLocked.mockReturnValue(dto.locked);
-				return chapter;
-			});
+			const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
 			chapterFinderFake.all.mockReturnValueOnce(chapterResponse);
 
 			const chapters = await engine.getChapters({ excludeLocked: true });

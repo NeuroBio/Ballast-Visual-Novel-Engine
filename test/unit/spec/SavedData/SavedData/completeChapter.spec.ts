@@ -17,7 +17,7 @@ describe(`SaveData.startNewChapter`, () => {
 			completedChapterKeys,
 		});
 
-		savedData.completedChapter();
+		savedData.completeChapter();
 		expect(savedData.toDto()).toEqual(expect.objectContaining({
 			priorChapterKey: currentChapterKey,
 			priorSceneKey: currentSceneKey,

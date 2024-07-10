@@ -48,7 +48,7 @@ export class SavedData {
 		this.#currentChapterKey = newChapterKey;
 	}
 
-	completedChapter () {
+	completeChapter () {
 		this.#completedChapterKeys.push(this.#currentChapterKey);
 		this.#priorChapterKey = this.#currentChapterKey;
 		this.#currentChapterKey = '';
