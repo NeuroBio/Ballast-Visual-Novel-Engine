@@ -24,8 +24,8 @@ interface AdvanceSceneParams {
 }
 
 interface getChaptersParams {
-	excludeLocked: boolean;
-	excludeUnlocked: boolean;
+	excludeLocked?: boolean;
+	excludeUnlocked?: boolean;
 }
 
 export class Engine {
@@ -53,8 +53,9 @@ export class Engine {
 	}
 
 	// needs to make a server call
-	getChapters (params: getChaptersParams) {
-		return this.#chapterFinder.all();
+	async getChapters (params: getChaptersParams = {}) {
+		const { excludeLocked, excludeUnlocked } = params;
+		return await this.#chapterFinder.all();
 		// requires player
 	}
 
