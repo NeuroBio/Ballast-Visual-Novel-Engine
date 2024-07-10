@@ -55,8 +55,20 @@ export class Engine {
 	// needs to make a server call
 	async getChapters (params: getChaptersParams = {}) {
 		const { excludeLocked, excludeUnlocked } = params;
-		return await this.#chapterFinder.all();
-		// requires player
+		let chapters = await this.#chapterFinder.all();
+
+		// requires player to unlock
+
+
+		if (excludeLocked) {
+			chapters = chapters.filter((chap) => chap.isLocked() === false);
+		}
+
+		if (excludeUnlocked) {
+			chapters = chapters.filter((chap) => chap.isLocked() === true);
+		}
+
+		return chapters;
 	}
 
 	async startChapter (params: LoadChapterParams) {

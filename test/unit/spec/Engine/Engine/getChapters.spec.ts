@@ -30,4 +30,34 @@ describe(`Engine.getChapters`, () => {
 			expect(chapters).toEqual(chapterResponse);
 		});
 	});
+	describe(`requesting only locked chapters`, () => {
+		it(`returns all locked chapters`, async () => {
+			const engine = _createEngine();
+			const chapterResponse = ChapterData.map((dto) => {
+				const chapter = new Chapter(dto);
+				chapter.isLocked.mockReturnValue(dto.locked);
+				return chapter;
+			});
+			chapterFinderFake.all.mockReturnValueOnce(chapterResponse);
+
+			const chapters = await engine.getChapters({ excludeUnlocked: true });
+			const lockedChapters = chapterResponse.filter((chap) => chap.isLocked() === true);
+			expect(chapters).toEqual(lockedChapters);
+		});
+	});
+	describe(`requesting only unlocked chapters`, () => {
+		it(`returns all locked chapters`, async () => {
+			const engine = _createEngine();
+			const chapterResponse = ChapterData.map((dto) => {
+				const chapter = new Chapter(dto);
+				chapter.isLocked.mockReturnValue(dto.locked);
+				return chapter;
+			});
+			chapterFinderFake.all.mockReturnValueOnce(chapterResponse);
+
+			const chapters = await engine.getChapters({ excludeLocked: true });
+			const unlockedChapters = chapterResponse.filter((chap) => chap.isLocked() === false);
+			expect(chapters).toEqual(unlockedChapters);
+		});
+	});
 });
