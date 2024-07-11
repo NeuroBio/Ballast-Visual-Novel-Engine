@@ -18,7 +18,11 @@ describe(`SaveData.toDto`, () => {
 
 		const dto = savedData.toDto();
 		expect(dto).toEqual(savedDataParams);
-		expect(dto.achievements).not.toBe(achievements);
+		// not by reference
+		expect(dto.activeChapters).not.toBe(activeChapters);
 		expect(dto.completedChapters).not.toBe(completedChapters);
+		expect(dto.unlockedChapters).not.toBe(unlockedChapters);
+		expect(dto.inventory).not.toBe(inventory);
+		expect(dto.achievements).not.toBe(achievements);
 	});
 });
