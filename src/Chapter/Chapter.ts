@@ -1,4 +1,4 @@
-import { SavedData } from '../SavedData/SavedData';
+import { SavedChapterData } from '../SavedData/SavedData';
 
 interface ChapterParams {
 	sceneKeys: string[];
@@ -38,7 +38,7 @@ export class Chapter {
 		return this.#locked;
 	}
 
-	reload (save: SavedData) {
+	reload (save: SavedChapterData) {
 		// const shouldUnlock = (save.currentChapterKey === this.#key
 		// 	|| save.completedChaptersKeys.includes(this.#key));
 		// unlock

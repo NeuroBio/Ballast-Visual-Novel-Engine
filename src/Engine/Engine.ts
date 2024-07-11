@@ -56,7 +56,7 @@ export class Engine {
 		const { excludeLocked, excludeUnlocked } = params;
 		let chapters = await this.#chapterFinder.all();
 
-		// requires player to unlock
+		// requires player data to unlock
 
 
 		if (excludeLocked) {

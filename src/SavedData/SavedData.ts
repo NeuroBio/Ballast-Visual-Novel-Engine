@@ -9,6 +9,12 @@ interface SavedDataParams {
 	// characters: { [characterKey: string]: Character }
 }
 
+export interface SavedChapterData {
+	isUnlocked: boolean,
+	wasCompleted: boolean,
+	queuedScene: string,
+}
+
 export class SavedData {
 	#activeChapters: { [key: string]: string };
 	#unlockedChapters: string[];
@@ -40,14 +46,12 @@ export class SavedData {
 		this.#activeChapters[chapterKey] = sceneKey;
 	}
 
-	getChapterData (chapterKey: string) {
-		this.#unlockedChapters.find((x) => x === chapterKey);
-		this.#completedChapters.find((x) => x === chapterKey);
-		this.#activeChapters[chapterKey];
-		// returns an object of
-		// isUnlocked
-		// wasCompleted
-		// queuedScene
+	getChapterData (chapterKey: string): SavedChapterData {
+		return {
+			isUnlocked: !!(this.#unlockedChapters.find((x) => x === chapterKey)),
+			wasCompleted: !!(this.#completedChapters.find((x) => x === chapterKey)),
+			queuedScene: this.#activeChapters[chapterKey] || '',
+		};
 	}
 
 	queueScene (chapterKey: string, sceneKey: string): void {
