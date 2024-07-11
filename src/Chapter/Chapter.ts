@@ -7,6 +7,7 @@ interface ChapterParams {
 	name: string;
 	key: string;
 }
+
 export class Chapter {
 	#key: string;
 	#name: string;
@@ -37,7 +38,9 @@ export class Chapter {
 		return this.#locked;
 	}
 
-	reload (params: SavedData) {
+	reload (save: SavedData) {
+		// const shouldUnlock = (save.currentChapterKey === this.#key
+		// 	|| save.completedChaptersKeys.includes(this.#key));
 		// unlock
 		// change current scene
 	}

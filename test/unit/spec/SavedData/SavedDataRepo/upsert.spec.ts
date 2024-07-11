@@ -11,12 +11,11 @@ describe(`SavedDataRepo.upsert`, () => {
 		});
 
 		const savedData = new SavedData({
-			priorChapterKey: '',
-			priorSceneKey: '',
-			currentChapterKey: 'chap',
-			currentSceneKey: 'scene',
-			achievementKeys: [],
-			completedChapterKeys: ['chap'],
+			activeChapters: { second: 'someScene' },
+			unlockedChapters: ['second'],
+			completedChapters: ['first'],
+			inventory: { item: 3 },
+			achievements: ['achieve'],
 		});
 
 		savedDataRepo.upsert(savedData);

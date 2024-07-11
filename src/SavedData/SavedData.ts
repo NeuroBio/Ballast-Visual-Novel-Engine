@@ -1,66 +1,64 @@
 import { SavedDataDto } from './SaveDataRepo';
 
 interface SavedDataParams {
-	priorChapterKey: string;
-	priorSceneKey: string;
-	currentChapterKey: string;
-	currentSceneKey: string;
-	achievementKeys: string[];
-	completedChapterKeys: string[];
+	activeChapters: { [chapterKey: string]: string };
+	unlockedChapters: string[];
+	completedChapters: string[];
+	inventory: { [itemKey: string]: number };
+	achievements: string[];
+	// characters: { [characterKey: string]: Character }
 }
 
 export class SavedData {
-	#priorChapterKey: string;
-	#priorSceneKey: string;
-	#currentChapterKey: string;
-	#currentSceneKey: string;
-	#achievementKeys: string[];
-	#completedChapterKeys: string[];
+	#activeChapters: { [key: string]: string };
+	#unlockedChapters: string[];
+	#completedChapters: string[];
+	#inventory: { [itemKey: string]: number };
+	#achievements: string[];
+	// #characters: { [characterKey: string]: Character };
 
 	constructor (params: SavedDataParams) {
-		const { priorChapterKey, priorSceneKey, currentChapterKey, currentSceneKey,
-			achievementKeys, completedChapterKeys } = params;
-		this.#priorChapterKey = priorChapterKey;
-		this.#priorSceneKey = priorSceneKey;
-		this.#currentChapterKey = currentChapterKey;
-		this.#currentSceneKey = currentSceneKey;
-		this.#achievementKeys = achievementKeys;
-		this.#completedChapterKeys = completedChapterKeys;
+		const { activeChapters, unlockedChapters, completedChapters,
+			inventory, achievements } = params;
+		this.#activeChapters = activeChapters;
+		this.#unlockedChapters = unlockedChapters;
+		this.#completedChapters = completedChapters;
+		this.#inventory = inventory;
+		this.#achievements = achievements;
+		// this.#characters - characters;
 	}
 
 	get achievementKeys () {
-		return [...this.#achievementKeys];
+		return [...this.#achievements];
 	}
 
 	get completedChaptersKeys () {
-		return [...this.#completedChapterKeys];
+		return [...this.#completedChapters];
 	}
 
-	get currentChapterKey () {
-		return this.#currentChapterKey;
+	startNewChapter (chapterKey: string, sceneKey: string): void {
+		this.#activeChapters[chapterKey] = sceneKey;
 	}
 
-	get currentSceneKey () {
-		return this.#currentSceneKey;
+	getChapterData (chapterKey: string) {
+		this.#unlockedChapters.find((x) => x === chapterKey);
+		this.#completedChapters.find((x) => x === chapterKey);
+		this.#activeChapters[chapterKey];
+		// returns an object of
+		// isUnlocked
+		// wasCompleted
+		// queuedScene
 	}
 
-	startNewChapter (newChapterKey: string) {
-		this.#currentChapterKey = newChapterKey;
+	queueScene (chapterKey: string, sceneKey: string): void {
+		this.#activeChapters[chapterKey] = sceneKey;
 	}
 
-	completeChapter () {
-		this.#completedChapterKeys.push(this.#currentChapterKey);
-		this.#priorChapterKey = this.#currentChapterKey;
-		this.#currentChapterKey = '';
-		this.#priorSceneKey = this.currentSceneKey;
-		this.#currentSceneKey = '';
+	completeChapter (chapterKey: string): void {
+		this.#completedChapters.push(chapterKey);
+		delete this.#activeChapters[chapterKey];
 	}
 
-
-	startNewScene (newSceneKey: string) {
-		this.#priorSceneKey = this.#currentSceneKey;
-		this.#currentSceneKey = newSceneKey;
-	}
 
 	// completeScene () {
 	// super back and forth on whether I need this
@@ -74,12 +72,11 @@ export class SavedData {
 
 	toDto (): SavedDataDto {
 		return {
-			priorChapterKey: this.#priorChapterKey,
-			priorSceneKey: this.#priorSceneKey,
-			currentChapterKey: this.#currentChapterKey,
-			currentSceneKey: this.#currentSceneKey,
-			achievementKeys: [...this.#achievementKeys],
-			completedChapterKeys: [...this.#completedChapterKeys],
+			activeChapters: { ...this.#activeChapters },
+			unlockedChapters: [...this.#unlockedChapters],
+			completedChapters: [...this.#completedChapters],
+			inventory: { ...this.#inventory },
+			achievements: [...this.#achievements],
 		};
 	}
 }

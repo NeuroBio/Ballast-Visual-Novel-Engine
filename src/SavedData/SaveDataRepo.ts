@@ -1,14 +1,12 @@
-// import { SavedData } from './SavedData';
-
 import { SavedData } from './SavedData';
 
 export interface SavedDataDto {
-	priorChapterKey: string;
-	priorSceneKey: string;
-	currentChapterKey: string;
-	currentSceneKey: string;
-	achievementKeys: string[];
-	completedChapterKeys: string[];
+	activeChapters: { [chapterKey: string]: string };
+	unlockedChapters: string[];
+	completedChapters: string[];
+	inventory: { [itemKey: string]: number };
+	achievements: string[];
+	// characters: { [characterKey: string]: CharacterDto }
 }
 
 interface SavedDataRepoParams {
@@ -22,12 +20,12 @@ export class SavedDataRepo {
 	#createData: () => Promise<SavedDataDto>;
 	#createDataDefault = () => {
 		return Promise.resolve({
-			priorChapterKey: '',
-			priorSceneKey: '',
-			currentChapterKey: '',
-			currentSceneKey: '',
-			achievementKeys: [],
-			completedChapterKeys: [],
+			activeChapters: {},
+			unlockedChapters: [],
+			completedChapters: [],
+			inventory: {},
+			achievements: [],
+			// characters: {},
 		});
 	};
 	#upsertData: (saveData: SavedDataDto) => Promise<void>;

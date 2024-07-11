@@ -88,10 +88,9 @@ export const SceneData: SceneDto[] = [
 ];
 
 export const SavedDataData: SavedDataDto = {
-	priorChapterKey: 'firstChapter',
-	priorSceneKey: 'firstSceneKey',
-	currentChapterKey: 'secondChapter',
-	currentSceneKey: 'secondSceneKey',
-	achievementKeys: [],
-	completedChapterKeys: ['firstChapter'],
+	activeChapters: { secondChapter: 'secondSceneKey' },
+	unlockedChapters: ['secondChapter'],
+	completedChapters: ['firstChapter'],
+	inventory: { item: 3 },
+	achievements: ['achievement1'],
 };

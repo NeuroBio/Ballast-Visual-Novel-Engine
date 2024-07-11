@@ -2,32 +2,23 @@ import { SavedData } from '../../../../../src/SavedData/SavedData';
 
 describe(`SaveData.toDto`, () => {
 	it(`returns a save data dto`, () => {
-		const priorChapterKey = 'firstChapter';
-		const priorSceneKey = 'firstScene';
-		const currentChapterKey = 'current chapter';
-		const currentSceneKey = 'current scene';
-		const achievementKeys = ['achieve 1', 'achieve 2'];
-		const completedChapterKeys = [ priorChapterKey ];
+		const activeChapters = { currentChapter: 'queued' };
+		const unlockedChapters = ['currentChapter'];
+		const completedChapters = ['priorChapter'];
+		const inventory = { someItem: 3 };
+		const achievements = [ 'achieve1', 'achieve2'];
 		const savedDataParams = {
-			priorChapterKey,
-			priorSceneKey,
-			currentChapterKey,
-			currentSceneKey,
-			achievementKeys,
-			completedChapterKeys,
+			activeChapters,
+			unlockedChapters,
+			completedChapters,
+			inventory,
+			achievements,
 		};
-		const savedData = new SavedData({
-			priorChapterKey,
-			priorSceneKey,
-			currentChapterKey,
-			currentSceneKey,
-			achievementKeys,
-			completedChapterKeys,
-		});
+		const savedData = new SavedData(savedDataParams);
 
 		const dto = savedData.toDto();
 		expect(dto).toEqual(savedDataParams);
-		expect(dto.achievementKeys).not.toBe(achievementKeys);
-		expect(dto.completedChapterKeys).not.toBe(completedChapterKeys);
+		expect(dto.achievements).not.toBe(achievements);
+		expect(dto.completedChapters).not.toBe(completedChapters);
 	});
 });
