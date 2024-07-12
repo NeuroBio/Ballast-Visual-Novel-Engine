@@ -108,23 +108,31 @@ export class Engine {
 		}
 
 		const { beatKey } = params;
-		return this.#currentScene.next(beatKey);
+		// this needs to...
+		//   - output display options
+		//   - update characters
+		//   - update queued scene
+		//   - unlock chapters
+		//   - update inventory
+		//   - update achievements
+
+		const displayOptions = this.#currentScene.next(beatKey);
+		return displayOptions;
 	}
 
-	async advanceChapter () {
-		// const sceneKey = this.#currentScene.advance();
-		// this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
-		// return this.#currentScene.start();
+	async completeScene () {
+		// currentBeat must be of type final beat
+		//   - unlock chapters
+		//   - update completed chapters
+		//   - active chapters
+		//   - autosave
 	}
 
-
-	saveGame () {
-		// save allowed/completed chapters
-		// save completed scenes
-		// save character states
+	async autoSave () {
+		// for my purposes this would store in session data
 	}
 
 	async storeSavedData () {
-		// save data for reals
+		// for my purposes this would store to a file
 	}
 }

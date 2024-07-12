@@ -12,6 +12,7 @@ export interface SavedDataDto {
 interface SavedDataRepoParams {
 	findData: () => Promise<SavedDataDto | void>;
 	createData?: () => Promise<SavedDataDto>;
+	// update this to take two mechanisms: autoSaveData manualSaveData
 	saveData: (saveData: SavedDataDto) => Promise<void>;
 }
 
