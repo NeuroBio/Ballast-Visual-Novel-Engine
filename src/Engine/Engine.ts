@@ -78,6 +78,9 @@ export class Engine {
 
 	async startChapter (params: LoadChapterParams) {
 		const { chapterKey } = params;
+
+		// load data if required
+
 		this.#currentChapter = await this.#findChapterElseThrow(chapterKey);
 
 		const sceneKey = this.#currentChapter.start();
@@ -98,6 +101,7 @@ export class Engine {
 	}
 
 	advanceScene (params: AdvanceSceneParams) {
+		// throw if current scene undefined
 		const { beatKey } = params;
 		return this.#currentScene.next(beatKey);
 	}
