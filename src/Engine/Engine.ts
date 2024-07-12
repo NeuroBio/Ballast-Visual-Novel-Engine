@@ -56,17 +56,21 @@ export class Engine {
 
 	async getChapters (params: getChaptersParams = {}) {
 		const { excludeLocked, excludeUnlocked } = params;
-		let chapters = await this.#chapterFinder.all();
 
-		// requires player data to unlock
+		if (!this.#currentSave) {
+			await this.loadSavedData();
+		}
+
+		let chapters = await this.#chapterFinder.all();
+		chapters.forEach(chapter => chapter.reload(this.#currentSave.getChapterData(chapter.key)));
 
 
 		if (excludeLocked) {
-			chapters = chapters.filter((chap) => chap.isLocked() === false);
+			chapters = chapters.filter((chap) => !chap.isLocked);
 		}
 
 		if (excludeUnlocked) {
-			chapters = chapters.filter((chap) => chap.isLocked() === true);
+			chapters = chapters.filter((chap) => chap.isLocked);
 		}
 
 		return chapters;

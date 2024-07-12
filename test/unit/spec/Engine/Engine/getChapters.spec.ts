@@ -2,13 +2,16 @@ import { Engine } from '../../../../../src/Engine/Engine';
 import { ChapterData, SavedDataData, SceneData } from '../../../FakeData/TestData';
 import { Chapter } from '../../../fakes/Chapter';
 import { Fakes } from '../../../fakes/index';
+import { SavedData } from '../../../fakes/SavedData';
 
 describe(`Engine.getChapters`, () => {
-	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any;
+	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any, savedData: SavedData;
 	function _createEngine (): Engine {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
+		savedData = new Fakes.SavedData();
+		savedDataRepoFake.findOrCreate.mockReturnValueOnce(savedData);
 		return new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
@@ -21,35 +24,59 @@ describe(`Engine.getChapters`, () => {
 	}
 
 	describe(`requesting all chapters`, () => {
-		it(`returns all chapters`, async () => {
+		const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
+		let response: any;
+		beforeAll(async () => {
 			const engine = _createEngine();
-			const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
 			chapterFinderFake.all.mockReturnValueOnce(chapterResponse);
 
-			const chapters = await engine.getChapters();
-			expect(chapters).toEqual(chapterResponse);
+			response = await engine.getChapters();
+		});
+		it(`loads saved data on all chapters`, () => {
+			chapterResponse.forEach((chapter) => {
+				expect(chapter.reload).toHaveBeenCalled();
+			});
+		});
+		it(`returns all chapters`, () => {
+			expect(response).toEqual(chapterResponse);
 		});
 	});
 	describe(`requesting only locked chapters`, () => {
-		it(`returns all locked chapters`, async () => {
+		const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
+		let response: any;
+		beforeAll(async () => {
 			const engine = _createEngine();
-			const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
 			chapterFinderFake.all.mockReturnValueOnce(chapterResponse);
 
-			const chapters = await engine.getChapters({ excludeUnlocked: true });
-			const lockedChapters = chapterResponse.filter((chap) => chap.isLocked() === true);
-			expect(chapters).toEqual(lockedChapters);
+			response = await engine.getChapters({ excludeUnlocked: true });
+		});
+		it(`loads saved data on all chapters`, () => {
+			chapterResponse.forEach((chapter) => {
+				expect(chapter.reload).toHaveBeenCalled();
+			});
+		});
+		it(`returns all locked chapters`, () => {
+			const lockedChapters = chapterResponse.filter((chap) => chap.isLocked);
+			expect(response).toEqual(lockedChapters);
 		});
 	});
 	describe(`requesting only unlocked chapters`, () => {
-		it(`returns all locked chapters`, async () => {
+		const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
+		let response: any;
+		beforeAll(async () => {
 			const engine = _createEngine();
-			const chapterResponse = ChapterData.map((dto) => new Chapter(dto));
 			chapterFinderFake.all.mockReturnValueOnce(chapterResponse);
 
-			const chapters = await engine.getChapters({ excludeLocked: true });
-			const unlockedChapters = chapterResponse.filter((chap) => chap.isLocked() === false);
-			expect(chapters).toEqual(unlockedChapters);
+			response = await engine.getChapters({ excludeLocked: true });
+		});
+		it(`loads saved data on all chapters`, () => {
+			chapterResponse.forEach((chapter) => {
+				expect(chapter.reload).toHaveBeenCalled();
+			});
+		});
+		it(`returns all unlocked chapters`, () => {
+			const unlockedChapters = chapterResponse.filter((chap) => !chap.isLocked);
+			expect(response).toEqual(unlockedChapters);
 		});
 	});
 });

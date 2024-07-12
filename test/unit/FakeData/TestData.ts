@@ -14,6 +14,7 @@ export const ChapterData: ChapterDto[] = [
 	{
 		key: 'secondChapter',
 		name: 'Another Chapter Name',
+		locked: true,
 		firstSceneKey: 'sceneKey',
 		sceneKeys: ['sceneKey'],
 	},

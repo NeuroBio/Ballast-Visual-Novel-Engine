@@ -33,16 +33,16 @@ export class Chapter {
 		return this.#key;
 	}
 
+	get isLocked () {
+		return this.#locked;
+	}
+
 	restart () {
 		return this.#firstSceneKey;
 	}
 
 	start () {
 		return this.#currentSceneKey;
-	}
-
-	isLocked () {
-		return this.#locked;
 	}
 
 	reload (save: SavedChapterData) {

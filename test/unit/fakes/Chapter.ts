@@ -6,7 +6,10 @@ export class Chapter {
 		this.params = params;
 	}
 
+	get isLocked () {
+		return this.params.isLocked;
+	}
+
 	start = jest.fn();
 	reload = jest.fn();
-	isLocked = jest.fn().mockImplementation(() => this.params.isLocked);
 }

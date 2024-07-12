@@ -12,7 +12,7 @@ describe(`Chapter.isLocked`, () => {
 				firstSceneKey,
 			});
 
-			expect(chapter.isLocked()).toBe(true);
+			expect(chapter.isLocked).toBe(true);
 		});
 	});
 	describe(`chapter is unlocked`, () => {
@@ -26,7 +26,7 @@ describe(`Chapter.isLocked`, () => {
 				firstSceneKey,
 			});
 
-			expect(chapter.isLocked()).toBe(false);
+			expect(chapter.isLocked).toBe(false);
 		});
 	});
 });

@@ -47,7 +47,7 @@ describe(`Chapter.reload`, () => {
 			};
 
 			chapter.reload(savedData);
-			expect(chapter.isLocked()).toBe(false);
+			expect(chapter.isLocked).toBe(false);
 			expect(chapter.start()).toBe(firstSceneKey);
 		});
 	});
@@ -69,7 +69,7 @@ describe(`Chapter.reload`, () => {
 			};
 
 			chapter.reload(savedData);
-			expect(chapter.isLocked()).toBe(false);
+			expect(chapter.isLocked).toBe(false);
 			expect(chapter.start()).toBe(firstSceneKey);
 		});
 	});
@@ -91,7 +91,7 @@ describe(`Chapter.reload`, () => {
 			};
 
 			chapter.reload(savedData);
-			expect(chapter.isLocked()).toBe(false);
+			expect(chapter.isLocked).toBe(false);
 			expect(chapter.start()).toBe(secondSceneKey);
 		});
 	});
@@ -158,7 +158,7 @@ describe(`Chapter.reload`, () => {
 			};
 
 			chapter.reload(savedData);
-			expect(chapter.isLocked()).toBe(false);
+			expect(chapter.isLocked).toBe(false);
 			expect(chapter.start()).toBe(firstSceneKey);
 		});
 	});
