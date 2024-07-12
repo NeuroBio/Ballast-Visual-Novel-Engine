@@ -8,6 +8,7 @@ describe(`Engine.loaSavedData`, () => {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
+		savedDataRepoFake.findOrCreate.mockReturnValueOnce(new Fakes.SavedData());
 		return new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),

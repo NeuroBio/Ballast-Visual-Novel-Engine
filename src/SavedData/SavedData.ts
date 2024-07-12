@@ -72,4 +72,8 @@ export class SavedData {
 			achievements: [...this.#achievements],
 		};
 	}
+
+	clone (): SavedData {
+		return new SavedData(this.toDto());
+	}
 }

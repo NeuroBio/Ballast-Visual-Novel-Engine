@@ -1,12 +1,12 @@
 export class Chapter {
-	isLocked;
+	params;
 
 	constructor (params: any = {}) {
 		Object.assign(this, params);
-
-		this.isLocked = jest.fn().mockReturnValue(params.isLocked);
+		this.params = params;
 	}
 
 	start = jest.fn();
 	reload = jest.fn();
+	isLocked = jest.fn().mockImplementation(() => this.params.isLocked);
 }

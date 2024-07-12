@@ -33,6 +33,7 @@ export class Engine {
 	#sceneFinder: SceneFinder;
 	#savedDataRepo: SavedDataRepo;
 
+	#originalSave: SavedData;
 	#currentSave: SavedData;
 	#currentChapter: Chapter;
 	#currentScene: Scene;
@@ -49,7 +50,8 @@ export class Engine {
 	}
 
 	async loadSavedData () {
-		this.#currentSave = await this.#savedDataRepo.findOrCreate();
+		this.#originalSave = await this.#savedDataRepo.findOrCreate();
+		this.#currentSave = this.#originalSave.clone();
 	}
 
 	async getChapters (params: getChaptersParams = {}) {
