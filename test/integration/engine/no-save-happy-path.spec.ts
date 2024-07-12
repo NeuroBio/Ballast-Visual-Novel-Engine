@@ -19,7 +19,7 @@ describe(`playing through the test data without save data`, () => {
 		},
 	};
 	it(`loads data`, () => {
-		console.log('start');
+		console.log('start no save happy path');
 		engine.loadSavedData();
 	});
 	it(`plays the first beat`, async () => {

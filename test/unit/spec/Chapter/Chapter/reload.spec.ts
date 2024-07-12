@@ -1,11 +1,11 @@
 import { Chapter } from '../../../../../src/Chapter/Chapter';
 
 describe(`Chapter.reload`, () => {
-	const Error = {
+	const Error = Object.freeze({
 		INVALID_SCENE: 'Tried to restart chapter at an invalid scene.',
 		LOCKED: 'This chapter has not yet been unlocked.',
 		NO_REPLAY: 'This chapter has already been completed and does not allow replays',
-	};
+	});
 
 	describe(`locked chapter was neither unlocked nor played`, () => {
 		it(`throws error`, () => {
