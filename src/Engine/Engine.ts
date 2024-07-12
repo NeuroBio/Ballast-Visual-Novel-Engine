@@ -79,7 +79,9 @@ export class Engine {
 	async startChapter (params: LoadChapterParams) {
 		const { chapterKey } = params;
 
-		// load data if required
+		if (!this.#currentSave) {
+			await this.loadSavedData();
+		}
 
 		this.#currentChapter = await this.#findChapterElseThrow(chapterKey);
 
@@ -101,7 +103,10 @@ export class Engine {
 	}
 
 	advanceScene (params: AdvanceSceneParams) {
-		// throw if current scene undefined
+		if (!this.#currentScene) {
+			throw new Error('You cannot call advance scene prior to starting a chapter.');
+		}
+
 		const { beatKey } = params;
 		return this.#currentScene.next(beatKey);
 	}

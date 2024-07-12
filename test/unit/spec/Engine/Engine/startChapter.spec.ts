@@ -22,7 +22,6 @@ fdescribe(`Engine.startChapter`, () => {
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,
 		});
-		await engine.loadSavedData();
 		return engine;
 	}
 
