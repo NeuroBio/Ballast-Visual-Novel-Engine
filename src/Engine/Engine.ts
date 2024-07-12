@@ -8,7 +8,7 @@ import { SceneDto, SceneFinder } from '../Scene/SceneFinder';
 interface EngineParams {
 	findChapterData: (key?: string) => Promise<ChapterDto[]>;
 	findSceneData: (key?: string) => Promise<SceneDto[]>;
-	findSavedData: () => Promise<SavedDataDto>;
+	findSavedData: () => Promise<SavedDataDto | void>;
 	createSavedData?: () => Promise<SavedDataDto>;
 	saveSavedData: (saveData: SavedDataDto) => Promise<void>;
 	chapterFinder?: ChapterFinder;
@@ -81,13 +81,12 @@ export class Engine {
 
 	async #findChapterElseThrow (chapterKey: string): Promise<Chapter> {
 		const chapter = await this.#chapterFinder.byKey(chapterKey);
+
 		if (!chapter) {
 			throw new Error('Requested chapter was not found.');
 		}
 
-		if (chapter.isLocked()) {
-			throw new Error('This chapter has not yet been unlocked.');
-		}
+		chapter.reload(this.#currentSave.getChapterData(chapter.key));
 
 		return chapter;
 	}

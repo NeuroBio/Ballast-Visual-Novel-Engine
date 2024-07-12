@@ -20,7 +20,7 @@ describe(`SaveData.getChapterData.`, () => {
 		});
 	});
 	describe(`chapter was unlocked but is not active or completed`, () => {
-		it(`returns data requesting no changes be made`, () => {
+		it(`returns data requesting chapter unlock`, () => {
 			const requestedChapter = 'chapter';
 			const savedData = new SavedData({
 				activeChapters: {},
@@ -38,7 +38,7 @@ describe(`SaveData.getChapterData.`, () => {
 		});
 	});
 	describe(`chapter was not locked but is active, not completed`, () => {
-		it(`returns data requesting no changes be made`, () => {
+		it(`returns data requesting setting current scene`, () => {
 			const requestedChapter = 'chapter';
 			const queuedScene = 'scene';
 			const savedData = new SavedData({
@@ -57,7 +57,7 @@ describe(`SaveData.getChapterData.`, () => {
 		});
 	});
 	describe(`chapter was not locked and was completed`, () => {
-		it(`returns data requesting no changes be made`, () => {
+		it(`returns data requesting be marked as completed`, () => {
 			const requestedChapter = 'chapter';
 			const savedData = new SavedData({
 				activeChapters: {},

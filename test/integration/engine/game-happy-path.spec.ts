@@ -1,12 +1,12 @@
 import { NARRATOR } from '../../../src/Beat/Beat';
 import { Engine } from '../../../src/Engine/Engine';
-import { BeatData, ChapterData, SavedDataData, SceneData } from '../../unit/FakeData/TestData';
+import { BeatData, ChapterData, SceneData } from '../../unit/FakeData/TestData';
 
-describe(`playing through the test data`, () => {
+describe(`playing through the test data without save data`, () => {
 	const engine = new Engine({
 		findChapterData: () => Promise.resolve(ChapterData),
 		findSceneData: () => Promise.resolve(SceneData),
-		findSavedData: () => Promise.resolve(SavedDataData),
+		findSavedData: () => Promise.resolve(),
 		saveSavedData: () => Promise.resolve(),
 	});
 	const chapterKey = 'firstChapter';
@@ -18,6 +18,10 @@ describe(`playing through the test data`, () => {
 			priorResult = newResult;
 		},
 	};
+	it(`loads data`, () => {
+		console.log('start');
+		engine.loadSavedData();
+	});
 	it(`plays the first beat`, async () => {
 		const start = await engine.startChapter({ chapterKey });
 		result.set(start);

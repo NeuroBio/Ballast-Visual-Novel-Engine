@@ -17,7 +17,7 @@ describe(`SavedDataRepo.findOrCreate`, () => {
 	describe(`requesting nonexistent save data, using default create`, () => {
 		it(`returns the saveData`, async () => {
 			const savedDataRepo = new SavedDataRepo({
-				findData: () => Promise.resolve(undefined),
+				findData: () => Promise.resolve(),
 				saveData: () => Promise.resolve(),
 			});
 
@@ -31,7 +31,7 @@ describe(`SavedDataRepo.findOrCreate`, () => {
 		beforeAll(async () => {
 			createData.mockReturnValueOnce(Promise.resolve(SavedDataData));
 			const savedDataRepo = new SavedDataRepo({
-				findData: () => Promise.resolve(undefined),
+				findData: () => Promise.resolve(),
 				saveData: () => Promise.resolve(),
 				createData,
 			});

@@ -10,13 +10,13 @@ export interface SavedDataDto {
 }
 
 interface SavedDataRepoParams {
-	findData: () => Promise<SavedDataDto | undefined>;
+	findData: () => Promise<SavedDataDto | void>;
 	createData?: () => Promise<SavedDataDto>;
 	saveData: (saveData: SavedDataDto) => Promise<void>;
 }
 
 export class SavedDataRepo {
-	#findData: () => Promise<SavedDataDto | undefined>;
+	#findData: () => Promise<SavedDataDto | void>;
 	#createData: () => Promise<SavedDataDto>;
 	#createDataDefault = () => {
 		return Promise.resolve({

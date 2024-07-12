@@ -13,6 +13,7 @@ describe(`Engine.advanceScene`, () => {
 		scene = new Fakes.Scene();
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
+		savedDataRepoFake.findOrCreate.mockReturnValueOnce(new Fakes.SavedData());
 		const engine = new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
@@ -22,6 +23,7 @@ describe(`Engine.advanceScene`, () => {
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,
 		});
+		await engine.loadSavedData();
 		await engine.startChapter({ chapterKey: '' });
 		return engine;
 	}

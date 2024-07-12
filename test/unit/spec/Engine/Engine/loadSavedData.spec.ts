@@ -20,7 +20,7 @@ describe(`Engine.loaSavedData`, () => {
 	}
 	it(`loads the saved data`, async () => {
 		const engine = _createEngine();
-		engine.loadSavedData();
+		await engine.loadSavedData();
 		expect(savedDataRepoFake.findOrCreate).toHaveBeenCalled();
 	});
 });

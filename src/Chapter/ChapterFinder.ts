@@ -3,7 +3,8 @@ import { Chapter } from './Chapter';
 export interface ChapterDto {
 	key: string,
 	name: string,
-	locked: boolean,
+	locked?: boolean,
+	allowReplay?: boolean,
 	firstSceneKey: string,
 	sceneKeys: string[],
 }
@@ -21,7 +22,7 @@ export class ChapterFinder {
 		this.#findData = findData;
 	}
 
-	async byKey (chapterKey: string): Promise<Chapter | undefined> {
+	async byKey (chapterKey: string): Promise<Chapter | void> {
 		if (!this.#cache[chapterKey]) {
 			await this.#refreshData();
 		}

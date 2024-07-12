@@ -63,17 +63,6 @@ export class SavedData {
 		delete this.#activeChapters[chapterKey];
 	}
 
-
-	// completeScene () {
-	// super back and forth on whether I need this
-	// if I do, I need to modify complete chapter to only do scene logic when current scene is set
-	// }
-
-	// unlockAchievement () {
-
-	// }
-
-
 	toDto (): SavedDataDto {
 		return {
 			activeChapters: { ...this.#activeChapters },

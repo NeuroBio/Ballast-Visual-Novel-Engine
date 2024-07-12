@@ -2,18 +2,18 @@ import { Engine } from '../../../../../src/Engine/Engine';
 import { ChapterData, SavedDataData, SceneData } from '../../../FakeData/TestData';
 import { Fakes } from '../../../fakes/index';
 
-describe(`Engine.startChapter`, () => {
+fdescribe(`Engine.startChapter`, () => {
 	const Error = Object.freeze({
 		NOT_FOUND: 'Requested chapter was not found.',
-		LOCKED: 'This chapter has not yet been unlocked.',
 	});
 
 	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any;
-	function _createEngine (): Engine {
+	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
-		return new Engine({
+		savedDataRepoFake.findOrCreate.mockReturnValueOnce(new Fakes.SavedData());
+		const engine = new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
 			findSavedData: () => Promise.resolve(SavedDataData),
@@ -22,27 +22,17 @@ describe(`Engine.startChapter`, () => {
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,
 		});
+		await engine.loadSavedData();
+		return engine;
 	}
 
 	describe(`chapter is not found`, () => {
 		it(`throws and error`, async () => {
 			const chapterKey = 'noChapter';
-			const engine = _createEngine();
+			const engine = await _createEngine();
 			await expect(async () => {
 				await engine.startChapter({ chapterKey });
 			}).rejects.toThrow(Error.NOT_FOUND);
-		});
-	});
-	describe(`chapter is locked`, () => {
-		it(`throws and error`, async () => {
-			const chapterKey = 'lockedChapter';
-			const engine = _createEngine();
-			const chapter = new Fakes.Chapter();
-			chapter.isLocked.mockReturnValueOnce(true);
-			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
-			await expect(async () => {
-				await engine.startChapter({ chapterKey });
-			}).rejects.toThrow(Error.LOCKED);
 		});
 	});
 	describe(`loading valid chapter for the first time`, () => {
@@ -50,7 +40,7 @@ describe(`Engine.startChapter`, () => {
 			scene = new Fakes.Scene(), startResponse = { result: 'result' };
 		let result: any;
 		beforeAll(async () => {
-			const engine = _createEngine();
+			const engine = await _createEngine();
 			const chapter = new Fakes.Chapter();
 			chapter.start.mockReturnValueOnce(sceneKey);
 			scene.start.mockReturnValueOnce(startResponse);
