@@ -16,6 +16,7 @@ describe(`SavedDataRepo.save`, () => {
 			completedChapters: ['first'],
 			inventory: { item: 3 },
 			achievements: ['achieve'],
+			characters: [],
 		});
 
 		savedDataRepo.save(savedData);

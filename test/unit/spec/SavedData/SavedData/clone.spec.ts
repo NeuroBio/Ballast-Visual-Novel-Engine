@@ -13,6 +13,7 @@ describe(`SavedData.clone`, () => {
 			completedChapters,
 			inventory,
 			achievements,
+			characters: [],
 		};
 		const savedData = new SavedData(savedDataParams);
 

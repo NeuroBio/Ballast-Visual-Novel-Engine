@@ -47,7 +47,7 @@ describe(`beat has a choice with a condition and character is set`, () => {
 		const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => true };
 		const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 		const choices = [ choice1, choice2, choice3];
-		const character = new Fakes.Character('name');
+		const character = new Fakes.Character({ name: 'name', key: 'key' });
 
 		expect(() => {
 			new ChoiceBeat({ choices, character });

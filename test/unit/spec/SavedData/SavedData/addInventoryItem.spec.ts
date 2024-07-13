@@ -11,6 +11,7 @@ describe(`SaveData.addInventoryItem`, () => {
 				completedChapters: [],
 				inventory: {},
 				achievements: [],
+				characters: [],
 			});
 
 			savedData.addInventoryItem({ key: itemKey, quantity });
@@ -30,6 +31,7 @@ describe(`SaveData.addInventoryItem`, () => {
 				completedChapters: [],
 				inventory: { [itemKey]: originalQuantity },
 				achievements: [],
+				characters: [],
 			});
 
 			savedData.addInventoryItem({ key: itemKey, quantity });

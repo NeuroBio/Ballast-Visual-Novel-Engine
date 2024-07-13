@@ -93,4 +93,5 @@ export const SavedDataData: SavedDataDto = {
 	completedChapters: ['firstChapter'],
 	inventory: { item: 3 },
 	achievements: ['achievement1'],
+	characters: [],
 };

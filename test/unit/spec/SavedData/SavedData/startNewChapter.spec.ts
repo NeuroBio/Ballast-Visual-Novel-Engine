@@ -10,6 +10,7 @@ describe(`SaveData.startNewChapter`, () => {
 			completedChapters: [],
 			inventory: {},
 			achievements: [],
+			characters: [],
 		});
 
 		savedData.startNewChapter(chapterKey, sceneKey);

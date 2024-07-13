@@ -11,6 +11,7 @@ describe(`SaveData.queueScene`, () => {
 			completedChapters: [],
 			inventory: {},
 			achievements: [],
+			characters: [],
 		});
 
 		savedData.queueScene(chapterKey, nextSceneKey);

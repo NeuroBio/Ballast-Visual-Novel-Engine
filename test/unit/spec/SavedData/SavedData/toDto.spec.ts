@@ -13,6 +13,7 @@ describe(`SaveData.toDto`, () => {
 			completedChapters,
 			inventory,
 			achievements,
+			characters: [],
 		};
 		const savedData = new SavedData(savedDataParams);
 

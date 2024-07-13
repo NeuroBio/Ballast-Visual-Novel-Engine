@@ -18,6 +18,7 @@ describe(`taking actions to generate errors`, () => {
 			completedChapters: ['firstChapter' ],
 			inventory: {},
 			achievements: [],
+			characters: [],
 		}),
 		saveSavedData: () => Promise.resolve(),
 	});

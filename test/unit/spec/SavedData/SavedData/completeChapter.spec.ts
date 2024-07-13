@@ -12,6 +12,7 @@ describe(`SaveData.completeChapter`, () => {
 			completedChapters,
 			inventory: {},
 			achievements: [],
+			characters: [],
 		});
 
 		savedData.completeChapter(currentChapterKey);

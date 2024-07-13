@@ -10,6 +10,7 @@ describe(`SaveData.getChapterData.`, () => {
 				completedChapters: [],
 				inventory: {},
 				achievements: [],
+				characters: [],
 			});
 
 			expect(savedData.getChapterData(requestedChapter)).toEqual({
@@ -28,6 +29,7 @@ describe(`SaveData.getChapterData.`, () => {
 				completedChapters: [],
 				inventory: {},
 				achievements: [],
+				characters: [],
 			});
 
 			expect(savedData.getChapterData(requestedChapter)).toEqual({
@@ -47,6 +49,7 @@ describe(`SaveData.getChapterData.`, () => {
 				completedChapters: [],
 				inventory: {},
 				achievements: [],
+				characters: [],
 			});
 
 			expect(savedData.getChapterData(requestedChapter)).toEqual({
@@ -65,6 +68,7 @@ describe(`SaveData.getChapterData.`, () => {
 				completedChapters: [requestedChapter],
 				inventory: {},
 				achievements: [],
+				characters: [],
 			});
 
 			expect(savedData.getChapterData(requestedChapter)).toEqual({

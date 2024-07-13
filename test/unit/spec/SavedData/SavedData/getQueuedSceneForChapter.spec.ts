@@ -10,6 +10,7 @@ describe(`SaveData.getQueuedSceneForChapter`, () => {
 			completedChapters: [],
 			inventory: {},
 			achievements: [],
+			characters: [],
 		});
 
 		expect(savedData.getQueuedSceneForChapter(chapterKey)).toBe(sceneKey);

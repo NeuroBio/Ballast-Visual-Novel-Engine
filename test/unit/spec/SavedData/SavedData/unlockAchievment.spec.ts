@@ -8,6 +8,7 @@ describe(`SaveData.unlockAchievement`, () => {
 			completedChapters: [],
 			inventory: {},
 			achievements: [],
+			characters: [],
 		});
 		const newAchievement = 'new';
 

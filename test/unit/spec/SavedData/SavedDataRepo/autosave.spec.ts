@@ -17,6 +17,7 @@ describe(`SavedDataRepo.autosave`, () => {
 				completedChapters: ['first'],
 				inventory: { item: 3 },
 				achievements: ['achieve'],
+				characters: [],
 			});
 
 			savedDataRepo.autosave(savedData);
@@ -39,6 +40,7 @@ describe(`SavedDataRepo.autosave`, () => {
 				completedChapters: ['first'],
 				inventory: { item: 3 },
 				achievements: ['achieve'],
+				characters: [],
 			});
 
 			savedDataRepo.autosave(savedData);

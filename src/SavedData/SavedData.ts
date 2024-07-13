@@ -1,3 +1,4 @@
+import { Character, CharacterDto } from '../Character/Character';
 import { SavedDataDto } from './SaveDataRepo';
 
 interface SavedDataParams {
@@ -6,7 +7,7 @@ interface SavedDataParams {
 	completedChapters: string[];
 	inventory: { [itemKey: string]: number };
 	achievements: string[];
-	// characters: { [characterKey: string]: Character }
+	characters: CharacterDto[]
 }
 
 interface InventoryItemParams {
@@ -26,17 +27,20 @@ export class SavedData {
 	#completedChapters: string[];
 	#inventory: { [itemKey: string]: number };
 	#achievements: string[];
-	// #characters: { [characterKey: string]: Character };
+	#characters: { [characterKey: string]: Character };
 
 	constructor (params: SavedDataParams) {
 		const { activeChapters, unlockedChapters, completedChapters,
-			inventory, achievements } = params;
+			characters, inventory, achievements } = params;
 		this.#activeChapters = activeChapters;
 		this.#unlockedChapters = unlockedChapters;
 		this.#completedChapters = completedChapters;
 		this.#inventory = inventory;
 		this.#achievements = achievements;
-		// this.#characters - characters;
+		this.#characters = characters.reduce((keyed: {[key: string]: Character}, dto) => {
+			keyed[dto.key] = new Character(dto);
+			return keyed;
+		}, {});
 	}
 
 	get achievementKeys () {
@@ -114,6 +118,7 @@ export class SavedData {
 			completedChapters: [...this.#completedChapters],
 			inventory: { ...this.#inventory },
 			achievements: [...this.#achievements],
+			characters: Object.values(this.#characters).map((char) => char.toDto()),
 		};
 	}
 

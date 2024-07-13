@@ -13,6 +13,7 @@ describe(`playing through the test data without save data`, () => {
 			completedChapters: ['firstChapter' ],
 			inventory: {},
 			achievements: [],
+			characters: [],
 		}),
 		saveSavedData: () => Promise.resolve(),
 	});

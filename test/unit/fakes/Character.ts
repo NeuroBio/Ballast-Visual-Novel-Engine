@@ -1,7 +1,13 @@
 export class Character {
+	params: any;
 	name: string;
+	key: string;
 
 	constructor (params: any) {
-		this.name = params.name;
+		Object.assign(this, params);
+		this.params = params;
 	}
+
+	clone = jest.fn();
+	toDto = jest.fn();
 }

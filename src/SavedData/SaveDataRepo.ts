@@ -1,3 +1,4 @@
+import { CharacterDto } from '../Character/Character';
 import { SavedData } from './SavedData';
 
 export interface SavedDataDto {
@@ -6,7 +7,7 @@ export interface SavedDataDto {
 	completedChapters: string[];
 	inventory: { [itemKey: string]: number };
 	achievements: string[];
-	// characters: { [characterKey: string]: CharacterDto }
+	characters: CharacterDto[];
 }
 
 interface SavedDataRepoParams {
@@ -26,7 +27,7 @@ export class SavedDataRepo {
 			completedChapters: [],
 			inventory: {},
 			achievements: [],
-			// characters: {},
+			characters: [],
 		});
 	};
 	#autosave: (saveData: SavedDataDto) => Promise<void>;

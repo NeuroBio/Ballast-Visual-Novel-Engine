@@ -15,6 +15,7 @@ describe(`SaveData.removeInventoryItem`, () => {
 				completedChapters: [],
 				inventory: { [itemKey]: originalQuantity },
 				achievements: [],
+				characters: [],
 			});
 
 			savedData.removeInventoryItem({ key: itemKey, quantity });
@@ -37,6 +38,7 @@ describe(`SaveData.removeInventoryItem`, () => {
 				completedChapters: [],
 				inventory: { [itemKey]: originalQuantity },
 				achievements: [],
+				characters: [],
 			});
 
 			savedData.removeInventoryItem({ key: itemKey, quantity });
@@ -59,6 +61,7 @@ describe(`SaveData.removeInventoryItem`, () => {
 				completedChapters: [],
 				inventory: { [itemKey]: originalQuantity },
 				achievements: [],
+				characters: [],
 			});
 
 			savedData.removeInventoryItem({ key: itemKey, quantity });
@@ -77,6 +80,7 @@ describe(`SaveData.removeInventoryItem`, () => {
 				completedChapters: [],
 				inventory: {},
 				achievements: [],
+				characters: [],
 			});
 
 			savedData.removeInventoryItem({ key: itemKey, quantity });
