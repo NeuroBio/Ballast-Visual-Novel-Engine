@@ -67,7 +67,7 @@ export class BeatFactory {
 	}
 
 	#getCharacter (characterKey?: string): Character | undefined {
-		return characterKey ? new Character({ name: characterKey, key: characterKey }) : undefined;
+		return characterKey ? new Character({ name: characterKey, key: characterKey, memories: [], sentiments: {} }) : undefined;
 	}
 
 	#createConditional (condition?: ConditionalCriterion) {

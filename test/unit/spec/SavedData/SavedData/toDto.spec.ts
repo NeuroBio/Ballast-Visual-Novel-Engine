@@ -7,7 +7,7 @@ describe(`SaveData.toDto`, () => {
 		const completedChapters = ['priorChapter'];
 		const inventory = { someItem: 3 };
 		const achievements = [ 'achieve1', 'achieve2'];
-		const characters = [{ key: 'key', name: 'char' }];
+		const characters = [{ key: 'key', name: 'char', sentiments: {}, memories: [] }];
 		const savedDataParams = {
 			activeChapters,
 			unlockedChapters,
