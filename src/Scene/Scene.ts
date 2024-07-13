@@ -1,4 +1,5 @@
 import { Beat, ChoiceBeatDisplay, FinalBeatDisplay, SimpleBeatDisplay } from '../Beat/Beat';
+import { FinalBeat } from '../Beat/FinalBeat';
 
 interface SceneParams {
 	beats: { [key: string]: Beat};
@@ -12,6 +13,7 @@ export class Scene {
 	#beats: { [key: string]: Beat};
 	#firstBeatKey: string;
 	#currentBeatKey: string;
+	#currentBeat: Beat;
 	#name: string;
 	#key: string;
 	#locked: boolean;
@@ -27,14 +29,20 @@ export class Scene {
 		this.#currentBeatKey = firstBeatKey;
 	}
 
+	get isComplete (): boolean {
+		return this.#currentBeat instanceof FinalBeat;
+	}
+
 	// restart()
 	start (): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay {
-		return this.#beats[this.#currentBeatKey].play();
+		this.#currentBeat = this.#beats[this.#currentBeatKey];
+		return this.#currentBeat.play();
 	}
 
 	next (beatKey: string): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay {
 		this.#currentBeatKey = beatKey;
-		return this.#beats[this.#currentBeatKey].play();
+		this.#currentBeat = this.#beats[this.#currentBeatKey];
+		return this.#currentBeat.play();
 	}
 
 

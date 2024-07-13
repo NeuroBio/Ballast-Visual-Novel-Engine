@@ -29,23 +29,23 @@ export class Chapter {
 		this.#allowReplay = allowReplay ?? false;
 	}
 
-	get key () {
+	get key (): string {
 		return this.#key;
 	}
 
-	get isLocked () {
+	get isLocked (): boolean {
 		return this.#locked;
 	}
 
-	restart () {
+	restart (): string {
 		return this.#firstSceneKey;
 	}
 
-	start () {
+	start (): string {
 		return this.#currentSceneKey;
 	}
 
-	reload (save: SavedChapterData) {
+	reload (save: SavedChapterData): void {
 		if (save.isUnlocked) {
 			this.#locked = false;
 		}

@@ -124,9 +124,16 @@ export class Engine {
 	}
 
 	async completeScene () {
-		// currentBeat must be of type final beat
+		if (!this.#currentScene) {
+			throw new Error('You cannot call complete scene prior to starting a chapter.');
+		}
+
+		if (!this.#currentScene.isComplete) {
+			throw new Error('You cannot call complete scene while the scene is in progress.');
+		}
+
 		//   - update completed chapters
-		//   - if final scene: update active chapters
+		//   - if final scene: update active chapters <- how do I know???? NO QUEUED SCENE
 		//   - autosave
 	}
 
