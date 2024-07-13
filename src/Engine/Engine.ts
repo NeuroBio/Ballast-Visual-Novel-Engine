@@ -131,11 +131,11 @@ export class Engine {
 		//   - autosave
 	}
 
-	async autoSave () {
-		// for my purposes this would store in session data
-	}
+	async save () {
+		if (!this.#currentSave) {
+			throw new Error('You cannot save data prior to loading save data.');
+		}
 
-	async storeSavedData () {
-		// for my purposes this would store to a file
+		await this.#savedDataRepo.save(this.#currentSave);
 	}
 }
