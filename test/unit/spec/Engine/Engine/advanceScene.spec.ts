@@ -50,16 +50,20 @@ describe(`Engine.advanceScene`, () => {
 		});
 	});
 	describe(`playing a beat with a next beat`, () => {
-		const beatKey = 'beatKey', playResponse = { result: 'result' };
+		const beatKey = 'beatKey';
+		const beat = new Fakes.SimpleBeat({});
+		const playResponse = { result: 'result' };
+		beat.play.mockReturnValueOnce(playResponse);
 		let result: any;
 
 		beforeAll(async () => {
 			const engine = await _createEngine();
-			scene.next.mockReturnValueOnce(playResponse);
+			scene.next.mockReturnValueOnce(beat);
 			result = engine.advanceScene({ beatKey });
 		});
 		it(`plays the scene's next beat`, () => {
 			expect(scene.next).toHaveBeenCalled();
+			expect(beat.play).toHaveBeenCalled();
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(playResponse);

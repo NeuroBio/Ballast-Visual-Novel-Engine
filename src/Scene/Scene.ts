@@ -42,10 +42,10 @@ export class Scene {
 		return this.#currentBeat.play();
 	}
 
-	next (beatKey: string): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay {
+	next (beatKey: string): Beat {
 		this.#currentBeatKey = beatKey;
 		this.#currentBeat = this.#beats[this.#currentBeatKey];
-		return this.#currentBeat.play();
+		return this.#currentBeat;
 	}
 
 	// restart() {}

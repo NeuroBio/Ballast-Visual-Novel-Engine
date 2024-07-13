@@ -7,8 +7,6 @@ describe(`Scene.next`, () => {
 		const secondBeatKey = 'secondBeat';
 		const firstBeat = new Fakes.SimpleBeat({});
 		const secondBeat = new Fakes.SimpleBeat({});
-		const beatResponse = { text: 'test', nextBeat: 'secondBeat' };
-		secondBeat.play.mockReturnValueOnce(beatResponse);
 		const scene = new Scene({
 			beats: {
 				[firstBeatKey]: firstBeat,
@@ -19,6 +17,6 @@ describe(`Scene.next`, () => {
 			key: 'sceneKey',
 			locked: false,
 		});
-		expect(scene.next(secondBeatKey)).toEqual(beatResponse);
+		expect(scene.next(secondBeatKey)).toEqual(secondBeat);
 	});
 });

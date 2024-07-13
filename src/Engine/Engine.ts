@@ -117,15 +117,15 @@ export class Engine {
 
 		const { beatKey } = params;
 		// this needs to...
-		//   - output display options
+		//   - output display options (return)
 		//   - update characters
-		//   - update queued scene
+		//   - queue scenes
 		//   - unlock chapters
 		//   - update inventory
 		//   - update achievements
 
-		const displayOptions = this.#currentScene.next(beatKey);
-		return displayOptions;
+		const currentBeat = this.#currentScene.next(beatKey);
+		return currentBeat.play();
 	}
 
 	async completeScene () {
