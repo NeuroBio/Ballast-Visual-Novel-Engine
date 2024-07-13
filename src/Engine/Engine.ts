@@ -53,7 +53,12 @@ export class Engine {
 	}
 
 	async loadSavedData () {
-		this.#originalSave = await this.#savedDataRepo.findOrCreate();
+		const latestSaveData = await this.#savedDataRepo.findOrCreate();
+		this.#refreshSave(latestSaveData);
+	}
+
+	#refreshSave (latestSaveData: SavedData) {
+		this.#originalSave = latestSaveData;
 		this.#currentSave = this.#originalSave.clone();
 	}
 
@@ -132,9 +137,13 @@ export class Engine {
 			throw new Error('You cannot call complete scene while the scene is in progress.');
 		}
 
-		//   - update completed chapters
-		//   - if final scene: update active chapters <- how do I know???? NO QUEUED SCENE
-		//   - autosave
+		const nextScene = this.#currentSave.getQueuedSceneForChapter(this.#currentChapter.key);
+		if (this.#currentScene.key === nextScene || nextScene === '') {
+			this.#currentSave.completeChapter(this.#currentChapter.key);
+		}
+
+		await this.#savedDataRepo.autosave(this.#currentSave);
+		this.#refreshSave(this.#currentSave);
 	}
 
 	async save () {

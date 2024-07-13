@@ -9,7 +9,8 @@ export class SavedData {
 	startNewChapter = jest.fn();
 	completeChapter = jest.fn();
 	startNewScene = jest.fn();
-	getChapterData = jest.fn().mockResolvedValue({});
-	clone = jest.fn().mockImplementation(() => new SavedData(this.params));
-	toDto = jest.fn().mockImplementation(() => this.params);
+	getChapterData = jest.fn(() => ({}));
+	getQueuedSceneForChapter = jest.fn();
+	clone = jest.fn(() => this);
+	toDto = jest.fn(() => this.params);
 }

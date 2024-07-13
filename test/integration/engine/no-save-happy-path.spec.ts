@@ -19,7 +19,7 @@ describe(`playing through the test data without save data`, () => {
 		},
 	};
 	it(`loads data`, () => {
-		console.log('start no save happy path');
+		console.debug('start no save happy path');
 		engine.loadSavedData();
 	});
 	it(`plays the first beat`, async () => {
@@ -51,5 +51,9 @@ describe(`playing through the test data without save data`, () => {
 	it(`plays the final beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
 		expect(result.get()).toEqual({ text: `${NARRATOR}: ${BeatData[6].text}` });
+	});
+	it(`completes scene and chapter`, () => {
+		engine.completeScene();
+		console.debug('Completed scene + chapter and saved data.');
 	});
 });

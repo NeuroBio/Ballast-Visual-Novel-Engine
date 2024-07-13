@@ -58,6 +58,10 @@ export class SavedData {
 		this.#activeChapters[chapterKey] = sceneKey;
 	}
 
+	getQueuedSceneForChapter (chapterKey: string) {
+		return this.#activeChapters[chapterKey];
+	}
+
 	completeChapter (chapterKey: string): void {
 		this.#completedChapters.push(chapterKey);
 		delete this.#activeChapters[chapterKey];

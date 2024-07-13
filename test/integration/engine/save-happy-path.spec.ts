@@ -35,7 +35,7 @@ describe(`playing through the test data without save data`, () => {
 			thrownError = error;
 		}
 
-		console.log('Threw: ', thrownError.message);
+		console.debug('Threw: ', thrownError.message);
 		expect(thrownError.message).toEqual(Error.NO_REPLAY);
 	});
 	it(`plays the first beat`, async () => {

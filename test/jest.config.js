@@ -7,4 +7,5 @@ module.exports = {
 	testEnvironment: 'node',
 	reporters: ['jest-standard-reporter'],
 	verbose: false,
+	setupFilesAfterEnv: ['./setup.js'],
 };

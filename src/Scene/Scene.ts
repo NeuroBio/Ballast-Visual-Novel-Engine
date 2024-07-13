@@ -29,11 +29,14 @@ export class Scene {
 		this.#currentBeatKey = firstBeatKey;
 	}
 
+	get key (): string {
+		return this.#key;
+	}
+
 	get isComplete (): boolean {
 		return this.#currentBeat instanceof FinalBeat;
 	}
 
-	// restart()
 	start (): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay {
 		this.#currentBeat = this.#beats[this.#currentBeatKey];
 		return this.#currentBeat.play();
@@ -45,8 +48,5 @@ export class Scene {
 		return this.#currentBeat.play();
 	}
 
-
-	// play (): void {
-	// 	this.#currentBeat.play();
-	// }
+	// restart() {}
 }
