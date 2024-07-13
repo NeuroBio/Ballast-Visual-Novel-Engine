@@ -11,6 +11,7 @@ interface EngineParams {
 	findSavedData: () => Promise<SavedDataDto | void>;
 	createSavedData?: () => Promise<SavedDataDto>;
 	saveSavedData: (saveData: SavedDataDto) => Promise<void>;
+	autosaveSaveData?: (saveData: SavedDataDto) => Promise<void>;
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
 	savedDataRepo?: SavedDataRepo;
@@ -39,13 +40,15 @@ export class Engine {
 	#currentScene: Scene;
 
 	constructor (params: EngineParams) {
-		const { findChapterData, findSceneData, findSavedData, createSavedData, saveSavedData } = params;
+		const { findChapterData, findSceneData, findSavedData,
+			createSavedData, saveSavedData, autosaveSaveData } = params;
 		this.#chapterFinder = params.chapterFinder || new ChapterFinder({ findData: findChapterData });
 		this.#sceneFinder = params.sceneFinder || new SceneFinder({ findData: findSceneData });
 		this.#savedDataRepo = params.savedDataRepo || new SavedDataRepo({
 			findData: findSavedData,
 			createData: createSavedData,
 			saveData: saveSavedData,
+			autosaveData: autosaveSaveData,
 		});
 	}
 

@@ -2,8 +2,8 @@ import { SavedDataRepo } from '../../../../../src/SavedData/SaveDataRepo';
 import { SavedData } from '../../../../../src/SavedData/SavedData';
 import { SavedDataData } from '../../../FakeData/TestData';
 
-describe(`SavedDataRepo.upsert`, () => {
-	it(`upserts the data with the custom function`, async () => {
+describe(`SavedDataRepo.save`, () => {
+	it(`saves the data with the custom function`, async () => {
 		const saveData = jest.fn();
 		const savedDataRepo = new SavedDataRepo({
 			findData: () => Promise.resolve(SavedDataData),
@@ -18,7 +18,7 @@ describe(`SavedDataRepo.upsert`, () => {
 			achievements: ['achieve'],
 		});
 
-		savedDataRepo.upsert(savedData);
+		savedDataRepo.save(savedData);
 		expect(saveData).toHaveBeenCalledWith(savedData.toDto());
 	});
 });

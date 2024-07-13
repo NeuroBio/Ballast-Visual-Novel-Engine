@@ -12,8 +12,8 @@ export interface SavedDataDto {
 interface SavedDataRepoParams {
 	findData: () => Promise<SavedDataDto | void>;
 	createData?: () => Promise<SavedDataDto>;
-	// update this to take two mechanisms: autoSaveData manualSaveData
 	saveData: (saveData: SavedDataDto) => Promise<void>;
+	autosaveData?: (saveData: SavedDataDto) => Promise<void>;
 }
 
 export class SavedDataRepo {
@@ -29,12 +29,14 @@ export class SavedDataRepo {
 			// characters: {},
 		});
 	};
-	#upsertData: (saveData: SavedDataDto) => Promise<void>;
+	#autosave: (saveData: SavedDataDto) => Promise<void>;
+	#save: (saveData: SavedDataDto) => Promise<void>;
 
 	constructor (params: SavedDataRepoParams) {
-		const { findData, saveData, createData } = params;
+		const { findData, saveData, autosaveData, createData } = params;
 		this.#findData = findData;
-		this.#upsertData = saveData;
+		this.#save = saveData;
+		this.#autosave = autosaveData || saveData;
 		this.#createData = createData || this.#createDataDefault;
 	}
 
@@ -47,8 +49,13 @@ export class SavedDataRepo {
 		return new SavedData(data);
 	}
 
-	async upsert (saveData: SavedData): Promise<void> {
+	async autosave (saveData: SavedData): Promise<void> {
 		const dto = saveData.toDto();
-		await this.#upsertData(dto);
+		await this.#autosave(dto);
+	}
+
+	async save (saveData: SavedData): Promise<void> {
+		const dto = saveData.toDto();
+		await this.#save(dto);
 	}
 }

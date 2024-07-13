@@ -1,4 +1,5 @@
 export class SavedDataRepo {
 	findOrCreate = jest.fn();
-	upsert = jest.fn();
+	save = jest.fn();
+	autosave = jest.fn();
 }
