@@ -125,9 +125,8 @@ export class Engine {
 
 	async completeScene () {
 		// currentBeat must be of type final beat
-		//   - unlock chapters
 		//   - update completed chapters
-		//   - active chapters
+		//   - if final scene: update active chapters
 		//   - autosave
 	}
 
