@@ -9,6 +9,11 @@ interface SavedDataParams {
 	// characters: { [characterKey: string]: Character }
 }
 
+interface InventoryItemParams {
+	key: string;
+	quantity: number;
+}
+
 export interface SavedChapterData {
 	isUnlocked: boolean,
 	wasCompleted: boolean,
@@ -56,6 +61,41 @@ export class SavedData {
 
 	queueScene (chapterKey: string, sceneKey: string): void {
 		this.#activeChapters[chapterKey] = sceneKey;
+	}
+
+	unlockChapter (unlockedChapter: string): void {
+		this.#unlockedChapters.push(unlockedChapter);
+	}
+
+	unlockAchievement (newAchievement: string): void {
+		this.#achievements.push(newAchievement);
+	}
+
+	// updateCharacterSentiment (): void {
+
+	// }
+
+	// addMemoryToCharacter (): void {
+
+	// }
+
+	// removeMemoryFromCharacter (): void {
+
+	// }
+
+	addInventoryItem (params: InventoryItemParams): void {
+		const { key, quantity } = params;
+		this.#inventory[key] = this.#inventory[key] ?? 0;
+		this.#inventory[key] += quantity;
+	}
+
+	removeInventoryItem (params: InventoryItemParams): void {
+		const { key, quantity } = params;
+		this.#inventory[key] = this.#inventory[key] ?? 0;
+		this.#inventory[key] -= quantity;
+		if (this.#inventory[key] <= 0) {
+			delete this.#inventory[key];
+		}
 	}
 
 	getQueuedSceneForChapter (chapterKey: string) {
