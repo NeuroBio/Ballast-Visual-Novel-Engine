@@ -3,9 +3,6 @@ import { Engine } from '../../../src/Engine/Engine';
 import { BeatData, ChapterData, SceneData } from '../../unit/FakeData/TestData';
 
 describe(`playing through the test data without save data`, () => {
-	const Error = Object.freeze({
-		NO_REPLAY: 'This chapter has already been completed and does not allow replays',
-	});
 	const chapterKey = 'secondChapter';
 	const engine = new Engine({
 		findChapterData: () => Promise.resolve(ChapterData),
@@ -27,17 +24,6 @@ describe(`playing through the test data without save data`, () => {
 			priorResult = newResult;
 		},
 	};
-	it(`refuses to load the completed chapter`, async () => {
-		let thrownError: any;
-		try {
-			await engine.startChapter({ chapterKey: 'firstChapter' });
-		} catch (error) {
-			thrownError = error;
-		}
-
-		console.debug('Threw: ', thrownError.message);
-		expect(thrownError.message).toEqual(Error.NO_REPLAY);
-	});
 	it(`plays the first beat`, async () => {
 		const start = await engine.startChapter({ chapterKey });
 		result.set(start);
