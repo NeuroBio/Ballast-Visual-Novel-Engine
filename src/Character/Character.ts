@@ -13,8 +13,9 @@ export class Character {
 	key: string;
 
 	constructor (params: CharacterParams) {
-		const { name } = params;
+		const { name, key } = params;
 		this.name = name;
+		this.key = key;
 	}
 
 	clone (): Character {

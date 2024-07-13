@@ -7,13 +7,14 @@ describe(`SaveData.toDto`, () => {
 		const completedChapters = ['priorChapter'];
 		const inventory = { someItem: 3 };
 		const achievements = [ 'achieve1', 'achieve2'];
+		const characters = [{ key: 'key', name: 'char' }];
 		const savedDataParams = {
 			activeChapters,
 			unlockedChapters,
 			completedChapters,
 			inventory,
 			achievements,
-			characters: [],
+			characters,
 		};
 		const savedData = new SavedData(savedDataParams);
 
@@ -25,5 +26,6 @@ describe(`SaveData.toDto`, () => {
 		expect(dto.unlockedChapters).not.toBe(unlockedChapters);
 		expect(dto.inventory).not.toBe(inventory);
 		expect(dto.achievements).not.toBe(achievements);
+		expect(dto.characters).not.toBe(characters);
 	});
 });
