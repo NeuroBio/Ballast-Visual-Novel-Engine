@@ -97,6 +97,21 @@ export class SavedData {
 		if (!characterData) {
 			throw new Error('Cannot modify data for unknown characters.');
 		}
+		this.#warnIfTooPrecise(change);
+
+		characterData.sentiments[sentiment] = characterData.sentiments[sentiment] ?? 0;
+		characterData.sentiments[sentiment] = this.#correctMaths(characterData.sentiments[sentiment] + change) ;
+	}
+
+	#correctMaths (n: number) {
+		return Math.round(n * 1000) / 1000;
+	}
+
+	#warnIfTooPrecise (change: number) {
+		const numberOfDecimals = +`${change}`.split('.')[1];
+		if (numberOfDecimals > 3) {
+			console.warn(`Math precision is only guaranteed to 3 decimal places.  Doing math on a number with ${numberOfDecimals} places`);
+		}
 	}
 
 	addMemoryToCharacter (params: MemoryParams): void {
@@ -123,14 +138,16 @@ export class SavedData {
 
 	addInventoryItem (params: InventoryItemParams): void {
 		const { key, quantity } = params;
+		this.#warnIfTooPrecise(quantity);
 		this.#inventory[key] = this.#inventory[key] ?? 0;
-		this.#inventory[key] += quantity;
+		this.#inventory[key] = this.#correctMaths(this.#inventory[key] + quantity);
 	}
 
 	removeInventoryItem (params: InventoryItemParams): void {
 		const { key, quantity } = params;
+		this.#warnIfTooPrecise(quantity);
 		this.#inventory[key] = this.#inventory[key] ?? 0;
-		this.#inventory[key] -= quantity;
+		this.#inventory[key] = this.#correctMaths(this.#inventory[key] - quantity);
 		if (this.#inventory[key] <= 0) {
 			delete this.#inventory[key];
 		}
