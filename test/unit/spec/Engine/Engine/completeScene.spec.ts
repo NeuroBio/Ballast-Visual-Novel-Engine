@@ -17,6 +17,8 @@ describe(`Engine.completeScene`, () => {
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		const chapter = new Fakes.Chapter();
 		scene = new Fakes.Scene();
+		const beat = new Fakes.SimpleBeat({});
+		scene.start.mockReturnValueOnce(beat);
 		saveData = new Fakes.SavedData();
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);

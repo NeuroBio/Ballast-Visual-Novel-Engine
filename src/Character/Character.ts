@@ -16,17 +16,14 @@ export class Character {
 	name: string;
 	key: string;
 	sentiments: { [key:string]: number };
-	memories: { [key:string]: string };
+	memories: Set<string>;
 
 	constructor (params: CharacterDto) {
 		const { name, key, sentiments, memories } = params;
 		this.name = name;
 		this.key = key;
 		this.sentiments = sentiments;
-		this.memories = memories.reduce((keyed: { [key:string]: string }, memory) => {
-			keyed[memory] = memory;
-			return keyed;
-		}, {});
+		this.memories = new Set(memories);
 	}
 
 	// clone (): Character {
@@ -41,7 +38,7 @@ export class Character {
 			name: this.name,
 			key: this.key,
 			sentiments: { ...this.sentiments },
-			memories: Object.values(this.memories),
+			memories: [...this.memories],
 		};
 	}
 }

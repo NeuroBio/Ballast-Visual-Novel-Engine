@@ -1,8 +1,9 @@
 import { Character } from '../Character/Character';
+
 export const NARRATOR = 'Narrator';
 
 export interface BeatParams {
-	character?: Character;
+	character?: string;
 }
 
 export interface SimpleBeatDisplay {
@@ -20,14 +21,14 @@ export interface FinalBeatDisplay {
 
 
 export abstract class Beat {
+	protected character: string;
 	protected speaker: string;
-	protected character?: Character;
 
 	constructor (params: BeatParams) {
 		const { character } = params;
-		this.character = character;
-		this.speaker = character?.name || NARRATOR;
+		this.speaker = character || NARRATOR;
+		this.character = character || NARRATOR;
 	}
 
-	abstract play (): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
+	abstract play (characters: { [characterKey: string]: Character }): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
 }

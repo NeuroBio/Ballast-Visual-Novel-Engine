@@ -1,18 +1,29 @@
-import { Character, CharacterDto } from '../Character/Character';
+import { Character } from '../Character/Character';
 import { SavedDataDto } from './SaveDataRepo';
 
-interface SavedDataParams {
-	activeChapters: { [chapterKey: string]: string };
-	unlockedChapters: string[];
-	completedChapters: string[];
-	inventory: { [itemKey: string]: number };
-	achievements: string[];
-	characters: CharacterDto[]
-}
+// interface SavedDataParams {
+// 	activeChapters: { [chapterKey: string]: string };
+// 	unlockedChapters: string[];
+// 	completedChapters: string[];
+// 	inventory: { [itemKey: string]: number };
+// 	achievements: string[];
+// 	characters: CharacterDto[]
+// }
 
 interface InventoryItemParams {
 	key: string;
 	quantity: number;
+}
+
+interface MemoryParams {
+	character: string;
+	memory: string;
+}
+
+interface SentimentParams {
+	character: string;
+	sentiment: string;
+	change: number;
 }
 
 export interface SavedChapterData {
@@ -29,7 +40,7 @@ export class SavedData {
 	#achievements: string[];
 	#characters: { [characterKey: string]: Character };
 
-	constructor (params: SavedDataParams) {
+	constructor (params: SavedDataDto) {
 		const { activeChapters, unlockedChapters, completedChapters,
 			characters, inventory, achievements } = params;
 		this.#activeChapters = activeChapters;
@@ -41,6 +52,10 @@ export class SavedData {
 			keyed[dto.key] = new Character(dto);
 			return keyed;
 		}, {});
+	}
+
+	get characters () {
+		return this.#characters;
 	}
 
 	get achievementKeys () {
@@ -75,17 +90,36 @@ export class SavedData {
 		this.#achievements.push(newAchievement);
 	}
 
-	// updateCharacterSentiment (): void {
+	updateCharacterSentiment (params: SentimentParams): void {
+		const { character, sentiment, change } = params;
+		const characterData = this.#characters[character];
 
-	// }
+		if (!characterData) {
+			throw new Error('Cannot modify data for unknown characters.');
+		}
+	}
 
-	// addMemoryToCharacter (): void {
+	addMemoryToCharacter (params: MemoryParams): void {
+		const { character, memory } = params;
+		const characterData = this.#characters[character];
 
-	// }
+		if (!characterData) {
+			throw new Error('Cannot modify data for unknown characters.');
+		}
 
-	// removeMemoryFromCharacter (): void {
+		characterData.memories.add(memory);
+	}
 
-	// }
+	removeMemoryFromCharacter (params: MemoryParams): void {
+		const { character, memory } = params;
+		const characterData = this.#characters[character];
+
+		if (!characterData) {
+			throw new Error('Cannot modify data for unknown characters.');
+		}
+
+		characterData.memories.delete(memory);
+	}
 
 	addInventoryItem (params: InventoryItemParams): void {
 		const { key, quantity } = params;

@@ -7,13 +7,16 @@ describe(`Engine.advanceScene`, () => {
 	const Error = Object.freeze({
 		TOO_EARLY: 'You cannot call advance scene prior to starting a chapter.',
 	});
-	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene, savedDataRepoFake: any;
+	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene,
+		savedDataRepoFake: any;
 	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		const chapter = new Fakes.Chapter();
+		const beat = new Fakes.SimpleBeat({});
 		scene = new Fakes.Scene();
+		scene.start.mockReturnValueOnce(beat);
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
 		savedDataRepoFake.findOrCreate.mockReturnValueOnce(new Fakes.SavedData());
@@ -51,19 +54,19 @@ describe(`Engine.advanceScene`, () => {
 	});
 	describe(`playing a beat with a next beat`, () => {
 		const beatKey = 'beatKey';
-		const beat = new Fakes.SimpleBeat({});
-		const playResponse = { result: 'result' };
-		beat.play.mockReturnValueOnce(playResponse);
+		const newBeat = new Fakes.SimpleBeat({});
+		const playResponse = { text: 'result' };
 		let result: any;
 
 		beforeAll(async () => {
 			const engine = await _createEngine();
-			scene.next.mockReturnValueOnce(beat);
+			newBeat.play.mockReturnValueOnce(playResponse);
+			scene.next.mockReturnValueOnce(newBeat);
 			result = engine.advanceScene({ beatKey });
 		});
 		it(`plays the scene's next beat`, () => {
 			expect(scene.next).toHaveBeenCalled();
-			expect(beat.play).toHaveBeenCalled();
+			expect(newBeat.play).toHaveBeenCalled();
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(playResponse);

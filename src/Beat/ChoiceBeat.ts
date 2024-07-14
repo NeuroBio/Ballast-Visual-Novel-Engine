@@ -7,12 +7,13 @@ interface ChoiceOption {
 }
 
 interface ChoiceBeatParams {
-	character?: Character;
+	character?: string;
 	choices: ChoiceOption[];
 	defaultBehavior?: SimpleBeatDisplay;
 }
 
 export class ChoiceBeat extends Beat {
+	// #character?: string;
 	#choices: ChoiceOption[];
 	#defaultBehavior?: SimpleBeatDisplay;
 
@@ -28,7 +29,7 @@ export class ChoiceBeat extends Beat {
 		}
 
 		const choicesHaveRequirements = choices.filter(x => x.condition);
-		if (choicesHaveRequirements.length > 0 && !this.character) {
+		if (choicesHaveRequirements.length > 0 && !params.character) {
 			throw new Error('Cannot check for conditional choices without a Character.');
 		}
 
@@ -37,10 +38,10 @@ export class ChoiceBeat extends Beat {
 		}
 	}
 
-	play (): ChoiceBeatDisplay | SimpleBeatDisplay {
+	play (characters: { [characterKey: string]: Character }): ChoiceBeatDisplay | SimpleBeatDisplay {
 		const choices: SimpleBeatDisplay[] = [];
 		this.#choices.forEach((choice) => {
-			const includeChoice = choice.condition ? choice.condition(this.character!) : true;
+			const includeChoice = choice.condition ? choice.condition(Object.values(characters)[0]) : true;
 			if (includeChoice) {
 				choices.push(choice.beat);
 			}

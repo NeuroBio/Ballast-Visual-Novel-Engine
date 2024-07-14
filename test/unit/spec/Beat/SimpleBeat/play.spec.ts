@@ -1,6 +1,5 @@
 import { NARRATOR } from '../../../../../src/Beat/Beat';
 import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
-import { Fakes } from '../../../fakes/index';
 
 describe(`SimpleBeat.play`, () => {
 	describe(`character is unset`, () => {
@@ -19,7 +18,7 @@ describe(`SimpleBeat.play`, () => {
 			const text = 'Something a character would say';
 			const nextBeat = 'beater';
 			const characterName = 'this character';
-			const character = new Fakes.Character({ name: characterName });
+			const character = characterName;
 			const beat = new SimpleBeat({ character, text, nextBeat });
 			expect(beat.play()).toEqual({
 				text: `${characterName}: ${text}`,

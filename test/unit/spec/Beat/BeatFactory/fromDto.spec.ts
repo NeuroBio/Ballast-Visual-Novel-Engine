@@ -28,7 +28,7 @@ describe('BeatFactory.fromDto', () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
-				characterKey: 'character key',
+				character: 'character name',
 				choices: [
 					{
 						text: 'text for this choice',
@@ -64,7 +64,7 @@ describe('BeatFactory.fromDto', () => {
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
 				text: 'test text',
-				characterKey: 'character key',
+				character: 'character name',
 				nextBeat: 'beat key',
 			});
 			expect(result instanceof SimpleBeat).toBe(true);
@@ -86,7 +86,7 @@ describe('BeatFactory.fromDto', () => {
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
 				text: 'test text',
-				characterKey: 'character key',
+				character: 'character name',
 			});
 			expect(result instanceof FinalBeat).toBe(true);
 		});

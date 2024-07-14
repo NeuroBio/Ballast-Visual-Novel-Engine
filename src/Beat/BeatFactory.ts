@@ -1,8 +1,8 @@
-import { Character } from '../Character/Character';
 import { Beat, SimpleBeatDisplay } from './Beat';
 import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
+import { Character } from '../Character/Character';
 
 interface ConditionalCriterion {
 	characterTrait: string;
@@ -17,7 +17,7 @@ interface Choice {
 
 export interface BeatDto {
 	key: string;
-	characterKey?: string;
+	character?: string;
 	choices?: Choice[];
 	defaultBehavior?: SimpleBeatDisplay;
 	text?: string;
@@ -39,7 +39,7 @@ export class BeatFactory {
 
 	#createSimpleBeat (dto: BeatDto): SimpleBeat {
 		const params = {
-			character: this.#getCharacter(dto.characterKey),
+			character: dto.character,
 			text: dto.text!,
 			nextBeat: dto.nextBeat!,
 		};
@@ -48,7 +48,7 @@ export class BeatFactory {
 
 	#createFinalBeat (dto: BeatDto): FinalBeat {
 		const params = {
-			character: this.#getCharacter(dto.characterKey),
+			character: dto.character,
 			text: dto.text!,
 		};
 		return new FinalBeat(params);
@@ -56,7 +56,7 @@ export class BeatFactory {
 
 	#createChoiceBeat (dto: BeatDto): ChoiceBeat {
 		const params = {
-			character: this.#getCharacter(dto.characterKey),
+			character: dto.character,
 			choices: dto.choices!.map((choice) => ({
 				beat: { text: choice.text, nextBeat: choice.nextBeat },
 				condition: this.#createConditional(choice.condition),
@@ -64,10 +64,6 @@ export class BeatFactory {
 			defaultBehavior: dto.defaultBehavior,
 		};
 		return new ChoiceBeat(params);
-	}
-
-	#getCharacter (characterKey?: string): Character | undefined {
-		return characterKey ? new Character({ name: characterKey, key: characterKey, memories: [], sentiments: {} }) : undefined;
 	}
 
 	#createConditional (condition?: ConditionalCriterion) {

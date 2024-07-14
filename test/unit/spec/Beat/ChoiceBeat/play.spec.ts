@@ -1,5 +1,4 @@
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
-import { Fakes } from '../../../fakes/index';
 
 describe(`ChoiceBeat.play`, () => {
 	describe(`beat has three choices without conditions`, () => {
@@ -10,7 +9,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choices = [ choice1, choice2, choice3];
 
 			const beat = new ChoiceBeat({ choices });
-			expect(beat.play()).toEqual({ choices: choices.map(x => x.beat) });
+			expect(beat.play({})).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
 	describe(`beat has two choices with a condition, character is set and all conditions met`, () => {
@@ -19,10 +18,10 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => true };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
-			const character = new Fakes.Character('name');
+			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character });
-			expect(beat.play()).toEqual({ choices: choices.map(x => x.beat) });
+			expect(beat.play({})).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
 	describe(`beat has two choices with a condition, character is set and second condition not met`, () => {
@@ -31,10 +30,10 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => false };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
-			const character = new Fakes.Character('name');
+			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character });
-			expect(beat.play()).toEqual({ choices: [ choice1.beat, choice3.beat ] });
+			expect(beat.play({})).toEqual({ choices: [ choice1.beat, choice3.beat ] });
 		});
 	});
 	describe(`beat has two choices with conditions, character is set and no condition is met`, () => {
@@ -44,10 +43,10 @@ describe(`ChoiceBeat.play`, () => {
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
-			const character = new Fakes.Character('name');
+			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
-			expect(beat.play()).toEqual(choice3.beat);
+			expect(beat.play({})).toEqual(choice3.beat);
 		});
 	});
 	describe(`beat has all choices with conditions, character is set and no condition is met`, () => {
@@ -57,10 +56,10 @@ describe(`ChoiceBeat.play`, () => {
 			const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: () => false };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
-			const character = new Fakes.Character('name');
+			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
-			expect(beat.play()).toEqual(defaultBehavior);
+			expect(beat.play({})).toEqual(defaultBehavior);
 		});
 	});
 });

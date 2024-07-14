@@ -1,13 +1,14 @@
 import { SavedChapterData } from '../SavedData/SavedData';
+import { ChapterDto } from './ChapterFinder';
 
-interface ChapterParams {
-	sceneKeys: string[];
-	locked?: boolean;
-	firstSceneKey: string;
-	name: string;
-	key: string;
-	allowReplay?: boolean;
-}
+// interface ChapterParams {
+// 	sceneKeys: string[];
+// 	locked?: boolean;
+// 	firstSceneKey: string;
+// 	name: string;
+// 	key: string;
+// 	allowReplay?: boolean;
+// }
 
 export class Chapter {
 	#key: string;
@@ -18,7 +19,7 @@ export class Chapter {
 	#currentSceneKey: string;
 	#allowReplay: boolean;
 
-	constructor (params: ChapterParams) {
+	constructor (params: ChapterDto) {
 		const { key, name, sceneKeys, locked, firstSceneKey, allowReplay } = params;
 		this.#key = key;
 		this.#name = name;
@@ -66,8 +67,4 @@ export class Chapter {
 			throw new Error('This chapter has already been completed and does not allow replays');
 		}
 	}
-
-	// advanceToNextScene () {
-
-	// }
 }

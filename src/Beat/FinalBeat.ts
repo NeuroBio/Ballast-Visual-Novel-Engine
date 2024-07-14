@@ -1,8 +1,7 @@
-import { Character } from '../Character/Character';
 import { Beat, FinalBeatDisplay } from './Beat';
 
 interface FinalBeatParams {
-	character?: Character;
+	character?: string;
 	text: string;
 }
 

@@ -1,5 +1,4 @@
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
-import { Fakes } from '../../../fakes/index';
 
 const Error = Object.freeze({
 	CHARACTER_REQUIRED: 'Cannot check for conditional choices without a Character.',
@@ -47,7 +46,7 @@ describe(`beat has a choice with a condition and character is set`, () => {
 		const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => true };
 		const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 		const choices = [ choice1, choice2, choice3];
-		const character = new Fakes.Character({ name: 'name', key: 'key' });
+		const character = 'character';
 
 		expect(() => {
 			new ChoiceBeat({ choices, character });
@@ -60,7 +59,7 @@ describe(`beat has all choices with conditions, and no default is set`, () => {
 		const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => false };
 		const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: () => false };
 		const choices = [ choice1, choice2, choice3];
-		const character = new Fakes.Character('name');
+		const character = 'character';
 
 		expect(() => {
 			new ChoiceBeat({ choices, character });
@@ -74,7 +73,7 @@ describe(`beat has all choices with conditions, and default is set`, () => {
 		const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: () => false };
 		const defaultBehavior = { text:'4', nextBeat: 'D' };
 		const choices = [ choice1, choice2, choice3];
-		const character = new Fakes.Character('name');
+		const character = 'character';
 
 		expect(() => {
 			new ChoiceBeat({ choices, character, defaultBehavior });

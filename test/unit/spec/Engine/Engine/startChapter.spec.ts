@@ -36,13 +36,15 @@ fdescribe(`Engine.startChapter`, () => {
 	});
 	describe(`loading valid chapter for the first time`, () => {
 		const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
-			scene = new Fakes.Scene(), startResponse = { result: 'result' };
+			scene = new Fakes.Scene(), beat = new Fakes.SimpleBeat({}),
+			startResponse = { result: 'result' };
 		let result: any;
 		beforeAll(async () => {
 			const engine = await _createEngine();
 			const chapter = new Fakes.Chapter();
 			chapter.start.mockReturnValueOnce(sceneKey);
-			scene.start.mockReturnValueOnce(startResponse);
+			scene.start.mockReturnValueOnce(beat);
+			beat.play.mockReturnValueOnce(startResponse);
 			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 			sceneFinderFake.byKey.mockReturnValueOnce(scene);
 			result = await engine.startChapter({ chapterKey });
@@ -55,6 +57,7 @@ fdescribe(`Engine.startChapter`, () => {
 		});
 		it(`plays the scene's first beat`, () => {
 			expect(scene.start).toHaveBeenCalled();
+			expect(beat.play).toHaveBeenCalled();
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(startResponse);

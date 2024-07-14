@@ -95,7 +95,8 @@ export class Engine {
 
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
-		return this.#currentScene.start();
+		const beat = this.#currentScene.start();
+		return beat.play(this.#currentSave.characters);
 	}
 
 	async #findChapterElseThrow (chapterKey: string): Promise<Chapter> {
@@ -125,7 +126,7 @@ export class Engine {
 		//   - update achievements
 
 		const currentBeat = this.#currentScene.next(beatKey);
-		return currentBeat.play();
+		return currentBeat.play(this.#currentSave.characters);
 	}
 
 	async completeScene () {

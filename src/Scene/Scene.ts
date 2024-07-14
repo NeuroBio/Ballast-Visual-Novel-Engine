@@ -1,4 +1,4 @@
-import { Beat, ChoiceBeatDisplay, FinalBeatDisplay, SimpleBeatDisplay } from '../Beat/Beat';
+import { Beat } from '../Beat/Beat';
 import { FinalBeat } from '../Beat/FinalBeat';
 
 interface SceneParams {
@@ -37,9 +37,9 @@ export class Scene {
 		return this.#currentBeat instanceof FinalBeat;
 	}
 
-	start (): SimpleBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay {
+	start (): Beat {
 		this.#currentBeat = this.#beats[this.#currentBeatKey];
-		return this.#currentBeat.play();
+		return this.#currentBeat;
 	}
 
 	next (beatKey: string): Beat {
