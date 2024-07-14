@@ -10,7 +10,7 @@ describe(`Engine.completeScene`, () => {
 		TOO_EARLY: 'You cannot call complete scene while the scene is in progress.',
 	});
 	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene,
-		saveData: SavedData, savedDataRepoFake: any;
+		characterTemplateFinderFake: any, saveData: SavedData, savedDataRepoFake: any;
 	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
@@ -23,12 +23,14 @@ describe(`Engine.completeScene`, () => {
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
 		savedDataRepoFake.findOrCreate.mockReturnValueOnce(saveData);
+		characterTemplateFinderFake = new Fakes.CharacterTemplateFinder();
 		const engine = new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
 			findCharacterData: () => Promise.resolve(CharacterData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
+			characterTemplateFinder: characterTemplateFinderFake,
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,

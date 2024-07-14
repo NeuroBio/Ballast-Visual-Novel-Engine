@@ -7,18 +7,21 @@ fdescribe(`Engine.startChapter`, () => {
 		NOT_FOUND: 'Requested chapter was not found.',
 	});
 
-	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any;
+	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any,
+		characterTemplateFinderFake: any;
 	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		savedDataRepoFake.findOrCreate.mockReturnValueOnce(new Fakes.SavedData());
+		characterTemplateFinderFake = new Fakes.CharacterTemplateFinder();
 		const engine = new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
 			findCharacterData: () => Promise.resolve(CharacterData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
+			characterTemplateFinder: characterTemplateFinderFake,
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,

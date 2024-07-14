@@ -5,19 +5,22 @@ import { Fakes } from '../../../fakes/index';
 import { SavedData } from '../../../fakes/SavedData';
 
 describe(`Engine.getChapters`, () => {
-	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any, savedData: SavedData;
+	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any,
+		characterTemplateFinderFake: any, savedData: SavedData;
 	function _createEngine (): Engine {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		savedData = new Fakes.SavedData();
 		savedDataRepoFake.findOrCreate.mockReturnValueOnce(savedData);
+		characterTemplateFinderFake = new Fakes.CharacterTemplateFinder();
 		return new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
 			findCharacterData: () => Promise.resolve(CharacterData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
+			characterTemplateFinder: characterTemplateFinderFake,
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,

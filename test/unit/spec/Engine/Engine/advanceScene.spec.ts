@@ -8,7 +8,7 @@ describe(`Engine.advanceScene`, () => {
 		TOO_EARLY: 'You cannot call advance scene prior to starting a chapter.',
 	});
 	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene,
-		savedDataRepoFake: any;
+		characterTemplateFinderFake: any, savedDataRepoFake: any;
 	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
@@ -20,12 +20,14 @@ describe(`Engine.advanceScene`, () => {
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
 		savedDataRepoFake.findOrCreate.mockReturnValueOnce(new Fakes.SavedData());
+		characterTemplateFinderFake = new Fakes.CharacterTemplateFinder();
 		const engine = new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
 			findCharacterData: () => Promise.resolve(CharacterData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
+			characterTemplateFinder: characterTemplateFinderFake,
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,

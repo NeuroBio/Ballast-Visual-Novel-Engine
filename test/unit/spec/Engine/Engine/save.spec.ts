@@ -7,7 +7,8 @@ describe(`Engine.save`, () => {
 	const Error = Object.freeze({
 		TOO_EARLY: 'You cannot save data prior to loading save data.',
 	});
-	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene, savedDataRepoFake: any;
+	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene, savedDataRepoFake: any,
+		characterTemplateFinderFake: any;
 	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
 		sceneFinderFake = new Fakes.SceneFinder();
@@ -17,12 +18,14 @@ describe(`Engine.save`, () => {
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
 		sceneFinderFake.byKey.mockReturnValueOnce(scene);
 		savedDataRepoFake.findOrCreate.mockReturnValueOnce(new Fakes.SavedData());
+		characterTemplateFinderFake = new Fakes.CharacterTemplateFinder();
 		const engine = new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
 			findCharacterData: () => Promise.resolve(CharacterData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
+			characterTemplateFinder: characterTemplateFinderFake,
 			chapterFinder: chapterFinderFake,
 			sceneFinder: sceneFinderFake,
 			savedDataRepo: savedDataRepoFake,
