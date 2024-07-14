@@ -4,15 +4,15 @@ export interface CharacterTemplate {
 	sentiments: { [key:string]: number };
 }
 
-interface CharacterFinderParams { // rename to CharacterTemplate
+interface CharacterTemplateFinderParams {
 	findData: (key?: string) => Promise<CharacterTemplate[]>;
 }
 
-export class CharacterFinder {
+export class CharacterTemplateFinder {
 	#findData: (key?: string) => Promise<CharacterTemplate[]>;
 	#cache: CharacterTemplate[];
 
-	constructor (params: CharacterFinderParams) {
+	constructor (params: CharacterTemplateFinderParams) {
 		const { findData } = params;
 		this.#findData = findData;
 	}

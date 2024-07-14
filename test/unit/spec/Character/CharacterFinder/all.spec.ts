@@ -1,13 +1,13 @@
-import { CharacterFinder } from '../../../../../src/Character/CharacterFinder';
-import { CharacterData } from '../../../FakeData/TestData';
+import { CharacterTemplateFinder } from '../../../../../src/Character/CharacterTemplateFinder';
+import { CharacterTemplateData } from '../../../FakeData/TestData';
 
-describe(`CharacterFinder.all`, () => {
+describe(`CharacterTemplateFinder.all`, () => {
 	it(`loads all characters from data`, async () => {
-		const characterFinder = new CharacterFinder({
-			findData: () => Promise.resolve(CharacterData),
+		const characterTemplateFinder = new CharacterTemplateFinder({
+			findData: () => Promise.resolve(CharacterTemplateData),
 		});
-		const chapters = await characterFinder.all();
-		expect(chapters[0]).toEqual(CharacterData[0]);
-		expect(chapters[1]).toEqual(CharacterData[1]);
+		const characters = await characterTemplateFinder.all();
+		expect(characters[0]).toEqual(CharacterTemplateData[0]);
+		expect(characters[1]).toEqual(CharacterTemplateData[1]);
 	});
 });

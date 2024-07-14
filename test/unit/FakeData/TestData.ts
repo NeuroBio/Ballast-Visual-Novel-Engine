@@ -1,6 +1,7 @@
 import { BeatDto } from '../../../src/Beat/BeatFactory';
 import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
 import { CharacterDto } from '../../../src/Character/Character';
+import { CharacterTemplate } from '../../../src/Character/CharacterTemplateFinder';
 import { SavedDataDto } from '../../../src/SavedData/SaveDataRepo';
 import { SceneDto } from '../../../src/Scene/SceneFinder';
 
@@ -115,5 +116,24 @@ export const CharacterData: CharacterDto[] = [
 			love: 0.5,
 		},
 		memories: [ ],
+	},
+];
+
+export const CharacterTemplateData: CharacterTemplate[] = [
+	{
+		name: 'tester',
+		key: 'test',
+		sentiments: {
+			like: 0,
+			love: 0,
+		},
+	},
+	{
+		name: 'tester2',
+		key: 'test2',
+		sentiments: {
+			like: -0.5,
+			love: 0.5,
+		},
 	},
 ];

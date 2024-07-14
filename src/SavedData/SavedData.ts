@@ -1,5 +1,5 @@
 import { Character } from '../Character/Character';
-import { CharacterTemplate } from '../Character/CharacterFinder';
+import { CharacterTemplate } from '../Character/CharacterTemplateFinder';
 import { SavedDataDto } from './SaveDataRepo';
 
 interface InventoryItemParams {

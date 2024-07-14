@@ -1,7 +1,7 @@
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
 import { CharacterDto } from '../Character/Character';
-import { CharacterFinder } from '../Character/CharacterFinder';
+import { CharacterTemplateFinder } from '../Character/CharacterTemplateFinder';
 import { SavedDataDto, SavedDataRepo } from '../SavedData/SaveDataRepo';
 import { SavedData } from '../SavedData/SavedData';
 import { Scene } from '../Scene/Scene';
@@ -18,7 +18,7 @@ interface EngineParams {
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
 	savedDataRepo?: SavedDataRepo;
-	characterFinder?: CharacterFinder;
+	characterTemplateFinder?: CharacterTemplateFinder;
 }
 interface LoadChapterParams {
 	chapterKey: string
@@ -36,7 +36,7 @@ interface getChaptersParams {
 export class Engine {
 	#chapterFinder: ChapterFinder;
 	#sceneFinder: SceneFinder;
-	#characterFinder: CharacterFinder;
+	#characterTemplateFinder: CharacterTemplateFinder;
 	#savedDataRepo: SavedDataRepo;
 
 	#originalSave: SavedData;
@@ -49,7 +49,7 @@ export class Engine {
 			createSavedData, saveSavedData, autosaveSaveData } = params;
 		this.#chapterFinder = params.chapterFinder || new ChapterFinder({ findData: findChapterData });
 		this.#sceneFinder = params.sceneFinder || new SceneFinder({ findData: findSceneData });
-		this.#characterFinder = params.characterFinder || new CharacterFinder({ findData: findCharacterData });
+		this.#characterTemplateFinder = params.characterTemplateFinder || new CharacterTemplateFinder({ findData: findCharacterData });
 		this.#savedDataRepo = params.savedDataRepo || new SavedDataRepo({
 			findData: findSavedData,
 			createData: createSavedData,
@@ -60,7 +60,7 @@ export class Engine {
 
 	async loadSavedData () {
 		const latestSaveData = await this.#savedDataRepo.findOrCreate();
-		// const characterTemplates = await this.#characterFinder.all();
+		const characterTemplates = await this.#characterTemplateFinder.all();
 		// apply char templates;
 		this.#refreshSave(latestSaveData);
 	}
