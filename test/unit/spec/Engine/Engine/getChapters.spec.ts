@@ -1,5 +1,5 @@
 import { Engine } from '../../../../../src/Engine/Engine';
-import { ChapterData, SavedDataData, SceneData } from '../../../FakeData/TestData';
+import { ChapterData, CharacterData, SavedDataData, SceneData } from '../../../FakeData/TestData';
 import { Chapter } from '../../../fakes/Chapter';
 import { Fakes } from '../../../fakes/index';
 import { SavedData } from '../../../fakes/SavedData';
@@ -15,6 +15,7 @@ describe(`Engine.getChapters`, () => {
 		return new Engine({
 			findChapterData: () => Promise.resolve(ChapterData),
 			findSceneData: () => Promise.resolve(SceneData),
+			findCharacterData: () => Promise.resolve(CharacterData),
 			findSavedData: () => Promise.resolve(SavedDataData),
 			saveSavedData: () => Promise.resolve(),
 			chapterFinder: chapterFinderFake,

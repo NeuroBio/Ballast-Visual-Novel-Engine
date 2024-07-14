@@ -1,5 +1,7 @@
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
+import { CharacterDto } from '../Character/Character';
+import { CharacterFinder } from '../Character/CharacterFinder';
 import { SavedDataDto, SavedDataRepo } from '../SavedData/SaveDataRepo';
 import { SavedData } from '../SavedData/SavedData';
 import { Scene } from '../Scene/Scene';
@@ -8,6 +10,7 @@ import { SceneDto, SceneFinder } from '../Scene/SceneFinder';
 interface EngineParams {
 	findChapterData: (key?: string) => Promise<ChapterDto[]>;
 	findSceneData: (key?: string) => Promise<SceneDto[]>;
+	findCharacterData: () => Promise<CharacterDto[]>;
 	findSavedData: () => Promise<SavedDataDto | void>;
 	createSavedData?: () => Promise<SavedDataDto>;
 	saveSavedData: (saveData: SavedDataDto) => Promise<void>;
@@ -15,6 +18,7 @@ interface EngineParams {
 	chapterFinder?: ChapterFinder;
 	sceneFinder?: SceneFinder;
 	savedDataRepo?: SavedDataRepo;
+	characterFinder?: CharacterFinder;
 }
 interface LoadChapterParams {
 	chapterKey: string
@@ -32,6 +36,7 @@ interface getChaptersParams {
 export class Engine {
 	#chapterFinder: ChapterFinder;
 	#sceneFinder: SceneFinder;
+	#characterFinder: CharacterFinder;
 	#savedDataRepo: SavedDataRepo;
 
 	#originalSave: SavedData;
@@ -40,10 +45,11 @@ export class Engine {
 	#currentScene: Scene;
 
 	constructor (params: EngineParams) {
-		const { findChapterData, findSceneData, findSavedData,
+		const { findChapterData, findSceneData, findSavedData, findCharacterData,
 			createSavedData, saveSavedData, autosaveSaveData } = params;
 		this.#chapterFinder = params.chapterFinder || new ChapterFinder({ findData: findChapterData });
 		this.#sceneFinder = params.sceneFinder || new SceneFinder({ findData: findSceneData });
+		this.#characterFinder = params.characterFinder || new CharacterFinder({ findData: findCharacterData });
 		this.#savedDataRepo = params.savedDataRepo || new SavedDataRepo({
 			findData: findSavedData,
 			createData: createSavedData,
@@ -118,12 +124,14 @@ export class Engine {
 
 		const { beatKey } = params;
 		// this needs to...
-		//   - output display options (return)
-		//   - update characters
-		//   - queue scenes
+		//   - queue scenes for chapters
 		//   - unlock chapters
-		//   - update inventory
-		//   - update achievements
+		//   - unlock achievements
+		//   - add to inventory
+		//   - remove from inventory
+		//   - add memory
+		//   - remove memory
+		//   - update sentiment
 
 		const currentBeat = this.#currentScene.next(beatKey);
 		return currentBeat.play(this.#currentSave.characters);

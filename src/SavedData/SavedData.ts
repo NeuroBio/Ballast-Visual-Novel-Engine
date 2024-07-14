@@ -15,12 +15,12 @@ interface InventoryItemParams {
 	quantity: number;
 }
 
-interface MemoryParams {
+export interface MemoryParams {
 	character: string;
 	memory: string;
 }
 
-interface SentimentParams {
+export interface SentimentParams {
 	character: string;
 	sentiment: string;
 	change: number;

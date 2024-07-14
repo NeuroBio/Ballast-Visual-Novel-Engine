@@ -1,5 +1,6 @@
 import { BeatDto } from '../../../src/Beat/BeatFactory';
 import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
+import { CharacterDto } from '../../../src/Character/Character';
 import { SavedDataDto } from '../../../src/SavedData/SaveDataRepo';
 import { SceneDto } from '../../../src/Scene/SceneFinder';
 
@@ -95,3 +96,24 @@ export const SavedDataData: SavedDataDto = {
 	achievements: ['achievement1'],
 	characters: [],
 };
+
+export const CharacterData: CharacterDto[] = [
+	{
+		name: 'tester',
+		key: 'test',
+		sentiments: {
+			like: 0,
+			love: 0,
+		},
+		memories: [ 'thinking' ],
+	},
+	{
+		name: 'tester2',
+		key: 'test2',
+		sentiments: {
+			like: -0.5,
+			love: 0.5,
+		},
+		memories: [ ],
+	},
+];

@@ -1,12 +1,13 @@
 import { NARRATOR } from '../../../src/Beat/Beat';
 import { Engine } from '../../../src/Engine/Engine';
-import { BeatData, ChapterData, SceneData } from '../../unit/FakeData/TestData';
+import { BeatData, ChapterData, CharacterData, SceneData } from '../../unit/FakeData/TestData';
 
 describe(`playing through the test data without save data`, () => {
 	const chapterKey = 'secondChapter';
 	const engine = new Engine({
 		findChapterData: () => Promise.resolve(ChapterData),
 		findSceneData: () => Promise.resolve(SceneData),
+		findCharacterData: () => Promise.resolve(CharacterData),
 		findSavedData: () => Promise.resolve({
 			activeChapters: { [chapterKey]: 'secondSceneKey' },
 			unlockedChapters: [ chapterKey ],
