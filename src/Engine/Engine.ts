@@ -60,6 +60,8 @@ export class Engine {
 
 	async loadSavedData () {
 		const latestSaveData = await this.#savedDataRepo.findOrCreate();
+		// const characterTemplates = await this.#characterFinder.all();
+		// apply char templates;
 		this.#refreshSave(latestSaveData);
 	}
 

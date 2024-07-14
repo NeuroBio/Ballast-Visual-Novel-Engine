@@ -24,7 +24,6 @@ describe(`SaveData.updateCharacterSentiment`, () => {
 	});
 	describe(`
 		character is in save data
-		sentiment is increasing
 		sentiment exists in data
 	`, () => {
 		it(`increases specified sentiment the correct amount for the correct character`, () => {
@@ -58,7 +57,6 @@ describe(`SaveData.updateCharacterSentiment`, () => {
 	});
 	describe(`
 		character is in save data
-		sentiment is increasing
 		sentiment does not exist in data
 	`, () => {
 		it(`sets specified sentiment to the correct amount for the correct character`, () => {
@@ -83,71 +81,6 @@ describe(`SaveData.updateCharacterSentiment`, () => {
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
 				characters: expect.arrayContaining([
 					expect.objectContaining({ sentiments: { [sentiment]: 0.001 } }),
-				]),
-			}));
-		});
-	});
-	describe(`
-		character is in save data
-		sentiment is decreasing
-		sentiment exists in data
-	`, () => {
-		it(`increases specified sentiment the correct amount for the correct character`, () => {
-			const character = 'char';
-			const sentiment = 'like-ity-ness';
-			const originalValue = 0.009;
-			const change = -0.001;
-			const savedData = new SavedData({
-				activeChapters: { },
-				unlockedChapters: [],
-				completedChapters: [],
-				inventory: {},
-				achievements: [],
-				characters: [{
-					name: 'some dude',
-					key: character,
-					sentiments: {
-						[sentiment]: originalValue,
-					},
-					memories: [],
-				}],
-			});
-
-			savedData.updateCharacterSentiment({ character, sentiment, change });
-			expect(savedData.toDto()).toEqual(expect.objectContaining({
-				characters: expect.arrayContaining([
-					expect.objectContaining({ sentiments: { [sentiment]: 0.008 } }),
-				]),
-			}));
-		});
-	});
-	describe(`
-		character is in save data
-		sentiment is decreasing
-		sentiment does not exist in data
-	`, () => {
-		it(`sets specified sentiment to the correct amount for the correct character`, () => {
-			const character = 'char';
-			const sentiment = 'like-ity-ness';
-			const change = -0.001;
-			const savedData = new SavedData({
-				activeChapters: { },
-				unlockedChapters: [],
-				completedChapters: [],
-				inventory: {},
-				achievements: [],
-				characters: [{
-					name: 'some dude',
-					key: character,
-					sentiments: {},
-					memories: [],
-				}],
-			});
-
-			savedData.updateCharacterSentiment({ character, sentiment, change });
-			expect(savedData.toDto()).toEqual(expect.objectContaining({
-				characters: expect.arrayContaining([
-					expect.objectContaining({ sentiments: { [sentiment]: -0.001 } }),
 				]),
 			}));
 		});

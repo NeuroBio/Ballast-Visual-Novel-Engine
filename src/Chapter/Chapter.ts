@@ -1,15 +1,6 @@
 import { SavedChapterData } from '../SavedData/SavedData';
 import { ChapterDto } from './ChapterFinder';
 
-// interface ChapterParams {
-// 	sceneKeys: string[];
-// 	locked?: boolean;
-// 	firstSceneKey: string;
-// 	name: string;
-// 	key: string;
-// 	allowReplay?: boolean;
-// }
-
 export class Chapter {
 	#key: string;
 	#name: string;

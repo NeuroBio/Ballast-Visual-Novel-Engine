@@ -1,15 +1,6 @@
 import { Character } from '../Character/Character';
 import { SavedDataDto } from './SaveDataRepo';
 
-// interface SavedDataParams {
-// 	activeChapters: { [chapterKey: string]: string };
-// 	unlockedChapters: string[];
-// 	completedChapters: string[];
-// 	inventory: { [itemKey: string]: number };
-// 	achievements: string[];
-// 	characters: CharacterDto[]
-// }
-
 interface InventoryItemParams {
 	key: string;
 	quantity: number;
@@ -97,21 +88,8 @@ export class SavedData {
 		if (!characterData) {
 			throw new Error('Cannot modify data for unknown characters.');
 		}
-		this.#warnIfTooPrecise(change);
 
-		characterData.sentiments[sentiment] = characterData.sentiments[sentiment] ?? 0;
-		characterData.sentiments[sentiment] = this.#correctMaths(characterData.sentiments[sentiment] + change) ;
-	}
-
-	#correctMaths (n: number) {
-		return Math.round(n * 1000) / 1000;
-	}
-
-	#warnIfTooPrecise (change: number) {
-		const numberOfDecimals = +`${change}`.split('.')[1];
-		if (numberOfDecimals > 3) {
-			console.warn(`Math precision is only guaranteed to 3 decimal places.  Doing math on a number with ${numberOfDecimals} places`);
-		}
+		characterData.updateSentiment({ sentiment, change }) ;
 	}
 
 	addMemoryToCharacter (params: MemoryParams): void {
@@ -122,7 +100,7 @@ export class SavedData {
 			throw new Error('Cannot modify data for unknown characters.');
 		}
 
-		characterData.memories.add(memory);
+		characterData.addMemory({ memory });
 	}
 
 	removeMemoryFromCharacter (params: MemoryParams): void {
@@ -133,7 +111,7 @@ export class SavedData {
 			throw new Error('Cannot modify data for unknown characters.');
 		}
 
-		characterData.memories.delete(memory);
+		characterData.removeMemory({ memory });
 	}
 
 	addInventoryItem (params: InventoryItemParams): void {
@@ -175,5 +153,16 @@ export class SavedData {
 
 	clone (): SavedData {
 		return new SavedData(this.toDto());
+	}
+
+	#correctMaths (n: number) {
+		return Math.round(n * 1000) / 1000;
+	}
+
+	#warnIfTooPrecise (change: number) {
+		const numberOfDecimals = +`${change}`.split('.')[1];
+		if (numberOfDecimals > 3) {
+			console.warn(`Math precision is only guaranteed to 3 decimal places.  Doing math on a number with ${numberOfDecimals} places`);
+		}
 	}
 }
