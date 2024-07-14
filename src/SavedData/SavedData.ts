@@ -141,6 +141,16 @@ export class SavedData {
 		delete this.#activeChapters[chapterKey];
 	}
 
+	addMissingCharacters (characters: CharacterTemplate[]) {
+		characters.forEach((char) => {
+			if (this.#characters[char.key]) {
+				return;
+			}
+
+			this.#characters[char.key] = new Character({ ...char, memories: [] });
+		});
+	}
+
 	toDto (): SavedDataDto {
 		return {
 			activeChapters: { ...this.#activeChapters },
@@ -165,9 +175,5 @@ export class SavedData {
 		if (numberOfDecimals > 3) {
 			console.warn(`Math precision is only guaranteed to 3 decimal places.  Doing math on a number with ${numberOfDecimals} places`);
 		}
-	}
-
-	addMissingCharacters (characters: CharacterTemplate[]) {
-		console.log(characters);
 	}
 }
