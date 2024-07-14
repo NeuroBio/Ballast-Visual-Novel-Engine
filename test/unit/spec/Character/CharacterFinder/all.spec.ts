@@ -1,4 +1,3 @@
-import { Character } from '../../../../../src/Character/Character';
 import { CharacterFinder } from '../../../../../src/Character/CharacterFinder';
 import { CharacterData } from '../../../FakeData/TestData';
 
@@ -8,7 +7,7 @@ describe(`CharacterFinder.all`, () => {
 			findData: () => Promise.resolve(CharacterData),
 		});
 		const chapters = await characterFinder.all();
-		expect(chapters[0] instanceof Character).toBe(true);
-		expect(chapters[1] instanceof Character).toBe(true);
+		expect(chapters[0]).toEqual(CharacterData[0]);
+		expect(chapters[1]).toEqual(CharacterData[1]);
 	});
 });

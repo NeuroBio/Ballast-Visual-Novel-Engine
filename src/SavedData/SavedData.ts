@@ -1,4 +1,5 @@
 import { Character } from '../Character/Character';
+import { CharacterTemplate } from '../Character/CharacterFinder';
 import { SavedDataDto } from './SaveDataRepo';
 
 interface InventoryItemParams {
@@ -164,5 +165,9 @@ export class SavedData {
 		if (numberOfDecimals > 3) {
 			console.warn(`Math precision is only guaranteed to 3 decimal places.  Doing math on a number with ${numberOfDecimals} places`);
 		}
+	}
+
+	addMissingCharacters (characters: CharacterTemplate[]) {
+		console.log(characters);
 	}
 }

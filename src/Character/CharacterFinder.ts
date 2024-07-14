@@ -1,32 +1,31 @@
-import { Character, CharacterDto } from './Character';
+export interface CharacterTemplate {
+	name: string;
+	key: string;
+	sentiments: { [key:string]: number };
+}
 
-interface CharacterFinderParams {
-	findData: (key?: string) => Promise<CharacterDto[]>;
+interface CharacterFinderParams { // rename to CharacterTemplate
+	findData: (key?: string) => Promise<CharacterTemplate[]>;
 }
 
 export class CharacterFinder {
-	#findData: (key?: string) => Promise<CharacterDto[]>;
-	#cache: { [key: string]: CharacterDto} = {};
+	#findData: (key?: string) => Promise<CharacterTemplate[]>;
+	#cache: CharacterTemplate[];
 
 	constructor (params: CharacterFinderParams) {
 		const { findData } = params;
 		this.#findData = findData;
 	}
 
-	async all (): Promise<Character[]> {
-		if (Object.keys(this.#cache).length < 1) {
+	async all (): Promise<CharacterTemplate[]> {
+		if (!this.#cache) {
 			await this.#refreshData();
 		}
 
-		return Object.values(this.#cache).map((dto) => new Character(dto));
+		return this.#cache.map((char) => ({ ...char }));
 	}
 
 	async #refreshData (key?: string) {
-		const rawData = await this.#findData(key);
-		const refreshedData = rawData.reduce((keyed: { [key: string]: CharacterDto}, data) => {
-			keyed[data.key] = data;
-			return keyed;
-		}, {});
-		this.#cache = { ...this.#cache, ...refreshedData };
+		this.#cache = await this.#findData(key);
 	}
 }
