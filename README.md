@@ -66,6 +66,26 @@ i.e. things the engine provides an interface for, but requires an implementation
 - Achievements
 	- array of achievement keys
 
+
+## Beats
+"Beats" are VN story units.  Chapters are composed of one or more scenes.  Scenes are composed of beats, where each beat provides the UI with display text or a user decision.  Events that affect save data, like unlocking chapters or changing character sentiments, are assigned/occur at the beat level.  All beats inherit the same event capabilities.  However, when "played," they handle their UI display components differently and decide what to return to the UI based on unique logic.
+
+Note: "conditional" choices reference save data (characters and/or inventory) for conditions.
+
+### Simple Beat
+Owns one set of text.  Returns that and the next beat.  There is no real logic here.
+
+### Branch Beat
+Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multiple conditional choices, it returns the first choice whose condition is satisfied.  Requires a default option with no condition.  These beats are for story choices that hinge of the user's past decisions.  Typically, these beats hinge on conditions satisfied in prior scenes and chapters, though there could be within scene uses.
+
+### Choice Beat
+Owns a set of choices.  Can return multiple options, but may not.  Conditional choices must be satisfied to return.  When there are all conditional choices, a default option is required.  If there is only one choice, it returns as a simple text display interface instead of a choice interface.  In short, this is where the user controls the novel side of game play.
+
+
+### Final Beat
+Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  This exists on the assumption that the story never needs to end on a choice or branch beat.  That should be easy enough to achieve, but if a story should require ending on a choice or branch beat, a final beat is allowed to return an empty string, and the UI could respond appropriately to that.
+
+
 ## Intended Use-Cases that are not Typical of VNs
 - Allow non-linear, randomized story structure
 - building relationships with characters is NOT based on choosing the right branch from a small number of choice branches (doing so would interfere with the non-linear storyline needs).  "Sentiments" are build incrementally on almost every choice made (expected change range 0.001-0.005).  There are very few make-or-break decisions, and they are very obvious (e.g. killing a character).
