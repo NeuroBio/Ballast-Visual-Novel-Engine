@@ -14,7 +14,7 @@ describe(`SaveData.queueScene`, () => {
 			characters: [],
 		});
 
-		savedData.queueScene(chapterKey, nextSceneKey);
+		savedData.queueScene({ chapterKey, sceneKey: nextSceneKey });
 		expect(savedData.toDto()).toEqual(expect.objectContaining({
 			activeChapters: { [chapterKey]: nextSceneKey },
 		}));

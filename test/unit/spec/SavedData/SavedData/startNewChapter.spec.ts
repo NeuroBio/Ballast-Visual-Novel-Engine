@@ -13,7 +13,7 @@ describe(`SaveData.startNewChapter`, () => {
 			characters: [],
 		});
 
-		savedData.startNewChapter(chapterKey, sceneKey);
+		savedData.startNewChapter({ chapterKey, sceneKey });
 		expect(savedData.toDto()).toEqual(expect.objectContaining({
 			activeChapters: { [chapterKey]: sceneKey },
 		}));

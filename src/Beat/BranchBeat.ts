@@ -1,4 +1,4 @@
-import { Beat, SimpleBeatDisplay } from './Beat';
+import { Beat, StandardBeatDisplay } from './Beat';
 
 interface BranchBeatParams {
 	// choices: ChoiceOption[];
@@ -12,7 +12,7 @@ export class BranchBeat extends Beat {
 		super(params);
 	}
 
-	play (): SimpleBeatDisplay {
+	play (): StandardBeatDisplay {
 		return { text: `not implemented`, nextBeat: '' };
 	}
 }

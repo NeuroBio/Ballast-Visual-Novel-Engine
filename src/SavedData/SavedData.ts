@@ -2,7 +2,11 @@ import { Character } from '../Character/Character';
 import { CharacterTemplate } from '../Character/CharacterTemplateFinder';
 import { SavedDataDto } from './SaveDataRepo';
 
-interface InventoryItemParams {
+export interface SceneParams {
+	chapterKey: string,
+	sceneKey: string,
+}
+export interface InventoryItemParams {
 	key: string;
 	quantity: number;
 }
@@ -58,7 +62,8 @@ export class SavedData {
 		return [...this.#completedChapters];
 	}
 
-	startNewChapter (chapterKey: string, sceneKey: string): void {
+	startNewChapter (params: SceneParams): void {
+		const { chapterKey, sceneKey } = params;
 		this.#activeChapters[chapterKey] = sceneKey;
 	}
 
@@ -70,7 +75,8 @@ export class SavedData {
 		};
 	}
 
-	queueScene (chapterKey: string, sceneKey: string): void {
+	queueScene (params: SceneParams): void {
+		const { chapterKey, sceneKey } = params;
 		this.#activeChapters[chapterKey] = sceneKey;
 	}
 

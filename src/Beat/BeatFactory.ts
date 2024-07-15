@@ -1,8 +1,9 @@
-import { Beat, SimpleBeatDisplay } from './Beat';
+import { Beat, StandardBeatDisplay } from './Beat';
 import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
 import { Character } from '../Character/Character';
+import { InventoryItemParams, SentimentParams } from '../SavedData/SavedData';
 
 interface ConditionalCriterion {
 	characterTrait: string;
@@ -15,19 +16,32 @@ interface Choice {
 	nextBeat: string;
 }
 
-export interface BeatDto {
+export interface SharedBeatParams {
+	queuedScenes?: string[];
+	unlockedChapters?: string[];
+	unlockedAchievements?: string[];
+	addedItems?: InventoryItemParams[];
+	removedItems?: InventoryItemParams[];
+	addedMemories?: string[];
+	removedMemories?: string[];
+	updatedSentimentsForCharacters?: SentimentParams[];
+}
+
+export interface BeatDto extends SharedBeatParams {
 	key: string;
 	character?: string;
 	choices?: Choice[];
-	defaultBehavior?: SimpleBeatDisplay;
+	userChoice?: boolean;
+	defaultBehavior?: StandardBeatDisplay;
 	text?: string;
 	nextBeat?: string;
 }
 
+
 export class BeatFactory {
 	fromDto (dto: BeatDto): Beat {
 		if (dto.choices) {
-			return this.#createChoiceBeat(dto);
+			return this.#createChoiceBeat(dto); // add branch beat here on !userChoice
 		}
 
 		if (dto.nextBeat) {
@@ -42,6 +56,7 @@ export class BeatFactory {
 			character: dto.character,
 			text: dto.text!,
 			nextBeat: dto.nextBeat!,
+			...this.#setSharedParams(dto),
 		};
 		return new SimpleBeat(params);
 	}
@@ -50,6 +65,7 @@ export class BeatFactory {
 		const params = {
 			character: dto.character,
 			text: dto.text!,
+			...this.#setSharedParams(dto),
 		};
 		return new FinalBeat(params);
 	}
@@ -62,6 +78,7 @@ export class BeatFactory {
 				condition: this.#createConditional(choice.condition),
 			})),
 			defaultBehavior: dto.defaultBehavior,
+			...this.#setSharedParams(dto),
 		};
 		return new ChoiceBeat(params);
 	}
@@ -73,5 +90,18 @@ export class BeatFactory {
 
 		const { characterTrait, traitThreshold } = condition;
 		return (character: Character) => character[characterTrait as keyof Character] >= traitThreshold;
+	}
+
+	#setSharedParams (dto: BeatDto): SharedBeatParams {
+		return {
+			queuedScenes: dto.queuedScenes,
+			unlockedChapters: dto.unlockedChapters,
+			unlockedAchievements: dto.unlockedAchievements,
+			addedItems: dto.addedItems,
+			removedItems: dto.removedItems,
+			addedMemories: dto.addedMemories,
+			removedMemories: dto.removedMemories,
+			updatedSentimentsForCharacters: dto.updatedSentimentsForCharacters,
+		};
 	}
 }

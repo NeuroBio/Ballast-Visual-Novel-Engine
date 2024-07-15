@@ -1,21 +1,21 @@
 import { Character } from '../Character/Character';
-import { Beat, ChoiceBeatDisplay, SimpleBeatDisplay } from './Beat';
+import { Beat, ChoiceBeatDisplay, StandardBeatDisplay } from './Beat';
 
 interface ChoiceOption {
-	beat: SimpleBeatDisplay;
+	beat: StandardBeatDisplay;
 	condition?: (character: Character) => boolean;
 }
 
 interface ChoiceBeatParams {
 	character?: string;
 	choices: ChoiceOption[];
-	defaultBehavior?: SimpleBeatDisplay;
+	defaultBehavior?: StandardBeatDisplay;
 }
 
 export class ChoiceBeat extends Beat {
 	// #character?: string;
 	#choices: ChoiceOption[];
-	#defaultBehavior?: SimpleBeatDisplay;
+	#defaultBehavior?: StandardBeatDisplay;
 
 	constructor (params: ChoiceBeatParams) {
 		const { choices, defaultBehavior } = params;
@@ -38,8 +38,8 @@ export class ChoiceBeat extends Beat {
 		}
 	}
 
-	play (characters: { [characterKey: string]: Character }): ChoiceBeatDisplay | SimpleBeatDisplay {
-		const choices: SimpleBeatDisplay[] = [];
+	play (characters: { [characterKey: string]: Character }): ChoiceBeatDisplay | StandardBeatDisplay {
+		const choices: StandardBeatDisplay[] = [];
 		this.#choices.forEach((choice) => {
 			const includeChoice = choice.condition ? choice.condition(Object.values(characters)[0]) : true;
 			if (includeChoice) {
