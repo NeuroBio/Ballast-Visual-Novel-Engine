@@ -1,3 +1,4 @@
+import { Character } from '../Character/Character';
 import { Beat, StandardBeatDisplay } from './Beat';
 
 interface SimpleBeatParams {
@@ -18,9 +19,10 @@ export class SimpleBeat extends Beat {
 		this.#nextBeat = nextBeat;
 	}
 
-	play (): StandardBeatDisplay {
+	play (characters: { [characterKey: string]: Character }): StandardBeatDisplay {
+		const speaker = characters[this.character]?.name || this.character;
 		return {
-			text: `${this.speaker}: ${this.#text}`,
+			text: `${speaker}: ${this.#text}`,
 			nextBeat: this.#nextBeat,
 		};
 	}

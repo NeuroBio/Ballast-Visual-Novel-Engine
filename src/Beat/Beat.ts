@@ -24,7 +24,6 @@ export interface FinalBeatDisplay {
 
 export abstract class Beat {
 	protected character: string;
-	protected speaker: string;
 	#queuedScenes: SceneParams[];
 	#unlockedChapters: string[];
 	#unlockedAchievements: string[];
@@ -38,7 +37,6 @@ export abstract class Beat {
 		const { character, queuedScenes, unlockedChapters, unlockedAchievements,
 			addedItems, removedItems, addedMemories, removedMemories,
 			updatedCharacterSentiments } = params;
-		this.speaker = character || NARRATOR;
 		this.character = character || NARRATOR;
 		this.#queuedScenes = queuedScenes || [];
 		this.#unlockedChapters = unlockedChapters || [];
