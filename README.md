@@ -85,8 +85,10 @@ Owns a set of choices.  Can return multiple options, but may not.  Conditional c
 ### Final Beat
 Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  This exists on the assumption that the story never needs to end on a choice or branch beat.  That should be easy enough to achieve, but if a story should require ending on a choice or branch beat, a final beat is allowed to return an empty string, and the UI could respond appropriately to that.
 
+### Configuring Conditional Choices
+TBD
 
-## Intended Use-Cases that are not Typical of VNs
+# Intended Use-Cases that are not Typical of VNs
 - Allow non-linear, randomized story structure
 - building relationships with characters is NOT based on choosing the right branch from a small number of choice branches (doing so would interfere with the non-linear storyline needs).  "Sentiments" are build incrementally on almost every choice made (expected change range 0.001-0.005).  There are very few make-or-break decisions, and they are very obvious (e.g. killing a character).
 -  sprite sets shift depending on sentiments.  The UI will have to be built to support this, but the sentiment structure is built to support this concept:
