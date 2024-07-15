@@ -23,6 +23,7 @@ export interface FinalBeatDisplay {
 
 export interface PlayParams {
 	characters: { [characterKey: string]: Character };
+	inventory?: { [itemKey: string]: number };
 }
 
 export abstract class Beat {

@@ -66,7 +66,7 @@ export class SavedData {
 	}
 
 	get inventory (): { [itemKey: string]: number } {
-		return { ...this.inventory };
+		return { ...this.#inventory };
 	}
 
 	startNewChapter (params: SceneParams): void {
