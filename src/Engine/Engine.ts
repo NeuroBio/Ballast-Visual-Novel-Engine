@@ -125,17 +125,17 @@ export class Engine {
 		}
 
 		const { beatKey } = params;
-		// this needs to...
-		//   - queue scenes for chapters
-		//   - unlock chapters
-		//   - unlock achievements
-		//   - add to inventory
-		//   - remove from inventory
-		//   - add memory
-		//   - remove memory
-		//   - update sentiment
-
 		const currentBeat = this.#currentScene.next(beatKey);
+
+		currentBeat.queuedScenes.forEach(x => this.#currentSave.queueScene(x));
+		currentBeat.unlockedChapters.forEach(x => this.#currentSave.unlockChapter(x));
+		currentBeat.unlockedAchievements.forEach(x => this.#currentSave.unlockAchievement(x));
+		currentBeat.addedItems.forEach(x => this.#currentSave.addInventoryItem(x));
+		currentBeat.removedItems.forEach(x => this.#currentSave.removeInventoryItem(x));
+		currentBeat.addedMemories.forEach(x => this.#currentSave.addMemoryToCharacter(x));
+		currentBeat.removedMemories.forEach(x => this.#currentSave.removeMemoryFromCharacter(x));
+		currentBeat.updatedCharacterSentiments.forEach(x => this.#currentSave.updateCharacterSentiment(x));
+
 		return currentBeat.play(this.#currentSave.characters);
 	}
 

@@ -3,7 +3,7 @@ import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
 import { Character } from '../Character/Character';
-import { InventoryItemParams, SentimentParams } from '../SavedData/SavedData';
+import { InventoryItemParams, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
 
 interface ConditionalCriterion {
 	characterTrait: string;
@@ -17,14 +17,14 @@ interface Choice {
 }
 
 export interface SharedBeatParams {
-	queuedScenes?: string[];
+	queuedScenes?: SceneParams[];
 	unlockedChapters?: string[];
 	unlockedAchievements?: string[];
 	addedItems?: InventoryItemParams[];
 	removedItems?: InventoryItemParams[];
-	addedMemories?: string[];
-	removedMemories?: string[];
-	updatedSentimentsForCharacters?: SentimentParams[];
+	addedMemories?: MemoryParams[];
+	removedMemories?: MemoryParams[];
+	updatedCharacterSentiments?: SentimentParams[];
 }
 
 export interface BeatDto extends SharedBeatParams {
@@ -101,7 +101,7 @@ export class BeatFactory {
 			removedItems: dto.removedItems,
 			addedMemories: dto.addedMemories,
 			removedMemories: dto.removedMemories,
-			updatedSentimentsForCharacters: dto.updatedSentimentsForCharacters,
+			updatedCharacterSentiments: dto.updatedCharacterSentiments,
 		};
 	}
 }

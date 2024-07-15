@@ -1,5 +1,5 @@
 import { Character } from '../Character/Character';
-import { InventoryItemParams, SentimentParams } from '../SavedData/SavedData';
+import { InventoryItemParams, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
 import { SharedBeatParams } from './BeatFactory';
 
 export const NARRATOR = 'Narrator';
@@ -25,19 +25,19 @@ export interface FinalBeatDisplay {
 export abstract class Beat {
 	protected character: string;
 	protected speaker: string;
-	#queuedScenes: string[];
+	#queuedScenes: SceneParams[];
 	#unlockedChapters: string[];
 	#unlockedAchievements: string[];
 	#addedItems: InventoryItemParams[];
 	#removedItems: InventoryItemParams[];
-	#addedMemories: string[];
-	#removedMemories: string[];
-	#updatedSentimentsForCharacters: SentimentParams[];
+	#addedMemories: MemoryParams[];
+	#removedMemories: MemoryParams[];
+	#updatedCharacterSentiments: SentimentParams[];
 
 	constructor (params: BeatParams) {
 		const { character, queuedScenes, unlockedChapters, unlockedAchievements,
 			addedItems, removedItems, addedMemories, removedMemories,
-			updatedSentimentsForCharacters } = params;
+			updatedCharacterSentiments } = params;
 		this.speaker = character || NARRATOR;
 		this.character = character || NARRATOR;
 		this.#queuedScenes = queuedScenes || [];
@@ -47,13 +47,13 @@ export abstract class Beat {
 		this.#removedItems = removedItems || [];
 		this.#addedMemories = addedMemories || [];
 		this.#removedMemories = removedMemories || [];
-		this.#updatedSentimentsForCharacters = updatedSentimentsForCharacters || [];
+		this.#updatedCharacterSentiments = updatedCharacterSentiments || [];
 	}
 
 	abstract play (characters: { [characterKey: string]: Character }): StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
 
-	get queuedScenes (): string[] {
-		return [...this.#queuedScenes];
+	get queuedScenes (): SceneParams[] {
+		return this.#queuedScenes.map((x) => ({ ...x }));
 	}
 
 	get unlockedChapters (): string[] {
@@ -72,15 +72,15 @@ export abstract class Beat {
 		return this.#removedItems.map((x) => ({ ...x }));
 	}
 
-	get addedMemories (): string[] {
-		return [...this.#addedMemories];
+	get addedMemories (): MemoryParams[] {
+		return this.#addedMemories.map((x) => ({ ...x }));
 	}
 
-	get removedMemories (): string[] {
-		return [...this.#removedMemories];
+	get removedMemories (): MemoryParams[] {
+		return this.#removedMemories.map((x) => ({ ...x }));
 	}
 
-	get updatedSentimentsForCharacters (): SentimentParams[] {
-		return this.#updatedSentimentsForCharacters.map((x) => ({ ...x }));
+	get updatedCharacterSentiments (): SentimentParams[] {
+		return this.#updatedCharacterSentiments.map((x) => ({ ...x }));
 	}
 }
