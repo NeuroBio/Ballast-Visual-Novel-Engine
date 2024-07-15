@@ -3,7 +3,7 @@ import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
 import { Character } from '../Character/Character';
-import { InventoryItemParams, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
+import { InventoryItem, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
 
 interface ConditionalCriterion {
 	characterTrait: string;
@@ -20,8 +20,8 @@ export interface SharedBeatParams {
 	queuedScenes?: SceneParams[];
 	unlockedChapters?: string[];
 	unlockedAchievements?: string[];
-	addedItems?: InventoryItemParams[];
-	removedItems?: InventoryItemParams[];
+	addedItems?: InventoryItem[];
+	removedItems?: InventoryItem[];
 	addedMemories?: MemoryParams[];
 	removedMemories?: MemoryParams[];
 	updatedCharacterSentiments?: SentimentParams[];

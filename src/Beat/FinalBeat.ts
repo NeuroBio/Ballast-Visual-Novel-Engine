@@ -1,5 +1,4 @@
-import { Character } from '../Character/Character';
-import { Beat, FinalBeatDisplay } from './Beat';
+import { Beat, FinalBeatDisplay, PlayParams } from './Beat';
 
 interface FinalBeatParams {
 	character?: string;
@@ -16,7 +15,8 @@ export class FinalBeat extends Beat {
 		this.#text = text;
 	}
 
-	play (characters: { [characterKey: string]: Character }): FinalBeatDisplay {
+	play (params: PlayParams): FinalBeatDisplay {
+		const { characters } = params;
 		const speaker = characters[this.character]?.name || this.character;
 		return { text: `${speaker}: ${this.#text}` };
 	}

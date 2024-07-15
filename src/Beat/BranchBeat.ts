@@ -1,5 +1,4 @@
-import { Character } from '../Character/Character';
-import { Beat, StandardBeatDisplay } from './Beat';
+import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
 
 interface BranchBeatParams {
 	// choices: ChoiceOption[];
@@ -13,7 +12,8 @@ export class BranchBeat extends Beat {
 		super(params);
 	}
 
-	play (characters: { [characterKey: string]: Character }): StandardBeatDisplay {
+	play (params: PlayParams): StandardBeatDisplay {
+		const { characters } = params;
 		const speaker = characters[this.character]?.name || this.character;
 		return { text: `${speaker}`, nextBeat: '' };
 	}

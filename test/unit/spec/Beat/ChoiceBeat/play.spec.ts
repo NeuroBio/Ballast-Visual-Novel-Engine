@@ -1,6 +1,12 @@
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
+import { Character } from '../../../../../src/Character/Character';
+import { CharacterData } from '../../../FakeData/TestData';
 
 describe(`ChoiceBeat.play`, () => {
+	const keyedCharacters = CharacterData.reduce((keyed: { [key: string]: Character}, char) => {
+		keyed[char.key] = new Character(char);
+		return keyed;
+	}, {});
 	describe(`beat has three choices without conditions`, () => {
 		it(`returns all three choice beats`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' } };
@@ -9,7 +15,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choices = [ choice1, choice2, choice3];
 
 			const beat = new ChoiceBeat({ choices });
-			expect(beat.play({})).toEqual({ choices: choices.map(x => x.beat) });
+			expect(beat.play({ characters: keyedCharacters })).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
 	describe(`beat has two choices with a condition, character is set and all conditions met`, () => {
@@ -21,7 +27,7 @@ describe(`ChoiceBeat.play`, () => {
 			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character });
-			expect(beat.play({})).toEqual({ choices: choices.map(x => x.beat) });
+			expect(beat.play({ characters: keyedCharacters })).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
 	describe(`beat has two choices with a condition, character is set and second condition not met`, () => {
@@ -33,7 +39,7 @@ describe(`ChoiceBeat.play`, () => {
 			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character });
-			expect(beat.play({})).toEqual({ choices: [ choice1.beat, choice3.beat ] });
+			expect(beat.play({ characters: keyedCharacters })).toEqual({ choices: [ choice1.beat, choice3.beat ] });
 		});
 	});
 	describe(`beat has two choices with conditions, character is set and no condition is met`, () => {
@@ -46,7 +52,7 @@ describe(`ChoiceBeat.play`, () => {
 			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
-			expect(beat.play({})).toEqual(choice3.beat);
+			expect(beat.play({ characters: keyedCharacters })).toEqual(choice3.beat);
 		});
 	});
 	describe(`beat has all choices with conditions, character is set and no condition is met`, () => {
@@ -59,7 +65,7 @@ describe(`ChoiceBeat.play`, () => {
 			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
-			expect(beat.play({})).toEqual(defaultBehavior);
+			expect(beat.play({ characters: keyedCharacters })).toEqual(defaultBehavior);
 		});
 	});
 });

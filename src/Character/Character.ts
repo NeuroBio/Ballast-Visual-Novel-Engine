@@ -44,13 +44,6 @@ export class Character {
 		return [...this.#memories];
 	}
 
-	// clone (): Character {
-	// 	return new Character({
-	// 		name: this.name,
-	// 		key: this.key,
-	// 	});
-	// }
-
 	updateSentiment (params: SentimentParams): void {
 		const { sentiment, change } = params;
 		this.#warnIfTooPrecise(change);
@@ -76,6 +69,10 @@ export class Character {
 			sentiments: { ...this.sentiments },
 			memories: [...this.memories],
 		};
+	}
+
+	clone (): Character {
+		return new Character(this.toDto());
 	}
 
 	#correctMaths (n: number) {

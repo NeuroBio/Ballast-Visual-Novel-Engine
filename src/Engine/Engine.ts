@@ -104,7 +104,7 @@ export class Engine {
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
 		const beat = this.#currentScene.start();
-		return beat.play(this.#currentSave.characters);
+		return beat.play({ characters: this.#currentSave.characters });
 	}
 
 	async #findChapterElseThrow (chapterKey: string): Promise<Chapter> {
@@ -136,7 +136,7 @@ export class Engine {
 		currentBeat.removedMemories.forEach(x => this.#currentSave.removeMemoryFromCharacter(x));
 		currentBeat.updatedCharacterSentiments.forEach(x => this.#currentSave.updateCharacterSentiment(x));
 
-		return currentBeat.play(this.#currentSave.characters);
+		return currentBeat.play({ characters: this.#currentSave.characters });
 	}
 
 	async completeScene () {

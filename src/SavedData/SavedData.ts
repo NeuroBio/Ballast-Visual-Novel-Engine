@@ -6,7 +6,7 @@ export interface SceneParams {
 	chapterKey: string,
 	sceneKey: string,
 }
-export interface InventoryItemParams {
+export interface InventoryItem {
 	key: string;
 	quantity: number;
 }
@@ -50,16 +50,23 @@ export class SavedData {
 		}, {});
 	}
 
-	get characters () {
-		return this.#characters;
+	get characters (): { [characterKey: string]: Character } {
+		return Object.keys(this.#characters).reduce((keyed: { [characterKey: string]: Character }, key) => {
+			keyed[key] = this.#characters[key].clone();
+			return keyed;
+		}, {});
 	}
 
-	get achievementKeys () {
+	get achievementKeys (): string[] {
 		return [...this.#achievements];
 	}
 
-	get completedChaptersKeys () {
+	get completedChaptersKeys (): string[] {
 		return [...this.#completedChapters];
+	}
+
+	get inventory (): { [itemKey: string]: number } {
+		return { ...this.inventory };
 	}
 
 	startNewChapter (params: SceneParams): void {
@@ -121,14 +128,14 @@ export class SavedData {
 		characterData.removeMemory({ memory });
 	}
 
-	addInventoryItem (params: InventoryItemParams): void {
+	addInventoryItem (params: InventoryItem): void {
 		const { key, quantity } = params;
 		this.#warnIfTooPrecise(quantity);
 		this.#inventory[key] = this.#inventory[key] ?? 0;
 		this.#inventory[key] = this.#correctMaths(this.#inventory[key] + quantity);
 	}
 
-	removeInventoryItem (params: InventoryItemParams): void {
+	removeInventoryItem (params: InventoryItem): void {
 		const { key, quantity } = params;
 		this.#warnIfTooPrecise(quantity);
 		this.#inventory[key] = this.#inventory[key] ?? 0;
