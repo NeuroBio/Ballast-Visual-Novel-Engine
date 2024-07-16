@@ -4,7 +4,7 @@ import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
 import { InventoryItem, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
 
-enum ConditionalType {
+export enum ConditionalType {
 	GREATEST_SENTIMENT = 'charMost',
 	LEAST_SENTIMENT = 'charLeast',
 	AT_LEAST_ITEM = 'itemEqual+',

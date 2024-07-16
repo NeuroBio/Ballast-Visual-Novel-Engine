@@ -1,4 +1,4 @@
-import { BeatFactory } from '../../../../../src/Beat/BeatFactory';
+import { BeatFactory, ConditionalType } from '../../../../../src/Beat/BeatFactory';
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { FinalBeat } from '../../../../../src/Beat/FinalBeat';
 import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
@@ -23,10 +23,7 @@ describe('BeatFactory.fromDto', () => {
 			expect(result instanceof ChoiceBeat).toBe(true);
 		});
 	});
-	describe(`
-		received dto with all classes of conditional choices,
-		a default behavior and a character
-	`, () => {
+	describe(`received dto with all classes of conditional choices an a default behavior`, () => {
 		it(`returns a Choice Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
@@ -34,14 +31,61 @@ describe('BeatFactory.fromDto', () => {
 				character: 'character name',
 				choices: [
 					{
-						text: 'text for this choice',
-						nextBeat: 'choice followup beat',
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						conditions: [{
+							type: ConditionalType.AT_LEAST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
 					},
 					{
-						text: 'text for this other choice',
-						nextBeat: 'other choice followup beat',
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						conditions: [{
+							type: ConditionalType.AT_MOST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
 					},
-					// will need 8
+					{
+						text: 'text 3',
+						nextBeat: 'beat 3',
+						conditions: [{
+							type: ConditionalType.AT_MOST_CHAR_FEELS,
+							character: 'character',
+							value: 0.3,
+							sentiment: 'a feels',
+						}],
+					},
+					{
+						text: 'text 4',
+						nextBeat: 'beat 4',
+						conditions: [{
+							type: ConditionalType.AT_LEAST_CHAR_FEELS,
+							character: 'character',
+							value: 0.3,
+							sentiment: 'a feels',
+						}],
+					},
+					{
+						text: 'text 5',
+						nextBeat: 'beat 5',
+						conditions: [{
+							type: ConditionalType.CHARACTER_AWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+					{
+						text: 'text 6',
+						nextBeat: 'beat 6',
+						conditions: [{
+							type: ConditionalType.CHARACTER_AWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
 				],
 				defaultBehavior: {
 					text: 'default text',
