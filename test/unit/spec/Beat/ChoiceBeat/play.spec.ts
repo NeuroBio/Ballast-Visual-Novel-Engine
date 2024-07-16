@@ -18,7 +18,7 @@ describe(`ChoiceBeat.play`, () => {
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
-	describe(`beat has two choices with a condition, character is set and all conditions met`, () => {
+	describe(`beat has two choices with a condition, character is set, and all conditions met`, () => {
 		it(`returns all three choice beats`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => true] };
@@ -30,7 +30,7 @@ describe(`ChoiceBeat.play`, () => {
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
-	describe(`beat has two choices with a condition, character is set and second condition not met`, () => {
+	describe(`beat has two choices with a condition, character is set, and second condition not met`, () => {
 		it(`returns first and last choice beats`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
@@ -42,7 +42,7 @@ describe(`ChoiceBeat.play`, () => {
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: [ choice1.beat, choice3.beat ] });
 		});
 	});
-	describe(`beat has two choices with conditions, character is set and no condition is met`, () => {
+	describe(`beat has two choices with conditions, character is set, and no condition is met`, () => {
 		it(`returns last choice beat as a simple beat display`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => false] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
@@ -55,7 +55,7 @@ describe(`ChoiceBeat.play`, () => {
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(choice3.beat);
 		});
 	});
-	describe(`beat has all choices with conditions, character is set and no condition is met`, () => {
+	describe(`beat has all choices with conditions, character is set, and no condition is met`, () => {
 		it(`returns default behavior as a simple beat display`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => false] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
@@ -66,6 +66,28 @@ describe(`ChoiceBeat.play`, () => {
 
 			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(defaultBehavior);
+		});
+	});
+	describe(`beat one choice with two conditions, character is set, and all conditions are met`, () => {
+		it(`returns default behavior as a simple beat display`, () => {
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true, () => true] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
+			const choices = [ choice1, choice2];
+			const character = 'character';
+
+			const beat = new ChoiceBeat({ choices, character });
+			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: [choice1.beat, choice2.beat] });
+		});
+	});
+	describe(`beat one choice with two conditions, character is set, and one conditions is unmet`, () => {
+		it(`returns default behavior as a simple beat display`, () => {
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true, () => false] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
+			const choices = [ choice1, choice2];
+			const character = 'character';
+
+			const beat = new ChoiceBeat({ choices, character });
+			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(choice2.beat);
 		});
 	});
 });

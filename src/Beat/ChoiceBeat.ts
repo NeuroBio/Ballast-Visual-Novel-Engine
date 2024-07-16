@@ -37,7 +37,7 @@ export class ChoiceBeat extends Beat {
 	play (params: PlayParams): ChoiceBeatDisplay | StandardBeatDisplay {
 		const choices: StandardBeatDisplay[] = [];
 		this.#choices.forEach((choice) => {
-			const includeChoice = choice.conditions ? choice.conditions[0](params) : true;
+			const includeChoice = choice.conditions ? choice.conditions.every((condition) => condition(params)) : true;
 			if (includeChoice) {
 				choices.push(choice.beat);
 			}

@@ -44,7 +44,7 @@ type ConditionCriterion = ItemCondition | MemoryCondition | SentimentLimitCondit
 
 interface Choice {
 	text: string;
-	condition?: ConditionCriterion;
+	conditions?: ConditionCriterion[];
 	nextBeat: string;
 }
 
@@ -105,72 +105,67 @@ export class BeatFactory {
 	#createChoiceBeat (dto: BeatDto): ChoiceBeat {
 		const params = {
 			character: dto.character,
-			choices: dto.choices!.map((choice) => {
-				const condition = this.#createConditional(choice.condition);
-				return {
-					beat: { text: choice.text, nextBeat: choice.nextBeat },
-					condition: condition ? [condition] : undefined,
-				};
-			}),
+			choices: dto.choices!.map((choice) => ({
+				beat: { text: choice.text, nextBeat: choice.nextBeat },
+				condition: this.#createConditional(choice.conditions || []),
+			})),
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
 		return new ChoiceBeat(params);
 	}
 
-	#createConditional (condition?: ConditionCriterion) {
-		if (!condition) {
-			return undefined;
-		}
+	#createConditional (conditions: ConditionCriterion[]) {
+		return conditions.map((condition) => {
+			switch (condition.type) {
+			case ConditionalType.AT_LEAST_ITEM: {
+				const { item, quantity } = condition;
+				return (params: PlayParams) =>
+					(params.inventory[item] || 0) >= quantity;
+			}
 
-		switch (condition.type) {
-		case ConditionalType.AT_LEAST_ITEM: {
-			const { item, quantity } = condition;
-			return (params: PlayParams) =>
-				(params.inventory[item] || 0) >= quantity;
-		}
+			case ConditionalType.AT_MOST_ITEM: {
+				const { item, quantity } = condition;
+				return (params: PlayParams) =>
+					(params.inventory[item] || 0) <= quantity;
+			}
 
-		case ConditionalType.AT_MOST_ITEM: {
-			const { item, quantity } = condition;
-			return (params: PlayParams) =>
-				(params.inventory[item] || 0) <= quantity;
-		}
+			case ConditionalType.CHARACTER_AWARE: {
+				const { character, memory } = condition;
+				return (params: PlayParams) =>
+					params.characters[character].hasMemory(memory);
+			}
 
-		case ConditionalType.CHARACTER_AWARE: {
-			const { character, memory } = condition;
-			return (params: PlayParams) =>
-				params.characters[character].hasMemory(memory);
-		}
+			case ConditionalType.CHARACTER_UNAWARE: {
+				const { character, memory } = condition;
+				return (params: PlayParams) =>
+					!params.characters[character].hasMemory(memory);
+			}
 
-		case ConditionalType.CHARACTER_UNAWARE: {
-			const { character, memory } = condition;
-			return (params: PlayParams) =>
-				!params.characters[character].hasMemory(memory);
-		}
+			case ConditionalType.AT_LEAST_CHAR_FEELS: {
+				const { character, sentiment, value } = condition;
+				return (params: PlayParams) =>
+					params.characters[character].sentiments[sentiment] >= value;
+			}
 
-		case ConditionalType.AT_LEAST_CHAR_FEELS: {
-			const { character, sentiment, value } = condition;
-			return (params: PlayParams) =>
-				params.characters[character].sentiments[sentiment] >= value;
-		}
+			case ConditionalType.AT_MOST_CHAR_FEELS: {
+				const { character, sentiment, value } = condition;
+				return (params: PlayParams) =>
+					params.characters[character].sentiments[sentiment] <= value;
+			}
 
-		case ConditionalType.AT_MOST_CHAR_FEELS: {
-			const { character, sentiment, value } = condition;
-			return (params: PlayParams) =>
-				params.characters[character].sentiments[sentiment] <= value;
-		}
+			// case ConditionalType.GREATEST_SENTIMENT: {
+			// 	return () => true;
+			// }
 
-		// case ConditionalType.GREATEST_SENTIMENT: {
-		// 	return () => true;
-		// }
+			// case ConditionalType.LEAST_SENTIMENT: {
+			// 	return () => true;
+			// }
 
-		// case ConditionalType.LEAST_SENTIMENT: {
-		// 	return () => true;
-		// }
-
-		default:
-			throw new Error('Not a real condition');
-		}
+			default:
+				throw new Error('Not a real condition');
+			}
+		});
 	}
 
 	#setSharedParams (dto: BeatDto): SharedBeatParams {
