@@ -1,18 +1,50 @@
-import { Beat, StandardBeatDisplay } from './Beat';
+import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
 import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
-import { Character } from '../Character/Character';
 import { InventoryItem, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
 
-interface ConditionalCriterion {
-	characterTrait: string;
-	traitThreshold: string;
+enum ConditionalType {
+	GREATEST_SENTIMENT = 'charMost',
+	LEAST_SENTIMENT = 'charLeast',
+	AT_LEAST_ITEM = 'itemEqual+',
+	AT_MOST_ITEM = 'itemEqual-',
+	CHARACTER_AWARE = 'hasMemory',
+	CHARACTER_UNAWARE = 'lacksMemory',
+	AT_LEAST_CHAR_FEELS = 'charFeelsEqual+',
+	AT_MOST_CHAR_FEELS = 'charFeelsEqual-',
 }
+
+interface ItemCondition {
+	type: ConditionalType.AT_LEAST_ITEM | ConditionalType.AT_MOST_ITEM;
+	item: string;
+	quantity: number;
+}
+
+interface MemoryCondition {
+	type: ConditionalType.CHARACTER_AWARE | ConditionalType.CHARACTER_UNAWARE;
+	character: string;
+	memory: string;
+}
+
+interface SentimentLimitCondition {
+	type: ConditionalType.AT_LEAST_CHAR_FEELS | ConditionalType.AT_MOST_CHAR_FEELS;
+	character: string;
+	sentiment: string;
+	value: number;
+}
+
+interface SentimentMaxMinCondition {
+	type: ConditionalType.GREATEST_SENTIMENT | ConditionalType.LEAST_SENTIMENT;
+	character: string;
+	sentiment: string;
+}
+
+type ConditionCriterion = ItemCondition | MemoryCondition | SentimentLimitCondition |SentimentMaxMinCondition;
 
 interface Choice {
 	text: string;
-	condition?: ConditionalCriterion;
+	condition?: ConditionCriterion;
 	nextBeat: string;
 }
 
@@ -73,23 +105,72 @@ export class BeatFactory {
 	#createChoiceBeat (dto: BeatDto): ChoiceBeat {
 		const params = {
 			character: dto.character,
-			choices: dto.choices!.map((choice) => ({
-				beat: { text: choice.text, nextBeat: choice.nextBeat },
-				condition: this.#createConditional(choice.condition),
-			})),
+			choices: dto.choices!.map((choice) => {
+				const condition = this.#createConditional(choice.condition);
+				return {
+					beat: { text: choice.text, nextBeat: choice.nextBeat },
+					condition: condition ? [condition] : undefined,
+				};
+			}),
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
 		return new ChoiceBeat(params);
 	}
 
-	#createConditional (condition?: ConditionalCriterion) {
+	#createConditional (condition?: ConditionCriterion) {
 		if (!condition) {
-			return;
+			return undefined;
 		}
 
-		const { characterTrait, traitThreshold } = condition;
-		return (character: Character) => character[characterTrait as keyof Character] >= traitThreshold;
+		switch (condition.type) {
+		case ConditionalType.AT_LEAST_ITEM: {
+			const { item, quantity } = condition;
+			return (params: PlayParams) =>
+				(params.inventory[item] || 0) >= quantity;
+		}
+
+		case ConditionalType.AT_MOST_ITEM: {
+			const { item, quantity } = condition;
+			return (params: PlayParams) =>
+				(params.inventory[item] || 0) <= quantity;
+		}
+
+		case ConditionalType.CHARACTER_AWARE: {
+			const { character, memory } = condition;
+			return (params: PlayParams) =>
+				params.characters[character].hasMemory(memory);
+		}
+
+		case ConditionalType.CHARACTER_UNAWARE: {
+			const { character, memory } = condition;
+			return (params: PlayParams) =>
+				!params.characters[character].hasMemory(memory);
+		}
+
+		case ConditionalType.AT_LEAST_CHAR_FEELS: {
+			const { character, sentiment, value } = condition;
+			return (params: PlayParams) =>
+				params.characters[character].sentiments[sentiment] >= value;
+		}
+
+		case ConditionalType.AT_MOST_CHAR_FEELS: {
+			const { character, sentiment, value } = condition;
+			return (params: PlayParams) =>
+				params.characters[character].sentiments[sentiment] <= value;
+		}
+
+		// case ConditionalType.GREATEST_SENTIMENT: {
+		// 	return () => true;
+		// }
+
+		// case ConditionalType.LEAST_SENTIMENT: {
+		// 	return () => true;
+		// }
+
+		default:
+			throw new Error('Not a real condition');
+		}
 	}
 
 	#setSharedParams (dto: BeatDto): SharedBeatParams {

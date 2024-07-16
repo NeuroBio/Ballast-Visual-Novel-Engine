@@ -32,7 +32,7 @@ describe(`ChoiceBeat.construction`, () => {
 	describe(`beat has a choice with a condition and no character is set`, () => {
 		it(`throws invalid error`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' } };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => true };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: [() => true] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
 
@@ -44,7 +44,7 @@ describe(`ChoiceBeat.construction`, () => {
 	describe(`beat has a choice with a condition and character is set`, () => {
 		it(`constructs without error`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' } };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => true };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: [() => true] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';
@@ -56,9 +56,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has all choices with conditions, and no default is set`, () => {
 		it(`throws invalid error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: () => false };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => false };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: () => false };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: [() => false] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: [() => false] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: [() => false] };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';
 
@@ -69,9 +69,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has all choices with conditions, and default is set`, () => {
 		it(`constructs without error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: () => false };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: () => false };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: () => false };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, condition: [() => false] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, condition: [() => false] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, condition: [() => false] };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';

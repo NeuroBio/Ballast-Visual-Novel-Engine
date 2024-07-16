@@ -40,8 +40,8 @@ export class Character {
 		return { ...this.#sentiments };
 	}
 
-	get memories (): string[] {
-		return [...this.#memories];
+	hasMemory (memory: string): boolean {
+		return this.#memories.has(memory);
 	}
 
 	updateSentiment (params: SentimentParams): void {
@@ -66,8 +66,8 @@ export class Character {
 		return {
 			name: this.name,
 			key: this.key,
-			sentiments: { ...this.sentiments },
-			memories: [...this.memories],
+			sentiments: { ...this.#sentiments },
+			memories: [...this.#memories],
 		};
 	}
 

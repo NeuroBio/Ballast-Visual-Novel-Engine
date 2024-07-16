@@ -12,4 +12,8 @@ export class Character {
 
 	clone = jest.fn();
 	toDto = jest.fn();
+	hasMemory = jest.fn();
+	addMemory = jest.fn();
+	removeMemory = jest.fn();
+	updateSentiment = jest.fn();
 }

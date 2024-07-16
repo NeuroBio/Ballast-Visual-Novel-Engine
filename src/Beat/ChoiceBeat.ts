@@ -1,9 +1,8 @@
-import { Character } from '../Character/Character';
 import { Beat, ChoiceBeatDisplay, PlayParams, StandardBeatDisplay } from './Beat';
 
 interface ChoiceOption {
 	beat: StandardBeatDisplay;
-	condition?: (character: Character) => boolean;
+	condition?: Array<(params: PlayParams) => boolean>;
 }
 
 interface ChoiceBeatParams {
@@ -39,10 +38,9 @@ export class ChoiceBeat extends Beat {
 	}
 
 	play (params: PlayParams): ChoiceBeatDisplay | StandardBeatDisplay {
-		const { characters } = params;
 		const choices: StandardBeatDisplay[] = [];
 		this.#choices.forEach((choice) => {
-			const includeChoice = choice.condition ? choice.condition(Object.values(characters)[0]) : true;
+			const includeChoice = choice.condition ? choice.condition[0](params) : true;
 			if (includeChoice) {
 				choices.push(choice.beat);
 			}

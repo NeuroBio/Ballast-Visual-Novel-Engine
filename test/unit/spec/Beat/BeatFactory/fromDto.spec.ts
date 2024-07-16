@@ -23,7 +23,10 @@ describe('BeatFactory.fromDto', () => {
 			expect(result instanceof ChoiceBeat).toBe(true);
 		});
 	});
-	describe(`received dto with conditional choices, a default behavior and a character`, () => {
+	describe(`
+		received dto with all classes of conditional choices,
+		a default behavior and a character
+	`, () => {
 		it(`returns a Choice Beat`, () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
@@ -38,6 +41,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text for this other choice',
 						nextBeat: 'other choice followup beat',
 					},
+					// will need 8
 				],
 				defaultBehavior: {
 					text: 'default text',
