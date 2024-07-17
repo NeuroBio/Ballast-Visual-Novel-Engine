@@ -4,6 +4,16 @@ import { FinalBeat } from '../../../../../src/Beat/FinalBeat';
 import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
 
 describe('BeatFactory.fromDto', () => {
+	const Error = Object.freeze({
+		NON_BEAT: 'Received malformed beat data for beatKey.  See the documentation for expected shapes for different beat types.',
+	});
+	describe(`received invalid dto`, () => {
+		it(`throws error`, () => {
+			const beatFactory = new BeatFactory();
+			expect(() => beatFactory.fromDto({ key: 'beatKey' }))
+				.toThrow(Error.NON_BEAT);
+		});
+	});
 	describe(`received dto with unconditional choices without a character`, () => {
 		it(`returns a Choice Beat`, () => {
 			const beatFactory = new BeatFactory();

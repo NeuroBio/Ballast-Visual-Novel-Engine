@@ -91,9 +91,20 @@ interface SimpleBeatParams extends SharedBeatParams {
 	defaultBehavior: { nextBeat: string, text: string, character?: string };
 }
 
+interface FinalBeatParams extends SharedBeatParams {
+	key: string;
+	defaultBehavior: { text: string, character?: string };
+}
+
+interface ChoiceBeatParams extends SharedBeatParams {
+	key: string;
+	choices: Choice[];
+	defaultBehavior?: { text: string, character?: string, nextBeat: string };
+}
+
 export class BeatFactory {
 	fromDto (dto: BeatDto): Beat {
-		if (dto.choices) {
+		if (this.#isChoiceBeat(dto)) {
 			return this.#createChoiceBeat(dto);
 		}
 
@@ -101,7 +112,11 @@ export class BeatFactory {
 			return this.#createSimpleBeat(dto);
 		}
 
-		return this.#createFinalBeat(dto);
+		if (this.#isFinalBeat(dto)) {
+			return this.#createFinalBeat(dto);
+		}
+
+		throw new Error(`Received malformed beat data for ${dto.key}.  See the documentation for expected shapes for different beat types.`);
 	}
 
 	#createSimpleBeat (dto: SimpleBeatParams): SimpleBeat {
@@ -114,19 +129,19 @@ export class BeatFactory {
 		return new SimpleBeat(params);
 	}
 
-	#createFinalBeat (dto: BeatDto): FinalBeat {
+	#createFinalBeat (dto: FinalBeatParams): FinalBeat {
 		const params = {
-			character: dto.defaultBehavior!.character,
-			text: dto.defaultBehavior!.text,
+			character: dto.defaultBehavior.character,
+			text: dto.defaultBehavior.text,
 			...this.#setSharedParams(dto),
 		};
 		return new FinalBeat(params);
 	}
 
-	#createChoiceBeat (dto: BeatDto): ChoiceBeat {
+	#createChoiceBeat (dto: ChoiceBeatParams): ChoiceBeat {
 		const params = {
 			character: dto.defaultBehavior?.character,
-			choices: dto.choices!.map((choice) => ({
+			choices: dto.choices.map((choice) => ({
 				beat: { text: choice.text, nextBeat: choice.nextBeat },
 				condition: this.#createConditional(choice.conditions || []),
 			})),
@@ -208,28 +223,42 @@ export class BeatFactory {
 			return false;
 		}
 
-		if (dto.defaultBehavior?.text && dto.defaultBehavior?.nextBeat) {
-			return true;
+		if (!dto.defaultBehavior) {
+			return false;
 		}
 
-		return false;
+		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 	}
 
-	#isFinalBeat (dto: BeatDto) {
+	#isFinalBeat (dto: BeatDto): dto is FinalBeatParams {
 		if (dto.choices || dto.responses || dto.branches) {
 			return false;
 		}
 
-		if (dto.defaultBehavior?.text && !dto.defaultBehavior?.nextBeat) {
-			return true;
+		if (!dto.defaultBehavior) {
+			return false;
 		}
 
-		return false;
+		return !!(dto.defaultBehavior.text && !dto.defaultBehavior.nextBeat);
 	}
 
-	// 	#isChoiceBeat (dto: BeatDto) {
+	#isChoiceBeat (dto: BeatDto): dto is ChoiceBeatParams {
+		if (dto.responses || dto.branches || !dto.choices) {
+			return false;
+		}
 
-	// 	}
+		for (const choice of dto.choices) {
+			if (!choice.text || !choice.nextBeat) {
+				return false;
+			}
+		}
+
+		if (dto.defaultBehavior) {
+			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+		}
+
+		return true;
+	}
 
 	// 	#isBranchBeat (dto: BeatDto) {
 
