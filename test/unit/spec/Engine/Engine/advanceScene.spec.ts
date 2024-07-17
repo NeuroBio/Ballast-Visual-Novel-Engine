@@ -15,7 +15,7 @@ describe(`Engine.advanceScene`, () => {
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		const chapter = new Fakes.Chapter();
-		const beat = new Fakes.SimpleBeat({});
+		const beat = new Fakes.SimpleBeat({ key: 'key' });
 		scene = new Fakes.Scene();
 		scene.start.mockReturnValueOnce(beat);
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
@@ -60,7 +60,7 @@ describe(`Engine.advanceScene`, () => {
 	});
 	describe(`playing a beat with a next beat and no side effects`, () => {
 		const beatKey = 'beatKey';
-		const newBeat = new Fakes.SimpleBeat({});
+		const newBeat = new Fakes.SimpleBeat({ key: 'key' });
 		const playResponse = { text: 'result', nextBeat: 'beater' };
 		let result: any;
 
@@ -114,6 +114,7 @@ describe(`Engine.advanceScene`, () => {
 			updatedCharacterSentiments = [{ character: 'char', sentiment: 'feeling', change: 0.002 }] ;
 
 		const newBeat = new Fakes.SimpleBeat({
+			key: 'key',
 			queuedScenes,
 			unlockedChapters,
 			unlockedAchievements,

@@ -12,7 +12,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const choices = [ choice1];
 
 			expect(() => {
-				new ChoiceBeat({ choices });
+				new ChoiceBeat({ key: 'key', choices });
 			}).toThrow(Error.USE_SIMPLE_BEAT);
 		});
 	});
@@ -24,7 +24,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
-				new ChoiceBeat({ choices });
+				new ChoiceBeat({ key: 'key', choices });
 			}).not.toThrow();
 		});
 	});
@@ -37,7 +37,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const character = 'character';
 
 			expect(() => {
-				new ChoiceBeat({ choices, character });
+				new ChoiceBeat({ key: 'key', choices, character });
 			}).not.toThrow();
 		});
 	});
@@ -50,7 +50,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const character = 'character';
 
 			expect(() => {
-				new ChoiceBeat({ choices, character });
+				new ChoiceBeat({ key: 'key', choices, character });
 			}).toThrow(Error.DEFAULT_REQUIRED);
 		});
 	});
@@ -64,7 +64,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const character = 'character';
 
 			expect(() => {
-				new ChoiceBeat({ choices, character, defaultBehavior });
+				new ChoiceBeat({ key: 'key', choices, character, defaultBehavior });
 			}).not.toThrow();
 		});
 	});

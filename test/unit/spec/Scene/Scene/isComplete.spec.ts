@@ -6,7 +6,7 @@ describe(`Scene.isComplete`, () => {
 	describe(`current beat is not a final beat`, () => {
 		it(`returns false`, () => {
 			const firstBeatKey = 'firstBeat';
-			const firstBeat = new Fakes.SimpleBeat({});
+			const firstBeat = new Fakes.SimpleBeat({ key: 'key' });
 			const scene = new Scene({
 				beats: {
 					[firstBeatKey]: firstBeat,
@@ -24,7 +24,7 @@ describe(`Scene.isComplete`, () => {
 	describe(`current beat is a final beat`, () => {
 		it(`returns true`, () => {
 			const firstBeatKey = 'firstBeat';
-			const firstBeat = new FinalBeat({ text: 'real-ish' });
+			const firstBeat = new FinalBeat({ key: 'key', text: 'real-ish' });
 			const scene = new Scene({
 				beats: {
 					[firstBeatKey]: firstBeat,

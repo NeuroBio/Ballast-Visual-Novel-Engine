@@ -4,6 +4,7 @@ interface SimpleBeatParams {
 	character?: string;
 	text: string;
 	nextBeat: string;
+	key: string;
 }
 
 export class SimpleBeat extends Beat {

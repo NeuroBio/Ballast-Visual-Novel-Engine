@@ -7,6 +7,7 @@ interface ChoiceOption {
 }
 
 interface ChoiceBeatParams {
+	key: string;
 	character?: string;
 	choices: ChoiceOption[];
 	defaultBehavior?: DefaultBehavior;

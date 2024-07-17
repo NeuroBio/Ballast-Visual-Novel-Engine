@@ -1,6 +1,7 @@
 import { Beat, FinalBeatDisplay, PlayParams } from './Beat';
 
 interface FinalBeatParams {
+	key: string;
 	character?: string;
 	text: string;
 }

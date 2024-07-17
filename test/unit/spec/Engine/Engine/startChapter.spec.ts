@@ -40,7 +40,7 @@ fdescribe(`Engine.startChapter`, () => {
 	});
 	describe(`loading valid chapter for the first time`, () => {
 		const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
-			scene = new Fakes.Scene(), beat = new Fakes.SimpleBeat({}),
+			scene = new Fakes.Scene(), beat = new Fakes.SimpleBeat({ key: 'key' }),
 			startResponse = { result: 'result' };
 		let result: any;
 		beforeAll(async () => {

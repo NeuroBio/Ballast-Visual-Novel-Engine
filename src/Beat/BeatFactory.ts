@@ -68,6 +68,7 @@ export interface DefaultBehavior {
 }
 
 export interface SharedBeatParams {
+	key: string;
 	queuedScenes?: SceneParams[];
 	unlockedChapters?: string[];
 	unlockedAchievements?: string[];
@@ -79,13 +80,16 @@ export interface SharedBeatParams {
 }
 
 export interface BeatDto extends SharedBeatParams {
-	key: string;
-	choices?: Choice[];
 	defaultBehavior?: DefaultBehavior;
+	choices?: Choice[];
 	branches?: Branch[],
 	responses?: Response[]
 }
 
+interface SimpleBeatParams extends SharedBeatParams {
+	key: string;
+	defaultBehavior: { nextBeat: string, text: string, character?: string };
+}
 
 export class BeatFactory {
 	fromDto (dto: BeatDto): Beat {
@@ -93,18 +97,18 @@ export class BeatFactory {
 			return this.#createChoiceBeat(dto);
 		}
 
-		if (dto.defaultBehavior?.nextBeat) {
+		if (this.#isSimpleBeat(dto)) {
 			return this.#createSimpleBeat(dto);
 		}
 
 		return this.#createFinalBeat(dto);
 	}
 
-	#createSimpleBeat (dto: BeatDto): SimpleBeat {
+	#createSimpleBeat (dto: SimpleBeatParams): SimpleBeat {
 		const params = {
-			character: dto.defaultBehavior!.character,
-			text: dto.defaultBehavior!.text,
-			nextBeat: dto.defaultBehavior!.nextBeat!,
+			character: dto.defaultBehavior.character,
+			text: dto.defaultBehavior.text,
+			nextBeat: dto.defaultBehavior.nextBeat,
 			...this.#setSharedParams(dto),
 		};
 		return new SimpleBeat(params);
@@ -187,6 +191,7 @@ export class BeatFactory {
 
 	#setSharedParams (dto: BeatDto): SharedBeatParams {
 		return {
+			key: dto.key,
 			queuedScenes: dto.queuedScenes,
 			unlockedChapters: dto.unlockedChapters,
 			unlockedAchievements: dto.unlockedAchievements,
@@ -197,4 +202,40 @@ export class BeatFactory {
 			updatedCharacterSentiments: dto.updatedCharacterSentiments,
 		};
 	}
+
+	#isSimpleBeat (dto: BeatDto): dto is SimpleBeatParams {
+		if (dto.choices || dto.responses || dto.branches) {
+			return false;
+		}
+
+		if (dto.defaultBehavior?.text && dto.defaultBehavior?.nextBeat) {
+			return true;
+		}
+
+		return false;
+	}
+
+	#isFinalBeat (dto: BeatDto) {
+		if (dto.choices || dto.responses || dto.branches) {
+			return false;
+		}
+
+		if (dto.defaultBehavior?.text && !dto.defaultBehavior?.nextBeat) {
+			return true;
+		}
+
+		return false;
+	}
+
+	// 	#isChoiceBeat (dto: BeatDto) {
+
+	// 	}
+
+	// 	#isBranchBeat (dto: BeatDto) {
+
+	// 	}
+
+	// 	#isMultiResponseBeat (dto: BeatDto) {
+
+// 	}
 }

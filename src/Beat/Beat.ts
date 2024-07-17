@@ -28,6 +28,7 @@ export interface PlayParams {
 
 export abstract class Beat {
 	protected character: string;
+	protected key: string;
 	#queuedScenes: SceneParams[];
 	#unlockedChapters: string[];
 	#unlockedAchievements: string[];
@@ -38,9 +39,10 @@ export abstract class Beat {
 	#updatedCharacterSentiments: SentimentParams[];
 
 	constructor (params: BeatParams) {
-		const { character, queuedScenes, unlockedChapters, unlockedAchievements,
+		const { character, key, queuedScenes, unlockedChapters, unlockedAchievements,
 			addedItems, removedItems, addedMemories, removedMemories,
 			updatedCharacterSentiments } = params;
+		this.key = key;
 		this.character = character || NARRATOR;
 		this.#queuedScenes = queuedScenes || [];
 		this.#unlockedChapters = unlockedChapters || [];

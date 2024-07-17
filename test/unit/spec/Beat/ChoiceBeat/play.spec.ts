@@ -13,8 +13,9 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
+			const key = 'key';
 
-			const beat = new ChoiceBeat({ choices });
+			const beat = new ChoiceBeat({ key, choices });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
@@ -25,8 +26,9 @@ describe(`ChoiceBeat.play`, () => {
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';
+			const key = 'key';
 
-			const beat = new ChoiceBeat({ choices, character });
+			const beat = new ChoiceBeat({ key, choices, character });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: choices.map(x => x.beat) });
 		});
 	});
@@ -37,8 +39,9 @@ describe(`ChoiceBeat.play`, () => {
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';
+			const key = 'key';
 
-			const beat = new ChoiceBeat({ choices, character });
+			const beat = new ChoiceBeat({ key, choices, character });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: [ choice1.beat, choice3.beat ] });
 		});
 	});
@@ -50,8 +53,9 @@ describe(`ChoiceBeat.play`, () => {
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';
+			const key = 'key';
 
-			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
+			const beat = new ChoiceBeat({ key, choices, character, defaultBehavior });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(choice3.beat);
 		});
 	});
@@ -63,8 +67,9 @@ describe(`ChoiceBeat.play`, () => {
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';
+			const key = 'key';
 
-			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
+			const beat = new ChoiceBeat({ key, choices, character, defaultBehavior });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
 				text: `${character}: ${defaultBehavior.text}`,
 				nextBeat: defaultBehavior.nextBeat,
@@ -77,8 +82,9 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
 			const choices = [ choice1, choice2];
 			const character = 'character';
+			const key = 'key';
 
-			const beat = new ChoiceBeat({ choices, character });
+			const beat = new ChoiceBeat({ key, choices, character });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({ choices: [choice1.beat, choice2.beat] });
 		});
 	});
@@ -88,8 +94,9 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
 			const choices = [ choice1, choice2];
 			const character = 'character';
+			const key = 'key';
 
-			const beat = new ChoiceBeat({ choices, character });
+			const beat = new ChoiceBeat({ key, choices, character });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(choice2.beat);
 		});
 	});

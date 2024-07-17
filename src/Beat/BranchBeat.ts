@@ -2,6 +2,7 @@ import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
 
 interface BranchBeatParams {
 	// choices: ChoiceOption[];
+	key: string;
 	character?: string;
 }
 
