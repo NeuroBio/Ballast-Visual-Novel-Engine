@@ -27,15 +27,15 @@ describe(`playing through the test data without save data`, () => {
 		const start = await engine.startChapter({ chapterKey });
 		result.set(start);
 		expect(result.get()).toEqual({
-			nextBeat: BeatData[0].nextBeat,
-			text: `${NARRATOR}: ${BeatData[0].text}`,
+			nextBeat: BeatData[0].defaultBehavior!.nextBeat,
+			text: `${NARRATOR}: ${BeatData[0].defaultBehavior!.text}`,
 		});
 	});
 	it(`plays the second beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
 		expect(result.get()).toEqual({
-			nextBeat: BeatData[1].nextBeat,
-			text: `${NARRATOR}: ${BeatData[1].text}`,
+			nextBeat: BeatData[1].defaultBehavior!.nextBeat,
+			text: `${NARRATOR}: ${BeatData[1].defaultBehavior!.text}`,
 		});
 	});
 	it(`plays the third beat`, () => {
@@ -45,13 +45,13 @@ describe(`playing through the test data without save data`, () => {
 	it(`plays the beat from choice 2`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().choices[1].nextBeat }));
 		expect(result.get()).toEqual({
-			nextBeat: BeatData[4].nextBeat,
-			text: `${NARRATOR}: ${BeatData[4].text}`,
+			nextBeat: BeatData[4].defaultBehavior!.nextBeat,
+			text: `${NARRATOR}: ${BeatData[4].defaultBehavior!.text}`,
 		});
 	});
 	it(`plays the final beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
-		expect(result.get()).toEqual({ text: `${NARRATOR}: ${BeatData[6].text}` });
+		expect(result.get()).toEqual({ text: `${NARRATOR}: ${BeatData[6].defaultBehavior!.text}` });
 	});
 	it(`completes scene and chapter`, () => {
 		engine.completeScene();

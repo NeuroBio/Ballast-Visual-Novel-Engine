@@ -1,4 +1,5 @@
 import { Beat, ChoiceBeatDisplay, PlayParams, StandardBeatDisplay } from './Beat';
+import { DefaultBehavior } from './BeatFactory';
 
 interface ChoiceOption {
 	beat: StandardBeatDisplay;
@@ -8,13 +9,13 @@ interface ChoiceOption {
 interface ChoiceBeatParams {
 	character?: string;
 	choices: ChoiceOption[];
-	defaultBehavior?: StandardBeatDisplay;
+	defaultBehavior?: DefaultBehavior;
 }
 
 export class ChoiceBeat extends Beat {
 	// #character?: string;
 	#choices: ChoiceOption[];
-	#defaultBehavior?: StandardBeatDisplay;
+	#defaultBehavior?: DefaultBehavior;
 
 	constructor (params: ChoiceBeatParams) {
 		const { choices, defaultBehavior } = params;
@@ -51,6 +52,9 @@ export class ChoiceBeat extends Beat {
 			return choices[0];
 		}
 
-		return this.#defaultBehavior!;
+		return {
+			text: `${this.character}: ${this.#defaultBehavior!.text}`,
+			nextBeat: this.#defaultBehavior!.nextBeat!,
+		};
 	}
 }

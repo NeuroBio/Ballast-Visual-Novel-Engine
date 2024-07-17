@@ -28,7 +28,6 @@ describe('BeatFactory.fromDto', () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
-				character: 'character name',
 				choices: [
 					{
 						text: 'text 1',
@@ -90,6 +89,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'default text',
 					nextBeat: 'default nextBeat',
+					character: 'characterKey',
 				},
 			});
 			expect(result instanceof ChoiceBeat).toBe(true);
@@ -100,8 +100,10 @@ describe('BeatFactory.fromDto', () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
-				text: 'test text',
-				nextBeat: 'beat key',
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+				},
 			});
 			expect(result instanceof SimpleBeat).toBe(true);
 		});
@@ -111,9 +113,11 @@ describe('BeatFactory.fromDto', () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
-				text: 'test text',
-				character: 'character name',
-				nextBeat: 'beat key',
+				defaultBehavior: {
+					text: 'test text',
+					character: 'characterKey',
+					nextBeat: 'beat key',
+				},
 			});
 			expect(result instanceof SimpleBeat).toBe(true);
 		});
@@ -123,7 +127,9 @@ describe('BeatFactory.fromDto', () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
-				text: 'test text',
+				defaultBehavior: {
+					text: 'test text',
+				},
 			});
 			expect(result instanceof FinalBeat).toBe(true);
 		});
@@ -133,8 +139,10 @@ describe('BeatFactory.fromDto', () => {
 			const beatFactory = new BeatFactory();
 			const result = beatFactory.fromDto({
 				key: 'beatKey',
-				text: 'test text',
-				character: 'character name',
+				defaultBehavior: {
+					text: 'test text',
+					character: 'characterKey',
+				},
 			});
 			expect(result instanceof FinalBeat).toBe(true);
 		});

@@ -25,13 +25,17 @@ export const ChapterData: ChapterDto[] = [
 export const BeatData: BeatDto[] = [
 	{
 		key: 'firstBeat',
-		text: 'This is the opening beat.',
-		nextBeat: 'secondBeat',
+		defaultBehavior: {
+			text: 'This is the opening beat.',
+			nextBeat: 'secondBeat',
+		},
 	},
 	{
 		key: 'secondBeat',
-		text: 'This is the second beat.',
-		nextBeat: 'choiceBeat',
+		defaultBehavior: {
+			text: 'This is the second beat.',
+			nextBeat: 'choiceBeat',
+		},
 	},
 	{
 		key: 'choiceBeat',
@@ -53,22 +57,30 @@ export const BeatData: BeatDto[] = [
 	},
 	{
 		key: 'downStream1',
-		text: 'This is downstream of choice 1.',
-		nextBeat: 'lastBeat',
+		defaultBehavior: {
+			text: 'This is downstream of choice 1.',
+			nextBeat: 'lastBeat',
+		},
 	},
 	{
 		key: 'downStream2',
-		text: 'This is downstream of choice 2.',
-		nextBeat: 'lastBeat',
+		defaultBehavior: {
+			text: 'This is downstream of choice 2.',
+			nextBeat: 'lastBeat',
+		},
 	},
 	{
 		key: 'downStream3',
-		text: 'This is downstream of choice 3.',
-		nextBeat: 'lastBeat',
+		defaultBehavior: {
+			text: 'This is downstream of choice 3.',
+			nextBeat: 'lastBeat',
+		},
 	},
 	{
 		key: 'lastBeat',
-		text: 'This is the final beat.',
+		defaultBehavior: {
+			text: 'This is the final beat.',
+		},
 	},
 ];
 

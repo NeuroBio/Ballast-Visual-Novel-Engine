@@ -30,8 +30,8 @@ describe(`playing through the test data without save data`, () => {
 		const start = await engine.startChapter({ chapterKey });
 		result.set(start);
 		expect(result.get()).toEqual({
-			nextBeat: BeatData[0].nextBeat,
-			text: `${NARRATOR}: ${BeatData[0].text}`,
+			nextBeat: BeatData[0].defaultBehavior!.nextBeat,
+			text: `${NARRATOR}: ${BeatData[0].defaultBehavior!.text}`,
 		});
 	});
 });

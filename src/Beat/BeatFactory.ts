@@ -1,4 +1,4 @@
-import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
+import { Beat, PlayParams } from './Beat';
 import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
@@ -44,8 +44,27 @@ type ConditionCriterion = ItemCondition | MemoryCondition | SentimentLimitCondit
 
 interface Choice {
 	text: string;
-	conditions?: ConditionCriterion[];
 	nextBeat: string;
+	conditions?: ConditionCriterion[];
+}
+
+interface Branch {
+	text: string;
+	character?: string,
+	nextBeat: string;
+	conditions?: ConditionCriterion[];
+}
+
+interface Response {
+	text: string,
+	character?: string,
+	conditions?: ConditionCriterion[];
+}
+
+export interface DefaultBehavior {
+	text: string;
+	character?: string;
+	nextBeat?: string;
 }
 
 export interface SharedBeatParams {
@@ -61,22 +80,20 @@ export interface SharedBeatParams {
 
 export interface BeatDto extends SharedBeatParams {
 	key: string;
-	character?: string;
 	choices?: Choice[];
-	userChoice?: boolean;
-	defaultBehavior?: StandardBeatDisplay;
-	text?: string;
-	nextBeat?: string;
+	defaultBehavior?: DefaultBehavior;
+	branches?: Branch[],
+	responses?: Response[]
 }
 
 
 export class BeatFactory {
 	fromDto (dto: BeatDto): Beat {
 		if (dto.choices) {
-			return this.#createChoiceBeat(dto); // add branch beat here on !userChoice
+			return this.#createChoiceBeat(dto);
 		}
 
-		if (dto.nextBeat) {
+		if (dto.defaultBehavior?.nextBeat) {
 			return this.#createSimpleBeat(dto);
 		}
 
@@ -85,9 +102,9 @@ export class BeatFactory {
 
 	#createSimpleBeat (dto: BeatDto): SimpleBeat {
 		const params = {
-			character: dto.character,
-			text: dto.text!,
-			nextBeat: dto.nextBeat!,
+			character: dto.defaultBehavior!.character,
+			text: dto.defaultBehavior!.text,
+			nextBeat: dto.defaultBehavior!.nextBeat!,
 			...this.#setSharedParams(dto),
 		};
 		return new SimpleBeat(params);
@@ -95,8 +112,8 @@ export class BeatFactory {
 
 	#createFinalBeat (dto: BeatDto): FinalBeat {
 		const params = {
-			character: dto.character,
-			text: dto.text!,
+			character: dto.defaultBehavior!.character,
+			text: dto.defaultBehavior!.text,
 			...this.#setSharedParams(dto),
 		};
 		return new FinalBeat(params);
@@ -104,7 +121,7 @@ export class BeatFactory {
 
 	#createChoiceBeat (dto: BeatDto): ChoiceBeat {
 		const params = {
-			character: dto.character,
+			character: dto.defaultBehavior?.character,
 			choices: dto.choices!.map((choice) => ({
 				beat: { text: choice.text, nextBeat: choice.nextBeat },
 				condition: this.#createConditional(choice.conditions || []),

@@ -65,7 +65,10 @@ describe(`ChoiceBeat.play`, () => {
 			const character = 'character';
 
 			const beat = new ChoiceBeat({ choices, character, defaultBehavior });
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(defaultBehavior);
+			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+				text: `${character}: ${defaultBehavior.text}`,
+				nextBeat: defaultBehavior.nextBeat,
+			});
 		});
 	});
 	describe(`beat one choice with two conditions, character is set, and all conditions are met`, () => {
