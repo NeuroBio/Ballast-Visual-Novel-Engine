@@ -12,8 +12,8 @@ export enum ConditionalType {
 	AT_MOST_ITEM = 'itemEqual-',
 	CHARACTER_AWARE = 'hasMemory',
 	CHARACTER_UNAWARE = 'lacksMemory',
-	AT_LEAST_CHAR_FEELS = 'charFeelsEqual+',
-	AT_MOST_CHAR_FEELS = 'charFeelsEqual-',
+	AT_LEAST_CHAR_TRAIT = 'charFeelsEqual+',
+	AT_MOST_CHAR_TRAIT = 'charFeelsEqual-',
 }
 
 interface ItemCondition {
@@ -29,7 +29,7 @@ interface MemoryCondition {
 }
 
 interface TraitLimitCondition {
-	type: ConditionalType.AT_LEAST_CHAR_FEELS | ConditionalType.AT_MOST_CHAR_FEELS;
+	type: ConditionalType.AT_LEAST_CHAR_TRAIT | ConditionalType.AT_MOST_CHAR_TRAIT;
 	character: string;
 	trait: string;
 	value: number;
@@ -201,13 +201,13 @@ export class BeatFactory {
 					!params.characters[character].hasMemory(memory);
 			}
 
-			case ConditionalType.AT_LEAST_CHAR_FEELS: {
+			case ConditionalType.AT_LEAST_CHAR_TRAIT: {
 				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
 					params.characters[character].traits[trait] >= value;
 			}
 
-			case ConditionalType.AT_MOST_CHAR_FEELS: {
+			case ConditionalType.AT_MOST_CHAR_TRAIT: {
 				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
 					params.characters[character].traits[trait] <= value;

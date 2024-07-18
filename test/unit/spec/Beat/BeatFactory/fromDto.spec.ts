@@ -62,7 +62,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 3',
 						nextBeat: 'beat 3',
 						conditions: [{
-							type: ConditionalType.AT_MOST_CHAR_FEELS,
+							type: ConditionalType.AT_MOST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -72,7 +72,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 4',
 						nextBeat: 'beat 4',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_CHAR_FEELS,
+							type: ConditionalType.AT_LEAST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -186,7 +186,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 3',
 						nextBeat: 'beat 3',
 						conditions: [{
-							type: ConditionalType.AT_MOST_CHAR_FEELS,
+							type: ConditionalType.AT_MOST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -196,7 +196,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 4',
 						nextBeat: 'beat 4',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_CHAR_FEELS,
+							type: ConditionalType.AT_LEAST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',

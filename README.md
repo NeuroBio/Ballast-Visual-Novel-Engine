@@ -75,18 +75,114 @@ Note: "conditional" choices reference save data (characters and/or inventory) fo
 ### Simple Beat
 Owns one set of text.  Returns that and the next beat.  There is no real logic here.
 
+```typescript
+{
+	key: string,
+	defaultBehavior: {
+		character?: string,
+		text: string,
+		nextBeat: string,
+	}
+	// + side-effects
+}
+```
+
 ### Branch Beat
 Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multiple conditional choices, it returns the first choice whose condition is satisfied.  Requires a default option with no condition.  These beats are for story choices that hinge of the user's past decisions.  Typically, these beats hinge on conditions satisfied in prior scenes and chapters, though there could be within scene uses.
 
+```typescript
+{
+	key: string,
+	branches: [ // min 1
+		{
+			character?: string,
+			text: string,
+			nextBeat: string,
+			conditions: Condition[], // min 1
+		}
+	],
+	defaultBehavior: {
+		character?: string,
+		text: string,
+		nextBeat: string,
+	}
+	// + side-effects
+}
+```
+
 ### Choice Beat
 Owns a set of choices.  Can return multiple options, but may not.  Conditional choices must be satisfied to return.  When there are all conditional choices, a default option is required.  If there is only one choice, it returns as a simple text display interface instead of a choice interface.  In short, this is where the user controls the novel side of game play.
+
+```typescript
+{
+	key: string,
+	choices: [ // min 2
+		{
+			text: string,
+			nextBeat: string,
+			conditions?: Condition[],
+		}
+	],
+	defaultBehavior: {
+		character?: string,
+		text: string,
+		nextBeat: string,
+	}
+	// + side-effects
+}
+```
 
 
 ### Final Beat
 Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  This exists on the assumption that the story never needs to end on a choice or branch beat.  That should be easy enough to achieve, but if a story should require ending on a choice or branch beat, a final beat is allowed to return an empty string, and the UI could respond appropriately to that.
 
-### Configuring Conditional Choices
-TBD
+```typescript
+{
+	defaultBehavior: {
+		character?: string,
+		text: string,
+	}
+	// + side-effects
+}
+```
+
+### Configuring Conditions
+#### Single Option Conditions
+
+```typescript
+enum Types {
+	AT_LEAST_ITEM = 'itemEqual+',
+	AT_MOST_ITEM = 'itemEqual-',
+	CHARACTER_AWARE = 'hasMemory',
+	CHARACTER_UNAWARE = 'lacksMemory',
+	AT_LEAST_CHAR_TRAIT = 'charFeelsEqual+',
+	AT_MOST_CHAR_TRAIT = 'charFeelsEqual-',
+}
+
+AT_LEAST_ITEM/AT_MOST_ITEM
+{
+	type: string, //enum value
+	item: string,
+	quantity: number,
+}
+
+CHARACTER_AWARE/CHARACTER_UNAWARE
+{
+	type: string, //enum value
+	character: string,
+	memory: string,
+}
+
+AT_LEAST_CHAR_TRAIT/AT_MOST_CHAR_TRAIT
+{
+	type: string, //enum value
+	character: string,
+	trait: string,
+	value: number,
+}
+```
+
+#### Cross-option Conditions (Best Fit Beat Only)
 
 # Intended Use-Cases that are not Typical of VNs
 - Allow non-linear, randomized story structure
