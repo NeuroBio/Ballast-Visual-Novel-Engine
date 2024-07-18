@@ -16,9 +16,9 @@ export interface MemoryParams {
 	memory: string;
 }
 
-export interface SentimentParams {
+export interface TraitParams {
 	character: string;
-	sentiment: string;
+	trait: string;
 	change: number;
 }
 
@@ -95,15 +95,15 @@ export class SavedData {
 		this.#achievements.push(newAchievement);
 	}
 
-	updateCharacterSentiment (params: SentimentParams): void {
-		const { character, sentiment, change } = params;
+	updateCharacterTrait (params: TraitParams): void {
+		const { character, trait, change } = params;
 		const characterData = this.#characters[character];
 
 		if (!characterData) {
 			throw new Error('Cannot modify data for unknown characters.');
 		}
 
-		characterData.updateSentiment({ sentiment, change }) ;
+		characterData.updateTrait({ trait, change }) ;
 	}
 
 	addMemoryToCharacter (params: MemoryParams): void {

@@ -2,7 +2,7 @@ export class Character {
 	params: any;
 	name: string;
 	key: string;
-	sentiments: { [key:string]: number };
+	traits: { [key:string]: number };
 	memories: { [key:string]: string };
 
 	constructor (params: any) {
@@ -15,5 +15,5 @@ export class Character {
 	hasMemory = jest.fn();
 	addMemory = jest.fn();
 	removeMemory = jest.fn();
-	updateSentiment = jest.fn();
+	updateTrait = jest.fn();
 }

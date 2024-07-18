@@ -9,13 +9,13 @@ describe(`SaveData.toDto`, () => {
 				{
 					key: 'test',
 					name: 'tester-y',
-					sentiments: {},
+					traits: {},
 					memories: ['originalData'],
 				},
 				{
 					key: 'test2',
 					name: 'tester-y 2',
-					sentiments: {},
+					traits: {},
 					memories: ['originalData'],
 
 				},
@@ -40,7 +40,7 @@ describe(`SaveData.toDto`, () => {
 				{
 					key: 'test',
 					name: 'tester-y',
-					sentiments: {},
+					traits: {},
 					memories: ['originalData'],
 				},
 			];

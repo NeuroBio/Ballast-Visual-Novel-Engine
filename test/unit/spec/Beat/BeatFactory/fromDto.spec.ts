@@ -65,7 +65,7 @@ describe('BeatFactory.fromDto', () => {
 							type: ConditionalType.AT_MOST_CHAR_FEELS,
 							character: 'character',
 							value: 0.3,
-							sentiment: 'a feels',
+							trait: 'a feels',
 						}],
 					},
 					{
@@ -75,7 +75,7 @@ describe('BeatFactory.fromDto', () => {
 							type: ConditionalType.AT_LEAST_CHAR_FEELS,
 							character: 'character',
 							value: 0.3,
-							sentiment: 'a feels',
+							trait: 'a feels',
 						}],
 					},
 					{
@@ -189,7 +189,7 @@ describe('BeatFactory.fromDto', () => {
 							type: ConditionalType.AT_MOST_CHAR_FEELS,
 							character: 'character',
 							value: 0.3,
-							sentiment: 'a feels',
+							trait: 'a feels',
 						}],
 					},
 					{
@@ -199,7 +199,7 @@ describe('BeatFactory.fromDto', () => {
 							type: ConditionalType.AT_LEAST_CHAR_FEELS,
 							character: 'character',
 							value: 0.3,
-							sentiment: 'a feels',
+							trait: 'a feels',
 						}],
 					},
 					{

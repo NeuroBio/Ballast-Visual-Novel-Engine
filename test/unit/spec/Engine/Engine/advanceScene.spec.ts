@@ -95,8 +95,8 @@ describe(`Engine.advanceScene`, () => {
 		it(`does not remove memories`, () => {
 			expect(savedData.removeMemoryFromCharacter).not.toHaveBeenCalled();
 		});
-		it(`does not update sentiments`, () => {
-			expect(savedData.updateCharacterSentiment).not.toHaveBeenCalled();
+		it(`does not update traits`, () => {
+			expect(savedData.updateCharacterTrait).not.toHaveBeenCalled();
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(playResponse);
@@ -111,7 +111,7 @@ describe(`Engine.advanceScene`, () => {
 			removedItems = [{ key: 'item', quantity: 2 }],
 			addedMemories = [{ character: 'char', memory: 'newMem' }],
 			removedMemories = [{ character: 'char', memory: 'oldMem' }],
-			updatedCharacterSentiments = [{ character: 'char', sentiment: 'feeling', change: 0.002 }] ;
+			updatedCharacterTraits = [{ character: 'char', trait: 'feeling', change: 0.002 }] ;
 
 		const newBeat = new Fakes.SimpleBeat({
 			key: 'key',
@@ -122,7 +122,7 @@ describe(`Engine.advanceScene`, () => {
 			removedItems,
 			addedMemories,
 			removedMemories,
-			updatedCharacterSentiments,
+			updatedCharacterTraits,
 		});
 		const playResponse = { text: 'result' };
 		let result: any;
@@ -158,8 +158,8 @@ describe(`Engine.advanceScene`, () => {
 		it(`removes memories`, () => {
 			expect(savedData.removeMemoryFromCharacter).toHaveBeenCalledWith(removedMemories[0]);
 		});
-		it(`updates sentiments`, () => {
-			expect(savedData.updateCharacterSentiment).toHaveBeenCalledWith(updatedCharacterSentiments[0]);
+		it(`updates traits`, () => {
+			expect(savedData.updateCharacterTrait).toHaveBeenCalledWith(updatedCharacterTraits[0]);
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(playResponse);

@@ -140,7 +140,7 @@ export const CharacterData: CharacterDto[] = [
 	{
 		name: 'tester',
 		key: 'test',
-		sentiments: {
+		traits: {
 			like: 0,
 			love: 0,
 		},
@@ -149,7 +149,7 @@ export const CharacterData: CharacterDto[] = [
 	{
 		name: 'tester2',
 		key: 'test2',
-		sentiments: {
+		traits: {
 			like: -0.5,
 			love: 0.5,
 		},
@@ -161,7 +161,7 @@ export const CharacterTemplateData: CharacterTemplate[] = [
 	{
 		name: 'tester',
 		key: 'test',
-		sentiments: {
+		traits: {
 			like: 0,
 			love: 0,
 		},
@@ -169,7 +169,7 @@ export const CharacterTemplateData: CharacterTemplate[] = [
 	{
 		name: 'tester2',
 		key: 'test2',
-		sentiments: {
+		traits: {
 			like: -0.5,
 			love: 0.5,
 		},

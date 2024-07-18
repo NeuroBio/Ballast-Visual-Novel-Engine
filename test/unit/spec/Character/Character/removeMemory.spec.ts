@@ -7,7 +7,7 @@ describe(`Character.removeMemory`, () => {
 		const character = new Character({
 			name: 'some dude',
 			key: 'key',
-			sentiments: {},
+			traits: {},
 			memories: [ untouchedMemory, memory ],
 		});
 

@@ -4,12 +4,12 @@ describe(`Character.c,one`, () => {
 	it(`returns a cloned character`, () => {
 		const key = 'key';
 		const name = 'char';
-		const sentiments = { feeling: 0 };
+		const traits = { feeling: 0 };
 		const memories = ['shinyTrees'];
 		const characterParams = {
 			key,
 			name,
-			sentiments,
+			traits,
 			memories,
 		};
 		const character = new Character(characterParams);
@@ -18,6 +18,6 @@ describe(`Character.c,one`, () => {
 		const dto = clone.toDto();
 		expect(dto).toEqual(characterParams);
 		expect(dto.memories).not.toBe(memories);
-		expect(dto.sentiments).not.toBe(sentiments);
+		expect(dto.traits).not.toBe(traits);
 	});
 });

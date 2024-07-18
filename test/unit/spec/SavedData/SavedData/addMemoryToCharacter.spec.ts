@@ -35,7 +35,7 @@ describe(`SaveData.addMemoryToCharacter`, () => {
 				characters: [{
 					name: 'some dude',
 					key: character,
-					sentiments: {},
+					traits: {},
 					memories: [ oldMemory ],
 				}],
 			});

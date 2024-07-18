@@ -1,7 +1,7 @@
 export interface CharacterDto {
 	name: string;
 	key: string;
-	sentiments: { [key:string]: number };
+	traits: { [key:string]: number };
 	memories: string[];
 }
 
@@ -9,22 +9,22 @@ interface MemoryParams {
 	memory: string;
 }
 
-interface SentimentParams {
+interface TraitParams {
 	change: number;
-	sentiment: string;
+	trait: string;
 }
 
 export class Character {
 	#name: string;
 	#key: string;
-	#sentiments: { [key:string]: number };
+	#traits: { [key:string]: number };
 	#memories: Set<string>;
 
 	constructor (params: CharacterDto) {
-		const { name, key, sentiments, memories } = params;
+		const { name, key, traits, memories } = params;
 		this.#name = name;
 		this.#key = key;
-		this.#sentiments = sentiments;
+		this.#traits = traits;
 		this.#memories = new Set(memories);
 	}
 
@@ -36,20 +36,20 @@ export class Character {
 		return this.#key;
 	}
 
-	get sentiments (): { [key:string]: number } {
-		return { ...this.#sentiments };
+	get traits (): { [key:string]: number } {
+		return { ...this.#traits };
 	}
 
 	hasMemory (memory: string): boolean {
 		return this.#memories.has(memory);
 	}
 
-	updateSentiment (params: SentimentParams): void {
-		const { sentiment, change } = params;
+	updateTrait (params: TraitParams): void {
+		const { trait, change } = params;
 		this.#warnIfTooPrecise(change);
 
-		this.#sentiments[sentiment] = this.#sentiments[sentiment] ?? 0;
-		this.#sentiments[sentiment] = this.#correctMaths(this.#sentiments[sentiment] + change) ;
+		this.#traits[trait] = this.#traits[trait] ?? 0;
+		this.#traits[trait] = this.#correctMaths(this.#traits[trait] + change) ;
 	}
 
 	addMemory (params: MemoryParams): void {
@@ -66,7 +66,7 @@ export class Character {
 		return {
 			name: this.name,
 			key: this.key,
-			sentiments: { ...this.#sentiments },
+			traits: { ...this.#traits },
 			memories: [...this.#memories],
 		};
 	}

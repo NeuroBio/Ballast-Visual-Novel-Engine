@@ -1,7 +1,7 @@
 export interface CharacterTemplate {
 	name: string;
 	key: string;
-	sentiments: { [key:string]: number };
+	traits: { [key:string]: number };
 }
 
 interface CharacterTemplateFinderParams {

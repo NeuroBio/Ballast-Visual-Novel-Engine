@@ -7,7 +7,7 @@ describe(`Character.hasMemory`, () => {
 			const characterParams = {
 				key: 'key',
 				name: 'char',
-				sentiments: {},
+				traits: {},
 				memories: [requestedMemory],
 			};
 			const character = new Character(characterParams);
@@ -20,7 +20,7 @@ describe(`Character.hasMemory`, () => {
 			const characterParams = {
 				key: 'key',
 				name: 'char',
-				sentiments: {},
+				traits: {},
 				memories: [],
 			};
 			const character = new Character(characterParams);

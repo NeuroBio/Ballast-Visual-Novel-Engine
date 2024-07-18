@@ -35,7 +35,7 @@ describe(`SaveData.removeMemoryFromCharacter`, () => {
 				characters: [{
 					name: 'some dude',
 					key: character,
-					sentiments: {},
+					traits: {},
 					memories: [ untouchedMemory, memory ],
 				}],
 			});

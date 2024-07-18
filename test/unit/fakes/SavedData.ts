@@ -14,7 +14,7 @@ export class SavedData {
 	addMissingCharacters = jest.fn();
 	unlockChapter = jest.fn();
 	unlockAchievement = jest.fn();
-	updateCharacterSentiment = jest.fn();
+	updateCharacterTrait = jest.fn();
 	addMemoryToCharacter = jest.fn();
 	removeMemoryFromCharacter = jest.fn();
 	addInventoryItem = jest.fn();

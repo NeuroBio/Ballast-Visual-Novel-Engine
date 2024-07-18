@@ -2,7 +2,7 @@ import { Beat, PlayParams } from './Beat';
 import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
-import { InventoryItem, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
+import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
 import { FirstFitBranchBeat } from './FirstFitBranchBeat';
 
 export enum ConditionalType {
@@ -28,20 +28,20 @@ interface MemoryCondition {
 	memory: string;
 }
 
-interface SentimentLimitCondition {
+interface TraitLimitCondition {
 	type: ConditionalType.AT_LEAST_CHAR_FEELS | ConditionalType.AT_MOST_CHAR_FEELS;
 	character: string;
-	sentiment: string;
+	trait: string;
 	value: number;
 }
 
-interface SentimentMaxMinCondition {
+interface TraitMaxMinCondition {
 	type: ConditionalType.GREATEST_SENTIMENT | ConditionalType.LEAST_SENTIMENT;
 	character: string;
-	sentiment: string;
+	trait: string;
 }
 
-type ConditionCriterion = ItemCondition | MemoryCondition | SentimentLimitCondition |SentimentMaxMinCondition;
+type ConditionCriterion = ItemCondition | MemoryCondition | TraitLimitCondition |TraitMaxMinCondition;
 
 interface Choice {
 	text: string;
@@ -77,7 +77,7 @@ export interface SharedBeatParams {
 	removedItems?: InventoryItem[];
 	addedMemories?: MemoryParams[];
 	removedMemories?: MemoryParams[];
-	updatedCharacterSentiments?: SentimentParams[];
+	updatedCharacterTraits?: TraitParams[];
 }
 
 export interface BeatDto extends SharedBeatParams {
@@ -202,15 +202,15 @@ export class BeatFactory {
 			}
 
 			case ConditionalType.AT_LEAST_CHAR_FEELS: {
-				const { character, sentiment, value } = condition;
+				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
-					params.characters[character].sentiments[sentiment] >= value;
+					params.characters[character].traits[trait] >= value;
 			}
 
 			case ConditionalType.AT_MOST_CHAR_FEELS: {
-				const { character, sentiment, value } = condition;
+				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
-					params.characters[character].sentiments[sentiment] <= value;
+					params.characters[character].traits[trait] <= value;
 			}
 
 			// case ConditionalType.GREATEST_SENTIMENT: {
@@ -237,7 +237,7 @@ export class BeatFactory {
 			removedItems: dto.removedItems,
 			addedMemories: dto.addedMemories,
 			removedMemories: dto.removedMemories,
-			updatedCharacterSentiments: dto.updatedCharacterSentiments,
+			updatedCharacterTraits: dto.updatedCharacterTraits,
 		};
 	}
 

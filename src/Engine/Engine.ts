@@ -137,7 +137,7 @@ export class Engine {
 		currentBeat.removedItems.forEach(x => this.#currentSave.removeInventoryItem(x));
 		currentBeat.addedMemories.forEach(x => this.#currentSave.addMemoryToCharacter(x));
 		currentBeat.removedMemories.forEach(x => this.#currentSave.removeMemoryFromCharacter(x));
-		currentBeat.updatedCharacterSentiments.forEach(x => this.#currentSave.updateCharacterSentiment(x));
+		currentBeat.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
 
 		return currentBeat.play({
 			characters: this.#currentSave.characters,

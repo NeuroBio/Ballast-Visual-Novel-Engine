@@ -1,5 +1,5 @@
 import { Character } from '../Character/Character';
-import { InventoryItem, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
+import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
 import { SharedBeatParams } from './BeatFactory';
 
 export const NARRATOR = 'Narrator';
@@ -41,12 +41,12 @@ export abstract class Beat {
 	#removedItems: InventoryItem[];
 	#addedMemories: MemoryParams[];
 	#removedMemories: MemoryParams[];
-	#updatedCharacterSentiments: SentimentParams[];
+	#updatedCharacterTraits: TraitParams[];
 
 	constructor (params: BeatParams) {
 		const { key, queuedScenes, unlockedChapters, unlockedAchievements,
 			addedItems, removedItems, addedMemories, removedMemories,
-			updatedCharacterSentiments } = params;
+			updatedCharacterTraits } = params;
 		this.key = key;
 		this.#queuedScenes = queuedScenes || [];
 		this.#unlockedChapters = unlockedChapters || [];
@@ -55,7 +55,7 @@ export abstract class Beat {
 		this.#removedItems = removedItems || [];
 		this.#addedMemories = addedMemories || [];
 		this.#removedMemories = removedMemories || [];
-		this.#updatedCharacterSentiments = updatedCharacterSentiments || [];
+		this.#updatedCharacterTraits = updatedCharacterTraits || [];
 	}
 
 	abstract play (params: PlayParams): StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
@@ -96,7 +96,7 @@ export abstract class Beat {
 		return this.#removedMemories.map((x) => ({ ...x }));
 	}
 
-	get updatedCharacterSentiments (): SentimentParams[] {
-		return this.#updatedCharacterSentiments.map((x) => ({ ...x }));
+	get updatedCharacterTraits (): TraitParams[] {
+		return this.#updatedCharacterTraits.map((x) => ({ ...x }));
 	}
 }

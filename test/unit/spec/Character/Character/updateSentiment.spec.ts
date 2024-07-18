@@ -1,85 +1,85 @@
 import { Character } from '../../../../../src/Character/Character';
 
-describe(`Character.updateSentiment`, () => {
+describe(`Character.updateTrait`, () => {
 	describe(`
-		sentiment is increasing
-		sentiment exists in data
+		trait is increasing
+		trait exists in data
 	`, () => {
 		it(`adds specified memory to the correct character`, () => {
-			const sentiment = 'like-ity-ness';
+			const trait = 'like-ity-ness';
 			const originalValue = 0.009;
 			const change = 0.001;
 			const character = new Character({
 				name: 'some dude',
 				key: 'key',
-				sentiments: { [sentiment]: originalValue },
+				traits: { [trait]: originalValue },
 				memories: [ ],
 			});
 
-			character.updateSentiment({ sentiment, change });
+			character.updateTrait({ trait, change });
 			expect(character.toDto()).toEqual(expect.objectContaining({
-				sentiments: { [sentiment]: 0.010 },
+				traits: { [trait]: 0.010 },
 			}));
 		});
 	});
 	describe(`
-		sentiment is decreasing
-		sentiment exists in data
+		trait is decreasing
+		trait exists in data
 	`, () => {
 		it(`adds specified memory to the correct character`, () => {
-			const sentiment = 'like-ity-ness';
+			const trait = 'like-ity-ness';
 			const originalValue = 0.009;
 			const change = -0.001;
 			const character = new Character({
 				name: 'some dude',
 				key: 'key',
-				sentiments: { [sentiment]: originalValue },
+				traits: { [trait]: originalValue },
 				memories: [ ],
 			});
 
-			character.updateSentiment({ sentiment, change });
+			character.updateTrait({ trait, change });
 			expect(character.toDto()).toEqual(expect.objectContaining({
-				sentiments: { [sentiment]: 0.008 },
+				traits: { [trait]: 0.008 },
 			}));
 		});
 	});
 	describe(`
-		sentiment is decreasing
-		sentiment does not exist in data
+		trait is decreasing
+		trait does not exist in data
 	`, () => {
 		it(`adds specified memory to the correct character`, () => {
-			const sentiment = 'like-ity-ness';
+			const trait = 'like-ity-ness';
 			const change = -0.001;
 			const character = new Character({
 				name: 'some dude',
 				key: 'key',
-				sentiments: {},
+				traits: {},
 				memories: [ ],
 			});
 
-			character.updateSentiment({ sentiment, change });
+			character.updateTrait({ trait, change });
 			expect(character.toDto()).toEqual(expect.objectContaining({
-				sentiments: { [sentiment]: -0.001 },
+				traits: { [trait]: -0.001 },
 			}));
 		});
 	});
 	describe(`
-		sentiment is increasing
-		sentiment does not exist in data
+		trait is increasing
+		trait does not exist in data
 	`, () => {
 		it(`adds specified memory to the correct character`, () => {
-			const sentiment = 'like-ity-ness';
+			const trait = 'like-ity-ness';
 			const change = 0.001;
 			const character = new Character({
 				name: 'some dude',
 				key: 'key',
-				sentiments: {},
+				traits: {},
 				memories: [ ],
 			});
 
-			character.updateSentiment({ sentiment, change });
+			character.updateTrait({ trait, change });
 			expect(character.toDto()).toEqual(expect.objectContaining({
-				sentiments: { [sentiment]: 0.001 },
+				traits: { [trait]: 0.001 },
 			}));
 		});
 	});
