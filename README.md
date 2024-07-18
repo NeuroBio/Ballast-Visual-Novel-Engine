@@ -155,8 +155,8 @@ enum Types {
 	AT_MOST_ITEM = 'itemEqual-',
 	CHARACTER_AWARE = 'hasMemory',
 	CHARACTER_UNAWARE = 'lacksMemory',
-	AT_LEAST_CHAR_TRAIT = 'charFeelsEqual+',
-	AT_MOST_CHAR_TRAIT = 'charFeelsEqual-',
+	AT_LEAST_CHAR_TRAIT = 'charTraitEqual+',
+	AT_MOST_CHAR_TRAIT = 'charTraitEqual-',
 }
 
 AT_LEAST_ITEM/AT_MOST_ITEM
