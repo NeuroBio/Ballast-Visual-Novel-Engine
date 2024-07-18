@@ -182,6 +182,44 @@ describe('BeatFactory.fromDto', () => {
 							quantity: 3,
 						}],
 					},
+					{
+						text: 'text 3',
+						nextBeat: 'beat 3',
+						conditions: [{
+							type: ConditionalType.AT_MOST_CHAR_FEELS,
+							character: 'character',
+							value: 0.3,
+							sentiment: 'a feels',
+						}],
+					},
+					{
+						text: 'text 4',
+						nextBeat: 'beat 4',
+						conditions: [{
+							type: ConditionalType.AT_LEAST_CHAR_FEELS,
+							character: 'character',
+							value: 0.3,
+							sentiment: 'a feels',
+						}],
+					},
+					{
+						text: 'text 5',
+						nextBeat: 'beat 5',
+						conditions: [{
+							type: ConditionalType.CHARACTER_AWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+					{
+						text: 'text 6',
+						nextBeat: 'beat 6',
+						conditions: [{
+							type: ConditionalType.CHARACTER_UNAWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
 				],
 				defaultBehavior: {
 					text: 'test text',
