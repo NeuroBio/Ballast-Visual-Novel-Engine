@@ -3,6 +3,7 @@ import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
 import { InventoryItem, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
+import { BranchBeat } from './BranchBeat';
 
 export enum ConditionalType {
 	GREATEST_SENTIMENT = 'charMost',
@@ -102,14 +103,24 @@ interface ChoiceBeatParams extends SharedBeatParams {
 	defaultBehavior?: { text: string, character?: string, nextBeat: string };
 }
 
+interface BranchBeatParams extends SharedBeatParams {
+	key: string;
+	branches: Branch[];
+	defaultBehavior?: { text: string, character?: string, nextBeat: string };
+}
+
 export class BeatFactory {
 	fromDto (dto: BeatDto): Beat {
+		if (this.#isSimpleBeat(dto)) {
+			return this.#createSimpleBeat(dto);
+		}
+
 		if (this.#isChoiceBeat(dto)) {
 			return this.#createChoiceBeat(dto);
 		}
 
-		if (this.#isSimpleBeat(dto)) {
-			return this.#createSimpleBeat(dto);
+		if (this.#isBranchBeat(dto)) {
+			return this.#createBranchBeat(dto);
 		}
 
 		if (this.#isFinalBeat(dto)) {
@@ -149,6 +160,19 @@ export class BeatFactory {
 			...this.#setSharedParams(dto),
 		};
 		return new ChoiceBeat(params);
+	}
+	// untested
+	#createBranchBeat (dto: BranchBeatParams): BranchBeat {
+		const params = {
+			character: dto.defaultBehavior?.character,
+			branches: dto.branches.map((branch) => ({
+				beat: { text: branch.text, nextBeat: branch.nextBeat },
+				condition: this.#createConditional(branch.conditions || []),
+			})),
+			defaultBehavior: dto.defaultBehavior,
+			...this.#setSharedParams(dto),
+		};
+		return new BranchBeat(params);
 	}
 
 	#createConditional (conditions: ConditionCriterion[]) {
@@ -260,9 +284,23 @@ export class BeatFactory {
 		return true;
 	}
 
-	// 	#isBranchBeat (dto: BeatDto) {
+	#isBranchBeat (dto: BeatDto): dto is BranchBeatParams {
+		if (dto.responses || !dto.branches || dto.choices) {
+			return false;
+		}
 
-	// 	}
+		for (const branch of dto.branches) {
+			if (!branch.text || !branch.nextBeat) {
+				return false;
+			}
+		}
+
+		if (dto.defaultBehavior) {
+			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+		}
+
+		return true;
+	}
 
 	// 	#isMultiResponseBeat (dto: BeatDto) {
 

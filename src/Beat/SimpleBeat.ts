@@ -10,20 +10,25 @@ interface SimpleBeatParams {
 export class SimpleBeat extends Beat {
 	#text: string;
 	#nextBeat: string;
+	#character: string | undefined;
 
 	constructor (params: SimpleBeatParams) {
-		const { text, nextBeat } = params;
+		const { text, nextBeat, character } = params;
 		super(params);
 
 		this.#text = text;
 		this.#nextBeat = nextBeat;
+		this.#character = character;
 	}
 
 	play (params: PlayParams): StandardBeatDisplay {
 		const { characters } = params;
-		const speaker = characters[this.character]?.name || this.character;
+		const character = this.getCharacter({
+			character: this.#character,
+			characters,
+		});
 		return {
-			text: `${speaker}: ${this.#text}`,
+			text: `${character}: ${this.#text}`,
 			nextBeat: this.#nextBeat,
 		};
 	}

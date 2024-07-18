@@ -14,7 +14,6 @@ interface ChoiceBeatParams {
 }
 
 export class ChoiceBeat extends Beat {
-	// #character?: string;
 	#choices: ChoiceOption[];
 	#defaultBehavior?: DefaultBehavior;
 
@@ -53,8 +52,13 @@ export class ChoiceBeat extends Beat {
 			return choices[0];
 		}
 
+		const character = this.getCharacter({
+			character: this.#defaultBehavior!.character,
+			characters: params.characters,
+		});
+
 		return {
-			text: `${this.character}: ${this.#defaultBehavior!.text}`,
+			text: `${character}: ${this.#defaultBehavior!.text}`,
 			nextBeat: this.#defaultBehavior!.nextBeat!,
 		};
 	}

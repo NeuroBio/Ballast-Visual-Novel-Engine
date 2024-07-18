@@ -8,17 +8,22 @@ interface FinalBeatParams {
 
 export class FinalBeat extends Beat {
 	#text: string;
+	#character: string |undefined;
 
 	constructor (params: FinalBeatParams) {
-		const { text } = params;
+		const { text, character } = params;
 		super(params);
 
 		this.#text = text;
+		this.#character = character;
 	}
 
 	play (params: PlayParams): FinalBeatDisplay {
 		const { characters } = params;
-		const speaker = characters[this.character]?.name || this.character;
-		return { text: `${speaker}: ${this.#text}` };
+		const character = this.getCharacter({
+			character: this.#character,
+			characters,
+		});
+		return { text: `${character}: ${this.#text}` };
 	}
 }

@@ -25,7 +25,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => true] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
-			const character = 'character';
+			const character = CharacterData[0].key;
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices, character });
@@ -38,7 +38,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const choices = [ choice1, choice2, choice3];
-			const character = 'character';
+			const character = CharacterData[0].key;
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices, character });
@@ -52,7 +52,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
-			const character = 'character';
+			const character = CharacterData[0].key;
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices, character, defaultBehavior });
@@ -64,14 +64,14 @@ describe(`ChoiceBeat.play`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => false] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [() => false] };
-			const defaultBehavior = { text:'4', nextBeat: 'D' };
+			const character = CharacterData[0].key;
+			const defaultBehavior = { text:'4', nextBeat: 'D', character };
 			const choices = [ choice1, choice2, choice3];
-			const character = 'character';
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices, character, defaultBehavior });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${character}: ${defaultBehavior.text}`,
+				text: `${CharacterData[0].name}: ${defaultBehavior.text}`,
 				nextBeat: defaultBehavior.nextBeat,
 			});
 		});
@@ -81,7 +81,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true, () => true] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
 			const choices = [ choice1, choice2];
-			const character = 'character';
+			const character = CharacterData[0].key;
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices, character });
@@ -93,7 +93,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true, () => false] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
 			const choices = [ choice1, choice2];
-			const character = 'character';
+			const character = CharacterData[0].key;
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices, character });
