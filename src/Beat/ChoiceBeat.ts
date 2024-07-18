@@ -1,20 +1,20 @@
 import { Beat, ChoiceBeatDisplay, PlayParams, StandardBeatDisplay } from './Beat';
 import { DefaultBehavior } from './BeatFactory';
 
-interface ChoiceOption {
+interface Choice {
 	beat: StandardBeatDisplay;
-	conditions?: Array<(params: PlayParams) => boolean>;
+	conditions: Array<(params: PlayParams) => boolean>;
 }
 
 interface ChoiceBeatParams {
 	key: string;
 	character?: string;
-	choices: ChoiceOption[];
+	choices: Choice[];
 	defaultBehavior?: DefaultBehavior;
 }
 
 export class ChoiceBeat extends Beat {
-	#choices: ChoiceOption[];
+	#choices: Choice[];
 	#defaultBehavior?: DefaultBehavior;
 
 	constructor (params: ChoiceBeatParams) {
@@ -24,11 +24,11 @@ export class ChoiceBeat extends Beat {
 		this.#defaultBehavior = defaultBehavior;
 
 
-		if (choices.length === 1) {
-			throw new Error('When there is only one choice, data should be formatted as a simple beat, not a choice beat.');
+		if (choices.length < 2) {
+			throw new Error('Choice beats require at least 2 choices.');
 		}
 
-		const choicesHaveRequirements = choices.filter(x => x.conditions);
+		const choicesHaveRequirements = choices.filter(x => x.conditions.length > 0);
 
 		if (choicesHaveRequirements.length === choices.length && !defaultBehavior) {
 			throw new Error('When all choices are conditional, a Default Behavior is required.');
@@ -38,7 +38,7 @@ export class ChoiceBeat extends Beat {
 	play (params: PlayParams): ChoiceBeatDisplay | StandardBeatDisplay {
 		const choices: StandardBeatDisplay[] = [];
 		this.#choices.forEach((choice) => {
-			const includeChoice = choice.conditions ? choice.conditions.every((condition) => condition(params)) : true;
+			const includeChoice = this.#mayPlay(choice, params);
 			if (includeChoice) {
 				choices.push(choice.beat);
 			}
@@ -56,10 +56,17 @@ export class ChoiceBeat extends Beat {
 			character: this.#defaultBehavior!.character,
 			characters: params.characters,
 		});
-
 		return {
 			text: `${character}: ${this.#defaultBehavior!.text}`,
 			nextBeat: this.#defaultBehavior!.nextBeat!,
 		};
+	}
+
+	#mayPlay (choice: Choice, params: PlayParams): boolean {
+		if (choice.conditions.length === 0) {
+			return true;
+		}
+
+		return choice.conditions.every((condition) => condition(params));
 	}
 }

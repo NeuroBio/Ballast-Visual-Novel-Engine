@@ -2,13 +2,20 @@ import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 
 const Error = Object.freeze({
 	DEFAULT_REQUIRED: 'When all choices are conditional, a Default Behavior is required.',
-	USE_SIMPLE_BEAT: 'When there is only one choice, data should be formatted as a simple beat, not a choice beat.',
+	USE_SIMPLE_BEAT: 'Choice beats require at least 2 choices.',
 });
 
 describe(`ChoiceBeat.construction`, () => {
+	describe(`beat has no choices`, () => {
+		it(`throws invalid error`, () => {
+			expect(() => {
+				new ChoiceBeat({ key: 'key', choices: [] });
+			}).toThrow(Error.USE_SIMPLE_BEAT);
+		});
+	});
 	describe(`beat has only one choice`, () => {
 		it(`throws invalid error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' } };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [] };
 			const choices = [ choice1];
 
 			expect(() => {
@@ -18,9 +25,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has choices without conditions and no character is set`, () => {
 		it(`constructs without error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' } };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
@@ -30,9 +37,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has a choice with a condition and character is set`, () => {
 		it(`constructs without error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' } };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => true] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
 			const character = 'character';
 

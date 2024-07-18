@@ -3,7 +3,7 @@ import { FinalBeat } from './FinalBeat';
 import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
 import { InventoryItem, MemoryParams, SceneParams, SentimentParams } from '../SavedData/SavedData';
-import { BranchBeat } from './BranchBeat';
+import { FirstFitBranchBeat } from './FirstFitBranchBeat';
 
 export enum ConditionalType {
 	GREATEST_SENTIMENT = 'charMost',
@@ -53,7 +53,7 @@ interface Branch {
 	text: string;
 	character?: string,
 	nextBeat: string;
-	conditions?: ConditionCriterion[];
+	conditions: ConditionCriterion[];
 }
 
 interface Response {
@@ -103,10 +103,10 @@ interface ChoiceBeatParams extends SharedBeatParams {
 	defaultBehavior?: { text: string, character?: string, nextBeat: string };
 }
 
-interface BranchBeatParams extends SharedBeatParams {
+interface FirstFitBranchBeatParams extends SharedBeatParams {
 	key: string;
 	branches: Branch[];
-	defaultBehavior?: { text: string, character?: string, nextBeat: string };
+	defaultBehavior: { text: string, character?: string, nextBeat: string };
 }
 
 export class BeatFactory {
@@ -119,8 +119,8 @@ export class BeatFactory {
 			return this.#createChoiceBeat(dto);
 		}
 
-		if (this.#isBranchBeat(dto)) {
-			return this.#createBranchBeat(dto);
+		if (this.#isFirstFitBranchBeat(dto)) {
+			return this.#createFirstFitBranchBeat(dto);
 		}
 
 		if (this.#isFinalBeat(dto)) {
@@ -154,25 +154,25 @@ export class BeatFactory {
 			character: dto.defaultBehavior?.character,
 			choices: dto.choices.map((choice) => ({
 				beat: { text: choice.text, nextBeat: choice.nextBeat },
-				condition: this.#createConditional(choice.conditions || []),
+				conditions: this.#createConditional(choice.conditions || []) || [],
 			})),
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
 		return new ChoiceBeat(params);
 	}
-	// untested
-	#createBranchBeat (dto: BranchBeatParams): BranchBeat {
+	#createFirstFitBranchBeat (dto: FirstFitBranchBeatParams): FirstFitBranchBeat {
 		const params = {
-			character: dto.defaultBehavior?.character,
+			character: dto.defaultBehavior.character,
 			branches: dto.branches.map((branch) => ({
-				beat: { text: branch.text, nextBeat: branch.nextBeat },
-				condition: this.#createConditional(branch.conditions || []),
+				beat: { text: branch.text, nextBeat: branch.nextBeat, character: branch.character },
+				conditions: this.#createConditional(branch.conditions || []) || [],
 			})),
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
-		return new BranchBeat(params);
+		console.log(JSON.stringify(params, null, 2));
+		return new FirstFitBranchBeat(params);
 	}
 
 	#createConditional (conditions: ConditionCriterion[]) {
@@ -284,22 +284,18 @@ export class BeatFactory {
 		return true;
 	}
 
-	#isBranchBeat (dto: BeatDto): dto is BranchBeatParams {
-		if (dto.responses || !dto.branches || dto.choices) {
+	#isFirstFitBranchBeat (dto: BeatDto): dto is FirstFitBranchBeatParams {
+		if (dto.responses || !dto.branches || dto.choices || !dto.defaultBehavior) {
 			return false;
 		}
 
 		for (const branch of dto.branches) {
-			if (!branch.text || !branch.nextBeat) {
+			if (!branch.text || !branch.nextBeat || !branch.conditions) {
 				return false;
 			}
 		}
 
-		if (dto.defaultBehavior) {
-			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
-		}
-
-		return true;
+		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 	}
 
 	// 	#isMultiResponseBeat (dto: BeatDto) {

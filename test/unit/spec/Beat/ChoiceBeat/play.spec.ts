@@ -9,9 +9,9 @@ describe(`ChoiceBeat.play`, () => {
 	}, {});
 	describe(`beat has three choices without conditions`, () => {
 		it(`returns all three choice beats`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' } };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
+			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
 			const key = 'key';
 
@@ -23,7 +23,7 @@ describe(`ChoiceBeat.play`, () => {
 		it(`returns all three choice beats`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => true] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
 			const character = CharacterData[0].key;
 			const key = 'key';
@@ -36,7 +36,7 @@ describe(`ChoiceBeat.play`, () => {
 		it(`returns first and last choice beats`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
 			const character = CharacterData[0].key;
 			const key = 'key';
@@ -49,7 +49,7 @@ describe(`ChoiceBeat.play`, () => {
 		it(`returns last choice beat as a simple beat display`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => false] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' } };
+			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
 			const character = CharacterData[0].key;
@@ -79,7 +79,7 @@ describe(`ChoiceBeat.play`, () => {
 	describe(`beat one choice with two conditions, character is set, and all conditions are met`, () => {
 		it(`returns default behavior as a simple beat display`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true, () => true] };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [] };
 			const choices = [ choice1, choice2];
 			const character = CharacterData[0].key;
 			const key = 'key';
@@ -91,7 +91,7 @@ describe(`ChoiceBeat.play`, () => {
 	describe(`beat one choice with two conditions, character is set, and one conditions is unmet`, () => {
 		it(`returns default behavior as a simple beat display`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => true, () => false] };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' } };
+			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [] };
 			const choices = [ choice1, choice2];
 			const character = CharacterData[0].key;
 			const key = 'key';

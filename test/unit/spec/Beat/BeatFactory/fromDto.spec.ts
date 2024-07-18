@@ -1,6 +1,7 @@
 import { BeatFactory, ConditionalType } from '../../../../../src/Beat/BeatFactory';
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { FinalBeat } from '../../../../../src/Beat/FinalBeat';
+import { FirstFitBranchBeat } from '../../../../../src/Beat/FirstFitBranchBeat';
 import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
 
 describe('BeatFactory.fromDto', () => {
@@ -155,6 +156,73 @@ describe('BeatFactory.fromDto', () => {
 				},
 			});
 			expect(result instanceof FinalBeat).toBe(true);
+		});
+	});
+	describe(`received dto with conditional branches and default behavior without a character`, () => {
+		it(`returns a First Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						conditions: [{
+							type: ConditionalType.AT_LEAST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						conditions: [{
+							type: ConditionalType.AT_MOST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat',
+				},
+			});
+			expect(result instanceof FirstFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`received dto with conditional branches and default behavior with a character`, () => {
+		it(`returns a First Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						conditions: [{
+							type: ConditionalType.AT_LEAST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						conditions: [{
+							type: ConditionalType.AT_MOST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat',
+					character: 'character',
+				},
+			});
+			expect(result instanceof FirstFitBranchBeat).toBe(true);
 		});
 	});
 });
