@@ -23,8 +23,8 @@ export class FirstFitBranchBeat extends Beat {
 		this.#defaultBehavior = defaultBehavior;
 		this.#branches = branches;
 
-		if (branches.length < 2) {
-			throw new Error('Branch Beats require at least 2 branches.');
+		if (branches.length < 1) {
+			throw new Error('Branch Beats require at least 1 branch.');
 		}
 
 		const branchesHaveRequirements = branches.filter(x => x.conditions.length > 0);
