@@ -1,4 +1,4 @@
-import { BeatDto } from '../../../src/Beat/BeatFactory';
+import { BeatDto, ConditionalType } from '../../../src/Beat/BeatFactory';
 import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
 import { CharacterDto } from '../../../src/Character/Character';
 import { CharacterTemplate } from '../../../src/Character/CharacterTemplateFinder';
@@ -41,7 +41,6 @@ export const BeatData: BeatDto[] = [
 		key: 'choiceBeat',
 		choices: [
 			{
-
 				nextBeat: 'downStream1',
 				text: 'This is choice 1',
 			},
@@ -59,20 +58,47 @@ export const BeatData: BeatDto[] = [
 		key: 'downStream1',
 		defaultBehavior: {
 			text: 'This is downstream of choice 1.',
-			nextBeat: 'lastBeat',
+			nextBeat: 'firstFitBeat',
 		},
 	},
 	{
 		key: 'downStream2',
 		defaultBehavior: {
 			text: 'This is downstream of choice 2.',
-			nextBeat: 'lastBeat',
+			nextBeat: 'firstFitBeat',
 		},
 	},
 	{
 		key: 'downStream3',
 		defaultBehavior: {
 			text: 'This is downstream of choice 3.',
+			nextBeat: 'firstFitBeat',
+		},
+	},
+	{
+		key: 'firstFitBeat',
+		branches: [
+			{
+				nextBeat: 'lastBeat',
+				text: 'This is branch 1',
+				conditions: [{
+					type: ConditionalType.AT_LEAST_ITEM,
+					item: 'you do have it',
+					quantity: 1,
+				}],
+			},
+			{
+				nextBeat: 'lastBeat',
+				text: 'This is branch 2',
+				conditions: [{
+					type: ConditionalType.AT_MOST_ITEM,
+					item: 'you don\'t have it',
+					quantity: 0,
+				}],
+			},
+		],
+		defaultBehavior: {
+			text: 'Default behavior for first fit.',
 			nextBeat: 'lastBeat',
 		},
 	},

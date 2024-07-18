@@ -171,7 +171,6 @@ export class BeatFactory {
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
-		console.log(JSON.stringify(params, null, 2));
 		return new FirstFitBranchBeat(params);
 	}
 

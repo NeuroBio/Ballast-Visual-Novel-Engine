@@ -2,7 +2,7 @@ import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
 import { DefaultBehavior } from './BeatFactory';
 
 interface Branch {
-	beat: StandardBeatDisplay;
+	beat: DefaultBehavior;
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
@@ -40,6 +40,20 @@ export class FirstFitBranchBeat extends Beat {
 	play (params: PlayParams): StandardBeatDisplay {
 		const { characters } = params;
 
+		for (const branch of this.#branches) {
+			if (branch.conditions.every((condition) => condition(params))) {
+				const beat = branch.beat;
+				const character = this.getCharacter({
+					character: beat.character,
+					characters,
+				});
+
+				return {
+					text: `${character}: ${beat.text}`,
+					nextBeat: beat.nextBeat!,
+				};
+			}
+		}
 
 		const character = this.getCharacter({
 			character: this.#defaultBehavior!.character,

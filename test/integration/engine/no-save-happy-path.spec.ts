@@ -49,9 +49,16 @@ describe(`playing through the test data without save data`, () => {
 			text: `${NARRATOR}: ${BeatData[4].defaultBehavior!.text}`,
 		});
 	});
+	it(`plays the branch 2 beat`, () => {
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({
+			nextBeat: BeatData[6].branches![1].nextBeat,
+			text: `${NARRATOR}: ${BeatData[6].branches![1].text}`,
+		});
+	});
 	it(`plays the final beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
-		expect(result.get()).toEqual({ text: `${NARRATOR}: ${BeatData[6].defaultBehavior!.text}` });
+		expect(result.get()).toEqual({ text: `${NARRATOR}: ${BeatData[7].defaultBehavior!.text}` });
 	});
 	it(`completes scene and chapter`, () => {
 		engine.completeScene();
