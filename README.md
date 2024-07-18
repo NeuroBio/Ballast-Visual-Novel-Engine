@@ -87,7 +87,7 @@ Owns one set of text.  Returns that and the next beat.  There is no real logic h
 }
 ```
 
-### Branch Beat
+### First Fit Branch Beat
 Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multiple conditional choices, it returns the first choice whose condition is satisfied.  Requires a default option with no condition.  These beats are for story choices that hinge of the user's past decisions.  Typically, these beats hinge on conditions satisfied in prior scenes and chapters, though there could be within scene uses.
 
 ```typescript
