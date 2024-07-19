@@ -115,20 +115,20 @@ Owns a set of responses and iterates through them when possible.  The beat type 
 
 ```
 choice => branch 1
-		=> conditional response 1 => branch 2
-				=> conditional response
-				=> always
-		=> conditional response 2 => always
+	=> conditional response 1 => branch 2
+		=> conditional response
 		=> always
+	=> conditional response 2 => always
+	=> always
 ```
 
 The more conditional responses there are, the harder this is to maintain.  If the responses are multi-beat chains, this becomes even more convoluted.  Multi Response beats flatten the above into:
 
 ```
 choice 1 => multi response
-		=> conditional response 1 => ...multi response
-		=> conditional response 2 => ...multi response
-		=> always
+	=> conditional response 1 => ...multi response
+	=> conditional response 2 => ...multi response
+	=> always
 ```
 
 Where `...` can lead directly back to the multi-response beat (intended default behavior), or it can branch off into a longer chain that ends by manually returning to the multi response beat (or not).  To branch off, a response will declare its next beat.  To immediately play the next allowed response, next beat should not be declared on the response.
