@@ -3,7 +3,7 @@ import { SavedData } from '../../../../../src/SavedData/SavedData';
 describe(`SaveData.addInventoryItem`, () => {
 	describe(`inventory item is not already in inventory`, () => {
 		it(`adds the correct item with the correct amount`, () => {
-			const itemKey = 'item';
+			const item = 'item';
 			const quantity = 3;
 			const savedData = new SavedData({
 				activeChapters: { },
@@ -14,29 +14,29 @@ describe(`SaveData.addInventoryItem`, () => {
 				characters: [],
 			});
 
-			savedData.addInventoryItem({ key: itemKey, quantity });
+			savedData.addInventoryItem({ item, quantity });
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
-				inventory: { [itemKey]: quantity },
+				inventory: { [item]: quantity },
 			}));
 		});
 	});
 	describe(`inventory item is already in inventory`, () => {
 		it(`adds the correct amount to the correct item`, () => {
-			const itemKey = 'item';
+			const item = 'item';
 			const originalQuantity = 5;
 			const quantity = 3;
 			const savedData = new SavedData({
 				activeChapters: { },
 				unlockedChapters: [],
 				completedChapters: [],
-				inventory: { [itemKey]: originalQuantity },
+				inventory: { [item]: originalQuantity },
 				achievements: [],
 				characters: [],
 			});
 
-			savedData.addInventoryItem({ key: itemKey, quantity });
+			savedData.addInventoryItem({ item, quantity });
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
-				inventory: { [itemKey]: quantity + originalQuantity },
+				inventory: { [item]: quantity + originalQuantity },
 			}));
 		});
 	});

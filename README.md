@@ -11,7 +11,7 @@ i.e. the things the engine does by default; the implementation is not customizab
 - Beginning next Scene (as dictated by Chapter OR save data)
 - Playing specified Beat and applying its affects on save data
 	- Updating Active Chapter(s) queued scenes
-	- Updating character sentiments + memories
+	- Updating character traits + memories
 	- Updating inventory items + their quantity
 	- unlocking Achievements
 	- unlocking chapters
@@ -58,7 +58,7 @@ i.e. things the engine provides an interface for, but requires an implementation
 	- array of character data
 		- memories: key for a specific beat; allows referencing events across chapters
 			- e.g: you helped a character, so they can bring that up later (or act differently if you if not help)
-		- sentiments: dict of a "sentiment" and it's numeric value (e.g. like: .324)
+		- traits: dict of a "trait" and it's numeric value (e.g. like: .324)
 			- references across chapters to affect general responses, display sprite sets, or relationship-driven branches
 - Inventory
 	- dict of item keys + qty
@@ -68,7 +68,7 @@ i.e. things the engine provides an interface for, but requires an implementation
 
 
 ## Beats
-"Beats" are VN story units.  Chapters are composed of one or more scenes.  Scenes are composed of beats, where each beat provides the UI with display text or a user decision.  Events that affect save data, like unlocking chapters or changing character sentiments, are assigned/occur at the beat level.  All beats inherit the same event capabilities.  However, when "played," they handle their UI display components differently and decide what to return to the UI based on unique logic.
+"Beats" are VN story units.  Chapters are composed of one or more scenes.  Scenes are composed of beats, where each beat provides the UI with display text or a user decision.  Events that affect save data, like unlocking chapters or changing character traits, are assigned/occur at the beat level.  All beats inherit the same event capabilities.  However, when "played," they handle their UI display components differently and decide what to return to the UI based on unique logic.
 
 Note: "conditional" choices reference save data (characters and/or inventory) for conditions.
 
@@ -183,18 +183,55 @@ AT_LEAST_CHAR_TRAIT/AT_MOST_CHAR_TRAIT
 ```
 
 #### Cross-option Conditions (Best Fit Beat Only)
+TBD
+
+### Configuring Side Effects
+Side effects are any save data change a beat results in.  All of them are optional.  Note: you can apply effects on choice beats, but they are NOT specific to any selected choice.  In those scenarios, it's best to wait for the user to make a selection and apply choice-specific side effects on the follow-up beat.
+```typescript
+{
+	queuedScenes: [{
+		chapterKey: string,
+		sceneKey: string,
+	}],
+	unlockedChapters: string[],
+	unlockedAchievements: string[],
+	addedItems: [{
+		item: string,
+		quantity: number,
+	}],
+	removedItems: [{
+		item: string,
+		quantity: number,
+	}],
+	addedMemories: [{
+		character: string,
+		memory: string,
+	}],
+	removedMemories: [{
+		character: string,
+		memory: string,
+	}],
+	updatedCharacterTraits: [{
+		character: string,
+		trait: string,
+		change: number,
+	}];
+}
+
+```
+
 
 # Intended Use-Cases that are not Typical of VNs
 - Allow non-linear, randomized story structure
-- building relationships with characters is NOT based on choosing the right branch from a small number of choice branches (doing so would interfere with the non-linear storyline needs).  "Sentiments" are build incrementally on almost every choice made (expected change range 0.001-0.005).  There are very few make-or-break decisions, and they are very obvious (e.g. killing a character).
--  sprite sets shift depending on sentiments.  The UI will have to be built to support this, but the sentiment structure is built to support this concept:
+- building relationships with characters is NOT based on choosing the right branch from a small number of choice branches (doing so would interfere with the non-linear storyline needs).  "Traits" are built incrementally on almost every choice made (expected change range 0.001-0.005).  There are very few make-or-break decisions, and they are very obvious (e.g. killing a character).
+-  sprite sets shift depending on traits.  The UI will have to be built to support this, but the trait structure is built to support this concept:
 	- the base sprite set is "neutral"
 	- one off sprites for special scenes are "special"
 	- additional sets could be "friend," "partner," "enemy," ect
 		- additional sets have matching keys to the neutral set
 		- e.g. if neutral has an "angry" sprite, then the "angry" sprite in the enemy set would look more angry because the characters have a bad relationship with the main character
 	- When choosing a sprite, the game will...
-		- prefer a matching key in the set matching the character's current sentiments.
+		- prefer a matching key in the set matching the character's current traits.
 		- If that does not exist, fallback to special.
 		- If that does not exist fallback to neutral
 		- If that does not exist, fallback to the "neutral" key from the neutral sprite set (required image)

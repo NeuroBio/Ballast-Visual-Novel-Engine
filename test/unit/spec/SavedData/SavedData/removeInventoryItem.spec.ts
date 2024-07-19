@@ -6,21 +6,21 @@ describe(`SaveData.removeInventoryItem`, () => {
 		and removed qty is less than the quantity in inventory
 	`, () => {
 		it(`removes the correct amount to the correct item`, () => {
-			const itemKey = 'item';
+			const item = 'item';
 			const originalQuantity = 5;
 			const quantity = 3;
 			const savedData = new SavedData({
 				activeChapters: { },
 				unlockedChapters: [],
 				completedChapters: [],
-				inventory: { [itemKey]: originalQuantity },
+				inventory: { [item]: originalQuantity },
 				achievements: [],
 				characters: [],
 			});
 
-			savedData.removeInventoryItem({ key: itemKey, quantity });
+			savedData.removeInventoryItem({ item, quantity });
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
-				inventory: { [itemKey]: originalQuantity - quantity },
+				inventory: { [item]: originalQuantity - quantity },
 			}));
 		});
 	});
@@ -29,19 +29,19 @@ describe(`SaveData.removeInventoryItem`, () => {
 		and removed qty is equal to the quantity in inventory
 	`, () => {
 		it(`removes the item`, () => {
-			const itemKey = 'item';
+			const item = 'item';
 			const originalQuantity = 5;
 			const quantity = originalQuantity;
 			const savedData = new SavedData({
 				activeChapters: { },
 				unlockedChapters: [],
 				completedChapters: [],
-				inventory: { [itemKey]: originalQuantity },
+				inventory: { [item]: originalQuantity },
 				achievements: [],
 				characters: [],
 			});
 
-			savedData.removeInventoryItem({ key: itemKey, quantity });
+			savedData.removeInventoryItem({ item, quantity });
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
 				inventory: { },
 			}));
@@ -52,19 +52,19 @@ describe(`SaveData.removeInventoryItem`, () => {
 		and removed qty is greater than the quantity in inventory
 	`, () => {
 		it(`removes the item`, () => {
-			const itemKey = 'item';
+			const item = 'item';
 			const originalQuantity = 5;
 			const quantity = originalQuantity + 1;
 			const savedData = new SavedData({
 				activeChapters: { },
 				unlockedChapters: [],
 				completedChapters: [],
-				inventory: { [itemKey]: originalQuantity },
+				inventory: { [item]: originalQuantity },
 				achievements: [],
 				characters: [],
 			});
 
-			savedData.removeInventoryItem({ key: itemKey, quantity });
+			savedData.removeInventoryItem({ item, quantity });
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
 				inventory: { },
 			}));
@@ -72,7 +72,7 @@ describe(`SaveData.removeInventoryItem`, () => {
 	});
 	describe(`inventory item is not already in inventory`, () => {
 		it(`does nothing`, () => {
-			const itemKey = 'item';
+			const item = 'item';
 			const quantity = 3;
 			const savedData = new SavedData({
 				activeChapters: { },
@@ -83,7 +83,7 @@ describe(`SaveData.removeInventoryItem`, () => {
 				characters: [],
 			});
 
-			savedData.removeInventoryItem({ key: itemKey, quantity });
+			savedData.removeInventoryItem({ item, quantity });
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
 				inventory: { },
 			}));

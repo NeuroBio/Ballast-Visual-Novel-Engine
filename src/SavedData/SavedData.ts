@@ -7,7 +7,7 @@ export interface SceneParams {
 	sceneKey: string,
 }
 export interface InventoryItem {
-	key: string;
+	item: string;
 	quantity: number;
 }
 
@@ -129,19 +129,19 @@ export class SavedData {
 	}
 
 	addInventoryItem (params: InventoryItem): void {
-		const { key, quantity } = params;
+		const { item, quantity } = params;
 		this.#warnIfTooPrecise(quantity);
-		this.#inventory[key] = this.#inventory[key] ?? 0;
-		this.#inventory[key] = this.#correctMaths(this.#inventory[key] + quantity);
+		this.#inventory[item] = this.#inventory[item] ?? 0;
+		this.#inventory[item] = this.#correctMaths(this.#inventory[item] + quantity);
 	}
 
 	removeInventoryItem (params: InventoryItem): void {
-		const { key, quantity } = params;
+		const { item, quantity } = params;
 		this.#warnIfTooPrecise(quantity);
-		this.#inventory[key] = this.#inventory[key] ?? 0;
-		this.#inventory[key] = this.#correctMaths(this.#inventory[key] - quantity);
-		if (this.#inventory[key] <= 0) {
-			delete this.#inventory[key];
+		this.#inventory[item] = this.#inventory[item] ?? 0;
+		this.#inventory[item] = this.#correctMaths(this.#inventory[item] - quantity);
+		if (this.#inventory[item] <= 0) {
+			delete this.#inventory[item];
 		}
 	}
 
