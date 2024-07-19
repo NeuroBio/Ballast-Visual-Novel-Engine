@@ -4,6 +4,7 @@ import { ChoiceBeat } from './ChoiceBeat';
 import { SimpleBeat } from './SimpleBeat';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
 import { FirstFitBranchBeat } from './FirstFitBranchBeat';
+import { MultiResponseBeat } from './MultiResponseBeat';
 
 export enum ConditionalType {
 	GREATEST_SENTIMENT = 'charMost',
@@ -59,6 +60,7 @@ interface Branch {
 interface Response {
 	text: string,
 	character?: string,
+	nextBeat?: string;
 	conditions?: ConditionCriterion[];
 }
 
@@ -109,6 +111,12 @@ interface FirstFitBranchBeatParams extends SharedBeatParams {
 	defaultBehavior: { text: string, character?: string, nextBeat: string };
 }
 
+interface MultiResponseBeatParams extends SharedBeatParams {
+	key: string;
+	responses: Response[];
+	defaultBehavior: DefaultBehavior;
+}
+
 export class BeatFactory {
 	fromDto (dto: BeatDto): Beat {
 		if (this.#isSimpleBeat(dto)) {
@@ -121,6 +129,10 @@ export class BeatFactory {
 
 		if (this.#isFirstFitBranchBeat(dto)) {
 			return this.#createFirstFitBranchBeat(dto);
+		}
+
+		if (this.#isMultiResponseBeat(dto)) {
+			return this.#createMultiResponseBeat(dto);
 		}
 
 		if (this.#isFinalBeat(dto)) {
@@ -161,6 +173,7 @@ export class BeatFactory {
 		};
 		return new ChoiceBeat(params);
 	}
+
 	#createFirstFitBranchBeat (dto: FirstFitBranchBeatParams): FirstFitBranchBeat {
 		const params = {
 			character: dto.defaultBehavior.character,
@@ -172,6 +185,19 @@ export class BeatFactory {
 			...this.#setSharedParams(dto),
 		};
 		return new FirstFitBranchBeat(params);
+	}
+
+	#createMultiResponseBeat (dto: MultiResponseBeatParams): MultiResponseBeat {
+		const params = {
+			character: dto.defaultBehavior.character,
+			responses: dto.responses.map((response) => ({
+				beat: { text: response.text, nextBeat: response.nextBeat, character: response.character },
+				conditions: this.#createConditional(response.conditions || []) || [],
+			})),
+			defaultBehavior: dto.defaultBehavior,
+			...this.#setSharedParams(dto),
+		};
+		return new MultiResponseBeat(params);
 	}
 
 	#createConditional (conditions: ConditionCriterion[]) {
@@ -297,7 +323,17 @@ export class BeatFactory {
 		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 	}
 
-	// 	#isMultiResponseBeat (dto: BeatDto) {
+	#isMultiResponseBeat (dto: BeatDto): dto is MultiResponseBeatParams {
+		if (!dto.responses || dto.branches || dto.choices || !dto.defaultBehavior) {
+			return false;
+		}
 
-// 	}
+		for (const response of dto.responses) {
+			if (!response.text) {
+				return false;
+			}
+		}
+
+		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+	}
 }

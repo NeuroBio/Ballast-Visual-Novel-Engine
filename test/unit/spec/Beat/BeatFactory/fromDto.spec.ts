@@ -2,6 +2,7 @@ import { BeatFactory, ConditionalType } from '../../../../../src/Beat/BeatFactor
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { FinalBeat } from '../../../../../src/Beat/FinalBeat';
 import { FirstFitBranchBeat } from '../../../../../src/Beat/FirstFitBranchBeat';
+import { MultiResponseBeat } from '../../../../../src/Beat/MultiResponseBeat';
 import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
 
 describe('BeatFactory.fromDto', () => {
@@ -261,6 +262,102 @@ describe('BeatFactory.fromDto', () => {
 				},
 			});
 			expect(result instanceof FirstFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with all classes of conditional responses an a default behavior with a character
+		some responses have next beats, others don't
+	`, () => {
+		it(`returns a MultiResponse Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				responses: [
+					{
+						text: 'text 1',
+						conditions: [{
+							type: ConditionalType.AT_LEAST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 2',
+						conditions: [{
+							type: ConditionalType.AT_MOST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 3',
+						conditions: [{
+							type: ConditionalType.AT_MOST_CHAR_TRAIT,
+							character: 'character',
+							value: 0.3,
+							trait: 'a feels',
+						}],
+					},
+					{
+						text: 'text 4',
+						nextBeat: 'beat 4',
+						conditions: [{
+							type: ConditionalType.AT_LEAST_CHAR_TRAIT,
+							character: 'character',
+							value: 0.3,
+							trait: 'a feels',
+						}],
+					},
+					{
+						text: 'text 5',
+						nextBeat: 'beat 5',
+						conditions: [{
+							type: ConditionalType.CHARACTER_AWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+					{
+						text: 'text 6',
+						nextBeat: 'beat 6',
+						conditions: [{
+							type: ConditionalType.CHARACTER_AWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'default text',
+					nextBeat: 'default nextBeat',
+					character: 'characterKey',
+				},
+			});
+			expect(result instanceof MultiResponseBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with no responses an a default behavior without a character
+		some responses have next beats, others don't
+	`, () => {
+		it(`returns a MultiResponse Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				responses: [
+					{
+						text: 'text 1',
+					},
+					{
+						text: 'text 2',
+					},
+				],
+				defaultBehavior: {
+					text: 'default text',
+					nextBeat: 'default nextBeat',
+				},
+			});
+			expect(result instanceof MultiResponseBeat).toBe(true);
 		});
 	});
 });

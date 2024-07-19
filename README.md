@@ -110,6 +110,28 @@ Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multi
 }
 ```
 
+### Multi Response Beat
+Owns a set of responses and iterates through them when possible.  The beat type is very fluid compared to the others.  It's primary use case is to allow for one story beat to lead to many beats that are conditional and expected to be in a set order  (e.g. play 1, optionally 2, and then 3).  Although this pattern can be achieved with branch beats, it's hard to keep track of and requires many beats, as shown in the following example.
+
+```
+choice => branch 1  => conditional response 1 => branch 2 => conditional response 2
+														  => always
+					=> conditional response 2 => always
+					=> always
+```
+
+The more conditional responses there are, the harder this is to maintain.  If the responses are multi-beat chains, this becomes even more convoluted.  Multi Response beats flatten the above into:
+
+```
+choice 1 => multi response  => conditional response 1 => ...multi response
+					 		=> conditional response 2 => ...multi response
+					 		=> always
+```
+
+Where `...` can lead directly back to the multi-response beat (intended default behavior), or it can branch off into a longer chain that ends by manually returning to the multi response beat (or not).  To branch off, a response will declare its next beat.  To immediately play the next allowed response, next beat should not be declared on the response.
+
+To deal with the uncertainty of whether conditional responses play, if they are and without their own next beat, the last allowed beat to play inherits it's next beat from the default behavior.  All beats earlier in the chain will return the parent multi beat as their next beat.  Default behavior is always required for this beat type, since it will fail to play if all responses have already been played and there is no default to fallback on.
+
 ### Choice Beat
 Owns a set of choices.  Can return multiple options, but may not.  Conditional choices must be satisfied to return.  When there are all conditional choices, a default option is required.  If there is only one choice, it returns as a simple text display interface instead of a choice interface.  In short, this is where the user controls the novel side of game play.
 
@@ -147,6 +169,16 @@ Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  T
 ```
 
 ### Configuring Conditions
+Currently, all conditional arrays assume AND states.  Because all single option conditions have an opposite condition (e.g. has/lacks memory), X and NOT Y can be achieved.  OR is not cleanly supported, but can be achieved with single Options conditionals.  Example: show a choice if X AND/OR Y is true.
+```
+choice 1: X AND NOT Y
+choice 2: Y AND NOT X
+choice 3: X AND Y
+```
+Assume choices 1-3 lead to the same result.  The AND NOT sections are to ensure that the same choice does not return 3 times when X and Y are true.  In a first response branch beat, just `branch 1: X` and `branch 2: Y` would be sufficient, as only the first true branch is returned.
+
+AND/OR logic is NOT supported for the Best Fit Branch cross option conditions.  However, you CAN apply single option conditions on branches for Best Fit Branches.  E.g. Say you wanted to have the character in a scene with the highest romance that does not have a breakup memory to say something.  You can combine `GREATEST_SENTIMENT` on the beat with `CHARACTER_UNAWARE` set on each branch.
+
 #### Single Option Conditions
 
 ```typescript

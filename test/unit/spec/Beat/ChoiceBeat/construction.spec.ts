@@ -1,11 +1,11 @@
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 
-const Error = Object.freeze({
-	DEFAULT_REQUIRED: 'When all choices are conditional, a Default Behavior is required.',
-	USE_SIMPLE_BEAT: 'Choice beats require at least 2 choices.',
-});
-
 describe(`ChoiceBeat.construction`, () => {
+	const Error = Object.freeze({
+		DEFAULT_REQUIRED: 'When all choices are conditional, a Default Behavior is required.',
+		USE_SIMPLE_BEAT: 'Choice beats require at least 2 choices.',
+	});
+
 	describe(`beat has no choices`, () => {
 		it(`throws invalid error`, () => {
 			expect(() => {
