@@ -113,21 +113,23 @@ Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multi
 ### Multi Response Beat
 Owns a set of responses and iterates through them when possible.  The beat type is very fluid compared to the others.  Its primary use case is to allow for one story beat to lead to many beats that are conditional and expected to be in a set order  (e.g. play 1, optionally 2, and then 3).  Although this pattern can be achieved with branch beats, it's hard to keep track of and requires many beats, as shown in the following example.
 
-choice => branch 1  => conditional response 1 => branch 2 => conditional response 2
-
-					                                      => always
-
-					=> conditional response 2 => always
-
+```
+choice => branch 1
+		=> conditional response 1 => branch 2
+				=> conditional response
 					=> always
+		=> conditional response 2 => always
+		=> always
+```
 
 The more conditional responses there are, the harder this is to maintain.  If the responses are multi-beat chains, this becomes even more convoluted.  Multi Response beats flatten the above into:
 
-choice 1 => multi response  => conditional response 1 => ...multi response
-
-					 		=> conditional response 2 => ...multi response
-							
-					 		=> always
+```
+choice 1 => multi response
+		=> conditional response 1 => ...multi response
+		=> conditional response 2 => ...multi response
+		=> always
+```
 
 Where `...` can lead directly back to the multi-response beat (intended default behavior), or it can branch off into a longer chain that ends by manually returning to the multi response beat (or not).  To branch off, a response will declare its next beat.  To immediately play the next allowed response, next beat should not be declared on the response.
 
