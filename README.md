@@ -115,7 +115,7 @@ Owns a set of responses and iterates through them when possible.  The beat type 
 
 ```
 choice => branch 1  => conditional response 1 => branch 2 => conditional response 2
-														  => always
+					                                      => always
 					=> conditional response 2 => always
 					=> always
 ```
