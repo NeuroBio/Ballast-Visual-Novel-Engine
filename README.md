@@ -111,26 +111,22 @@ Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multi
 ```
 
 ### Multi Response Beat
-Owns a set of responses and iterates through them when possible.  The beat type is very fluid compared to the others.  It's primary use case is to allow for one story beat to lead to many beats that are conditional and expected to be in a set order  (e.g. play 1, optionally 2, and then 3).  Although this pattern can be achieved with branch beats, it's hard to keep track of and requires many beats, as shown in the following example.
+Owns a set of responses and iterates through them when possible.  The beat type is very fluid compared to the others.  Its primary use case is to allow for one story beat to lead to many beats that are conditional and expected to be in a set order  (e.g. play 1, optionally 2, and then 3).  Although this pattern can be achieved with branch beats, it's hard to keep track of and requires many beats, as shown in the following example.
 
-```
 choice => branch 1  => conditional response 1 => branch 2 => conditional response 2
 					                                      => always
 					=> conditional response 2 => always
 					=> always
-```
 
 The more conditional responses there are, the harder this is to maintain.  If the responses are multi-beat chains, this becomes even more convoluted.  Multi Response beats flatten the above into:
 
-```
 choice 1 => multi response  => conditional response 1 => ...multi response
 					 		=> conditional response 2 => ...multi response
 					 		=> always
-```
 
 Where `...` can lead directly back to the multi-response beat (intended default behavior), or it can branch off into a longer chain that ends by manually returning to the multi response beat (or not).  To branch off, a response will declare its next beat.  To immediately play the next allowed response, next beat should not be declared on the response.
 
-To deal with the uncertainty of whether conditional responses play, if they are and without their own next beat, the last allowed beat to play inherits it's next beat from the default behavior.  All beats earlier in the chain will return the parent multi beat as their next beat.  Default behavior is always required for this beat type, since it will fail to play if all responses have already been played and there is no default to fallback on.
+To deal with the uncertainty of whether conditional responses play, if they lack a next beat, the last allowed beat to play inherits its next beat from the default behavior.  All beats earlier in the chain will return the parent multi response beat as their next beat.  Default behavior is always required for this beat type, since it will fail to play if all responses have already been played and there is no default to fallback on.
 
 ### Choice Beat
 Owns a set of choices.  Can return multiple options, but may not.  Conditional choices must be satisfied to return.  When there are all conditional choices, a default option is required.  If there is only one choice, it returns as a simple text display interface instead of a choice interface.  In short, this is where the user controls the novel side of game play.
