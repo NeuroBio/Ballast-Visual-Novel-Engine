@@ -2,7 +2,7 @@ import { MultiResponseBeat } from '../../../../../src/Beat/MultiResponseBeat';
 
 describe(`MultiResponseBeat.construction`, () => {
 	const Error = Object.freeze({
-		USE_SIMPLE_BEAT: 'Multi Response Beats require at least 2 responses.',
+		USE_SIMPLE_BEAT: 'Multi Response Beats require at least 2 responses.  Use a Simple Beat or First Fit Branch Beat Instead.',
 	});
 	describe(`beat has no responses`, () => {
 		it(`throws invalid error`, () => {

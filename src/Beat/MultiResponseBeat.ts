@@ -38,7 +38,7 @@ export class MultiResponseBeat extends Beat {
 		this.#playableOptions = [];
 
 		if (responses.length < 2) {
-			throw new Error('Multi Response Beats require at least 2 responses.');
+			throw new Error('Multi Response Beats require at least 2 responses.  Use a Simple Beat or First Fit Branch Beat Instead.');
 		}
 	}
 

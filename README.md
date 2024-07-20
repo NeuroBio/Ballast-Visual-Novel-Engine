@@ -70,6 +70,8 @@ i.e. things the engine provides an interface for, but requires an implementation
 ## Beats
 "Beats" are VN story units.  Chapters are composed of one or more scenes.  Scenes are composed of beats, where each beat provides the UI with display text or a user decision.  Events that affect save data, like unlocking chapters or changing character traits, are assigned/occur at the beat level.  All beats inherit the same event capabilities.  However, when "played," they handle their UI display components differently and decide what to return to the UI based on unique logic.
 
+
+
 Note: "conditional" choices reference save data (characters and/or inventory) for conditions.
 
 ### Simple Beat
@@ -88,7 +90,7 @@ Owns one set of text.  Returns that and the next beat.  There is no real logic h
 ```
 
 ### First Fit Branch Beat
-Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multiple conditional choices, it returns the first choice whose condition is satisfied.  Requires a default option with no condition.  These beats are for story choices that hinge of the user's past decisions.  Typically, these beats hinge on conditions satisfied in prior scenes and chapters, though there could be within scene uses.
+Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given multiple conditional choices, it returns the first choice whose condition is satisfied.  Requires a default option with no condition.  These beats are for story choices that hinge of the user's past decisions.  Typically, these beats hinge on conditions satisfied in prior scenes and chapters, though there could be within scene uses.
 
 ```typescript
 {
@@ -108,6 +110,41 @@ Owns a set of choices, but *ONLY ONE* will be returned to the user.  Given multi
 	}
 	// + side-effects
 }
+```
+
+### Best Fit Branch Beat
+Owns a set branches, but *ONLY ONE* will be returned to the user.  Choses the branch whose character has the greatest or least value for the beat's cross option condition. All branches must have a character.  Branches are permitted to have single option conditions.  If the same character is present on multiple branches or multiple character satisfy the cross condition, the first valid branch is used.  In other words: this Beat type uses First Fit to resolve ties.
+
+Example setup:
+```
+cross condition: Character with greatest friendship
+
+characters:
+- Enemy: friendship = -0.5
+- Friend2: friendship = 1
+- Friend: friendship = 1
+
+branches:
+- Enemy: condition met
+- Friend: condition1 failed
+- Friend: condition2 met
+- Friend2: condition met
+- Friend: condition3 met
+```
+
+After checking which branches satisfy their own conditions, we are left with:
+```
+branches:
+- Enemy: condition met
+- Friend: condition2 met**
+- Friend2: condition met
+- Friend: condition3 met
+```
+
+Friend and Friend2 both satisfy greatest friendship cross condition.  However, Friend has a branch before Friend 2, so the Friend beat with condition2 is used.
+
+```typescript
+TBD
 ```
 
 ### Multi Response Beat
@@ -135,6 +172,26 @@ Where `...` can lead directly back to the multi-response beat (intended default 
 
 To deal with the uncertainty of whether conditional responses play, if they lack a next beat, the last allowed beat to play inherits its next beat from the default behavior.  All beats earlier in the chain will return the parent multi response beat as their next beat.  Default behavior is always required for this beat type, since it will fail to play if all responses have already been played and there is no default to fallback on.
 
+```typescript
+{
+	key: string,
+	responses: [ // min 2
+		{
+			text: string,
+			nextBeat: string,
+			character?: string,
+			conditions?: Condition[],
+		}
+	],
+	defaultBehavior: {
+		character?: string,
+		text: string,
+		nextBeat: string,
+	}
+	// + side-effects
+}
+```
+
 ### Choice Beat
 Owns a set of choices.  Can return multiple options, but may not.  Conditional choices must be satisfied to return.  When there are all conditional choices, a default option is required.  If there is only one choice, it returns as a simple text display interface instead of a choice interface.  In short, this is where the user controls the novel side of game play.
 
@@ -148,7 +205,7 @@ Owns a set of choices.  Can return multiple options, but may not.  Conditional c
 			conditions?: Condition[],
 		}
 	],
-	defaultBehavior: {
+	defaultBehavior?: { // required when all choices are conditional
 		character?: string,
 		text: string,
 		nextBeat: string,
@@ -217,7 +274,7 @@ AT_LEAST_CHAR_TRAIT/AT_MOST_CHAR_TRAIT
 }
 ```
 
-#### Cross-option Conditions (Best Fit Beat Only)
+#### Cross-Option Conditions (Best Fit Beat Only)
 TBD
 
 ### Configuring Side Effects
