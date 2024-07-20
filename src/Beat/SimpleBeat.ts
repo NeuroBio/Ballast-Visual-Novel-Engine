@@ -1,10 +1,10 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
+import { SharedBeatParams } from './BeatFactory';
 
-interface SimpleBeatParams {
+interface SimpleBeatParams extends SharedBeatParams {
 	character?: string;
 	text: string;
 	nextBeat: string;
-	key: string;
 }
 
 export class SimpleBeat extends Beat {

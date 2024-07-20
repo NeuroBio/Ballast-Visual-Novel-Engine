@@ -1,4 +1,5 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
+import { SharedBeatParams } from './BeatFactory';
 
 
 interface DefaultBehavior {
@@ -18,8 +19,7 @@ interface Response {
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
-interface MultiResponseBeatParams {
-	key: string;
+interface MultiResponseBeatParams extends SharedBeatParams {
 	responses: Response[];
 	defaultBehavior: DefaultBehavior;
 }

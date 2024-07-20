@@ -1,7 +1,7 @@
 import { Beat, FinalBeatDisplay, PlayParams } from './Beat';
+import { SharedBeatParams } from './BeatFactory';
 
-interface FinalBeatParams {
-	key: string;
+interface FinalBeatParams extends SharedBeatParams {
 	character?: string;
 	text: string;
 }

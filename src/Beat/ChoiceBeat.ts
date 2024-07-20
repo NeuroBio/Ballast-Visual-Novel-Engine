@@ -1,4 +1,5 @@
 import { Beat, ChoiceBeatDisplay, PlayParams, StandardBeatDisplay } from './Beat';
+import { SharedBeatParams } from './BeatFactory';
 
 interface DefaultBehavior {
 	text: string;
@@ -11,8 +12,7 @@ interface Choice {
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
-interface ChoiceBeatParams {
-	key: string;
+interface ChoiceBeatParams extends SharedBeatParams {
 	character?: string;
 	choices: Choice[];
 	defaultBehavior?: DefaultBehavior;

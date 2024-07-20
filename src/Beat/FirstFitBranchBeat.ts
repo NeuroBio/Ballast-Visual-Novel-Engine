@@ -1,4 +1,5 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
+import { SharedBeatParams } from './BeatFactory';
 
 interface DefaultBehavior {
 	text: string;
@@ -11,8 +12,7 @@ interface Branch {
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
-interface FirstFitBranchBeatParams {
-	key: string;
+interface FirstFitBranchBeatParams extends SharedBeatParams {
 	branches: Branch[];
 	defaultBehavior: DefaultBehavior;
 }
