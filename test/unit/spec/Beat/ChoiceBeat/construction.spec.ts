@@ -41,10 +41,9 @@ describe(`ChoiceBeat.construction`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => true] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
-			const character = 'character';
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices, character });
+				new ChoiceBeat({ key: 'key', choices });
 			}).not.toThrow();
 		});
 	});
@@ -54,10 +53,9 @@ describe(`ChoiceBeat.construction`, () => {
 			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [() => false] };
 			const choices = [ choice1, choice2, choice3];
-			const character = 'character';
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices, character });
+				new ChoiceBeat({ key: 'key', choices });
 			}).toThrow(Error.DEFAULT_REQUIRED);
 		});
 	});
@@ -68,10 +66,9 @@ describe(`ChoiceBeat.construction`, () => {
 			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [() => false] };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
-			const character = 'character';
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices, character, defaultBehavior });
+				new ChoiceBeat({ key: 'key', choices, defaultBehavior });
 			}).not.toThrow();
 		});
 	});

@@ -44,26 +44,28 @@ interface TraitMaxMinCondition {
 	trait: string;
 }
 
-type ConditionCriterion = ItemCondition | MemoryCondition | TraitLimitCondition;
+type CrossCondition = TraitMaxMinCondition;
+
+type SingleCriterion = ItemCondition | MemoryCondition | TraitLimitCondition;
 
 interface Choice {
 	text: string;
 	nextBeat: string;
-	conditions?: ConditionCriterion[];
+	conditions?: SingleCriterion[];
 }
 
 interface Branch {
 	text: string;
 	character?: string,
 	nextBeat: string;
-	conditions?: ConditionCriterion[];
+	conditions?: SingleCriterion[];
 }
 
 interface Response {
 	text: string,
 	character?: string,
 	nextBeat?: string;
-	conditions?: ConditionCriterion[];
+	conditions?: SingleCriterion[];
 }
 
 export interface DefaultBehavior {
@@ -171,10 +173,9 @@ export class BeatFactory {
 
 	#createChoiceBeat (dto: ChoiceBeatParams): ChoiceBeat {
 		const params = {
-			character: dto.defaultBehavior?.character,
 			choices: dto.choices.map((choice) => ({
 				beat: { text: choice.text, nextBeat: choice.nextBeat },
-				conditions: this.#createConditional(choice.conditions || []) || [],
+				conditions: this.#createSingleCondition(choice.conditions || []) || [],
 			})),
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
@@ -184,10 +185,9 @@ export class BeatFactory {
 
 	#createFirstFitBranchBeat (dto: FirstFitBranchBeatParams): FirstFitBranchBeat {
 		const params = {
-			character: dto.defaultBehavior.character,
 			branches: dto.branches.map((branch) => ({
 				beat: { text: branch.text, nextBeat: branch.nextBeat, character: branch.character },
-				conditions: this.#createConditional(branch.conditions || []) || [],
+				conditions: this.#createSingleCondition(branch.conditions || []) || [],
 			})),
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
@@ -197,10 +197,9 @@ export class BeatFactory {
 
 	#createMultiResponseBeat (dto: MultiResponseBeatParams): MultiResponseBeat {
 		const params = {
-			character: dto.defaultBehavior.character,
 			responses: dto.responses.map((response) => ({
 				beat: { text: response.text, nextBeat: response.nextBeat, character: response.character },
-				conditions: this.#createConditional(response.conditions || []) || [],
+				conditions: this.#createSingleCondition(response.conditions || []) || [],
 			})),
 			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
@@ -209,10 +208,19 @@ export class BeatFactory {
 	}
 
 	#createBestFitBranchBeat (dto: BestFitBranchBeatParams): BestFitBranchBeat {
-		return new BestFitBranchBeat(dto);
+		const params = {
+			branches: dto.branches.map((branch) => ({
+				beat: { text: branch.text, nextBeat: branch.nextBeat, character: branch.character },
+				conditions: this.#createSingleCondition(branch.conditions || []) || [],
+			})),
+			crossBranchCondition: this.#createCrossCondition(dto.crossBranchCondition),
+			defaultBehavior: dto.defaultBehavior,
+			...this.#setSharedParams(dto),
+		};
+		return new BestFitBranchBeat(params);
 	}
 
-	#createConditional (conditions: ConditionCriterion[]) {
+	#createSingleCondition (conditions: SingleCriterion[]) {
 		return conditions.map((condition) => {
 			switch (condition.type) {
 			case SingleConditionType.AT_LEAST_ITEM: {
@@ -251,18 +259,23 @@ export class BeatFactory {
 					params.characters[character].traits[trait] <= value;
 			}
 
-			// case ConditionalType.GREATEST_SENTIMENT: {
-			// 	return () => true;
-			// }
-
-			// case ConditionalType.LEAST_SENTIMENT: {
-			// 	return () => true;
-			// }
-
-			default:
-				throw new Error('Not a real condition');
+			default: throw new Error('Not a real condition'); // not tested
 			}
 		});
+	}
+
+	#createCrossCondition (condition: CrossCondition) {
+		switch (condition.type) {
+		case CrossConditionType.GREATEST_SENTIMENT: {
+			return () => true;
+		}
+
+		case CrossConditionType.LEAST_SENTIMENT: {
+			return () => true;
+		}
+
+		default: throw new Error('Not a real condition'); // not tested
+		}
 	}
 
 	#setSharedParams (dto: BeatDto): SharedBeatParams {

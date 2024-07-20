@@ -13,7 +13,6 @@ interface Choice {
 }
 
 interface ChoiceBeatParams extends SharedBeatParams {
-	character?: string;
 	choices: Choice[];
 	defaultBehavior?: DefaultBehavior;
 }

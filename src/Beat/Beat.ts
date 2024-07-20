@@ -4,10 +4,6 @@ import { SharedBeatParams } from './BeatFactory';
 
 export const NARRATOR = 'Narrator';
 
-export interface BeatParams extends SharedBeatParams {
-	character?: string;
-}
-
 export interface StandardBeatDisplay {
 	text: string;
 	nextBeat: string;
@@ -43,7 +39,7 @@ export abstract class Beat {
 	#removedMemories: MemoryParams[];
 	#updatedCharacterTraits: TraitParams[];
 
-	constructor (params: BeatParams) {
+	constructor (params: SharedBeatParams) {
 		const { key, queuedScenes, unlockedChapters, unlockedAchievements,
 			addedItems, removedItems, addedMemories, removedMemories,
 			updatedCharacterTraits } = params;
