@@ -1,5 +1,10 @@
 import { Beat, ChoiceBeatDisplay, PlayParams, StandardBeatDisplay } from './Beat';
-import { DefaultBehavior } from './BeatFactory';
+
+interface DefaultBehavior {
+	text: string;
+	character?: string;
+	nextBeat: string;
+}
 
 interface Choice {
 	beat: StandardBeatDisplay;

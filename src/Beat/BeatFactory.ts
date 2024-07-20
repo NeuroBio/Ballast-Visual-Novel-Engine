@@ -114,7 +114,7 @@ interface FirstFitBranchBeatParams extends SharedBeatParams {
 interface MultiResponseBeatParams extends SharedBeatParams {
 	key: string;
 	responses: Response[];
-	defaultBehavior: DefaultBehavior;
+	defaultBehavior: { text: string, character?: string, nextBeat: string };
 }
 
 export class BeatFactory {

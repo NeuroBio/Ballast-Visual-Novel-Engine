@@ -1,5 +1,11 @@
 import { Beat, FinalBeatDisplay, PlayParams, StandardBeatDisplay } from './Beat';
-import { DefaultBehavior } from './BeatFactory';
+
+
+interface DefaultBehavior {
+	text: string;
+	character?: string;
+	nextBeat: string;
+}
 
 interface Response {
 	beat: StandardBeatDisplay | FinalBeatDisplay;
@@ -30,6 +36,7 @@ export class MultiResponseBeat extends Beat {
 	}
 
 	play (params: PlayParams): StandardBeatDisplay {
+		const { characters, inventory } = params;
 		// if !lastPlayed, assemble playableOptions
 		// 		no playable options, play default
 		// 		some, set playNext to 0
