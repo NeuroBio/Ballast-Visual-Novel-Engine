@@ -5,10 +5,9 @@ import { SimpleBeat } from './SimpleBeat';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
 import { FirstFitBranchBeat } from './FirstFitBranchBeat';
 import { MultiResponseBeat } from './MultiResponseBeat';
+import { BestFitBranchBeat } from './BestFitBranchBeat';
 
-export enum ConditionalType {
-	GREATEST_SENTIMENT = 'charMost',
-	LEAST_SENTIMENT = 'charLeast',
+export enum SingleConditionType {
 	AT_LEAST_ITEM = 'itemEqual+',
 	AT_MOST_ITEM = 'itemEqual-',
 	CHARACTER_AWARE = 'hasMemory',
@@ -17,32 +16,35 @@ export enum ConditionalType {
 	AT_MOST_CHAR_TRAIT = 'charTraitEqual-',
 }
 
+export enum CrossConditionType {
+	GREATEST_SENTIMENT = 'charMost',
+	LEAST_SENTIMENT = 'charLeast',
+}
 interface ItemCondition {
-	type: ConditionalType.AT_LEAST_ITEM | ConditionalType.AT_MOST_ITEM;
+	type: SingleConditionType.AT_LEAST_ITEM | SingleConditionType.AT_MOST_ITEM;
 	item: string;
 	quantity: number;
 }
 
 interface MemoryCondition {
-	type: ConditionalType.CHARACTER_AWARE | ConditionalType.CHARACTER_UNAWARE;
+	type: SingleConditionType.CHARACTER_AWARE | SingleConditionType.CHARACTER_UNAWARE;
 	character: string;
 	memory: string;
 }
 
 interface TraitLimitCondition {
-	type: ConditionalType.AT_LEAST_CHAR_TRAIT | ConditionalType.AT_MOST_CHAR_TRAIT;
+	type: SingleConditionType.AT_LEAST_CHAR_TRAIT | SingleConditionType.AT_MOST_CHAR_TRAIT;
 	character: string;
 	trait: string;
 	value: number;
 }
 
 interface TraitMaxMinCondition {
-	type: ConditionalType.GREATEST_SENTIMENT | ConditionalType.LEAST_SENTIMENT;
-	character: string;
+	type: CrossConditionType.GREATEST_SENTIMENT | CrossConditionType.LEAST_SENTIMENT;
 	trait: string;
 }
 
-type ConditionCriterion = ItemCondition | MemoryCondition | TraitLimitCondition |TraitMaxMinCondition;
+type ConditionCriterion = ItemCondition | MemoryCondition | TraitLimitCondition;
 
 interface Choice {
 	text: string;
@@ -54,7 +56,7 @@ interface Branch {
 	text: string;
 	character?: string,
 	nextBeat: string;
-	conditions: ConditionCriterion[];
+	conditions?: ConditionCriterion[];
 }
 
 interface Response {
@@ -86,33 +88,35 @@ export interface BeatDto extends SharedBeatParams {
 	defaultBehavior?: DefaultBehavior;
 	choices?: Choice[];
 	branches?: Branch[],
+	crossBranchCondition?: TraitMaxMinCondition;
 	responses?: Response[]
 }
 
 interface SimpleBeatParams extends SharedBeatParams {
-	key: string;
 	defaultBehavior: { nextBeat: string, text: string, character?: string };
 }
 
 interface FinalBeatParams extends SharedBeatParams {
-	key: string;
 	defaultBehavior: { text: string, character?: string };
 }
 
 interface ChoiceBeatParams extends SharedBeatParams {
-	key: string;
 	choices: Choice[];
 	defaultBehavior?: { text: string, character?: string, nextBeat: string };
 }
 
 interface FirstFitBranchBeatParams extends SharedBeatParams {
-	key: string;
 	branches: Branch[];
 	defaultBehavior: { text: string, character?: string, nextBeat: string };
 }
 
+interface BestFitBranchBeatParams extends SharedBeatParams {
+	branches: Branch[];
+	crossBranchCondition: TraitMaxMinCondition;
+	defaultBehavior?: { text: string, character?: string, nextBeat: string };
+}
+
 interface MultiResponseBeatParams extends SharedBeatParams {
-	key: string;
 	responses: Response[];
 	defaultBehavior: { text: string, character?: string, nextBeat: string };
 }
@@ -129,6 +133,10 @@ export class BeatFactory {
 
 		if (this.#isFirstFitBranchBeat(dto)) {
 			return this.#createFirstFitBranchBeat(dto);
+		}
+
+		if (this.#isBestFitBranchBeat(dto)) {
+			return this.#createBestFitBranchBeat(dto);
 		}
 
 		if (this.#isMultiResponseBeat(dto)) {
@@ -200,40 +208,44 @@ export class BeatFactory {
 		return new MultiResponseBeat(params);
 	}
 
+	#createBestFitBranchBeat (dto: BestFitBranchBeatParams): BestFitBranchBeat {
+		return new BestFitBranchBeat(dto);
+	}
+
 	#createConditional (conditions: ConditionCriterion[]) {
 		return conditions.map((condition) => {
 			switch (condition.type) {
-			case ConditionalType.AT_LEAST_ITEM: {
+			case SingleConditionType.AT_LEAST_ITEM: {
 				const { item, quantity } = condition;
 				return (params: PlayParams) =>
 					(params.inventory[item] || 0) >= quantity;
 			}
 
-			case ConditionalType.AT_MOST_ITEM: {
+			case SingleConditionType.AT_MOST_ITEM: {
 				const { item, quantity } = condition;
 				return (params: PlayParams) =>
 					(params.inventory[item] || 0) <= quantity;
 			}
 
-			case ConditionalType.CHARACTER_AWARE: {
+			case SingleConditionType.CHARACTER_AWARE: {
 				const { character, memory } = condition;
 				return (params: PlayParams) =>
 					params.characters[character].hasMemory(memory);
 			}
 
-			case ConditionalType.CHARACTER_UNAWARE: {
+			case SingleConditionType.CHARACTER_UNAWARE: {
 				const { character, memory } = condition;
 				return (params: PlayParams) =>
 					!params.characters[character].hasMemory(memory);
 			}
 
-			case ConditionalType.AT_LEAST_CHAR_TRAIT: {
+			case SingleConditionType.AT_LEAST_CHAR_TRAIT: {
 				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
 					params.characters[character].traits[trait] >= value;
 			}
 
-			case ConditionalType.AT_MOST_CHAR_TRAIT: {
+			case SingleConditionType.AT_MOST_CHAR_TRAIT: {
 				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
 					params.characters[character].traits[trait] <= value;
@@ -268,7 +280,7 @@ export class BeatFactory {
 	}
 
 	#isSimpleBeat (dto: BeatDto): dto is SimpleBeatParams {
-		if (dto.choices || dto.responses || dto.branches) {
+		if (dto.choices || dto.responses || dto.branches || dto.crossBranchCondition) {
 			return false;
 		}
 
@@ -280,7 +292,7 @@ export class BeatFactory {
 	}
 
 	#isFinalBeat (dto: BeatDto): dto is FinalBeatParams {
-		if (dto.choices || dto.responses || dto.branches) {
+		if (dto.choices || dto.responses || dto.branches || dto.crossBranchCondition) {
 			return false;
 		}
 
@@ -292,7 +304,7 @@ export class BeatFactory {
 	}
 
 	#isChoiceBeat (dto: BeatDto): dto is ChoiceBeatParams {
-		if (dto.responses || dto.branches || !dto.choices) {
+		if (dto.responses || dto.branches || !dto.choices || dto.crossBranchCondition) {
 			return false;
 		}
 
@@ -310,7 +322,7 @@ export class BeatFactory {
 	}
 
 	#isFirstFitBranchBeat (dto: BeatDto): dto is FirstFitBranchBeatParams {
-		if (dto.responses || !dto.branches || dto.choices || !dto.defaultBehavior) {
+		if (dto.responses || !dto.branches || dto.choices || !dto.defaultBehavior || dto.crossBranchCondition) {
 			return false;
 		}
 
@@ -320,11 +332,15 @@ export class BeatFactory {
 			}
 		}
 
-		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+		if (dto.defaultBehavior) {
+			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+		}
+
+		return true;
 	}
 
 	#isMultiResponseBeat (dto: BeatDto): dto is MultiResponseBeatParams {
-		if (!dto.responses || dto.branches || dto.choices || !dto.defaultBehavior) {
+		if (!dto.responses || dto.branches || dto.choices || !dto.defaultBehavior || dto.crossBranchCondition) {
 			return false;
 		}
 
@@ -335,5 +351,23 @@ export class BeatFactory {
 		}
 
 		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+	}
+
+	#isBestFitBranchBeat (dto: BeatDto): dto is BestFitBranchBeatParams {
+		if (dto.responses || !dto.branches || dto.choices || !dto.crossBranchCondition) {
+			return false;
+		}
+
+		for (const branch of dto.branches) {
+			if (!branch.text || !branch.nextBeat || !branch.character) {
+				return false;
+			}
+		}
+
+		if (dto.defaultBehavior) {
+			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+		}
+
+		return true;
 	}
 }

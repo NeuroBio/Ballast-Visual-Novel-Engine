@@ -1,4 +1,5 @@
-import { BeatFactory, ConditionalType } from '../../../../../src/Beat/BeatFactory';
+import { BeatFactory, SingleConditionType, CrossConditionType } from '../../../../../src/Beat/BeatFactory';
+import { BestFitBranchBeat } from '../../../../../src/Beat/BestFitBranchBeat';
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { FinalBeat } from '../../../../../src/Beat/FinalBeat';
 import { FirstFitBranchBeat } from '../../../../../src/Beat/FirstFitBranchBeat';
@@ -45,7 +46,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 1',
 						nextBeat: 'beat 1',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_ITEM,
+							type: SingleConditionType.AT_LEAST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -54,7 +55,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 2',
 						nextBeat: 'beat 2',
 						conditions: [{
-							type: ConditionalType.AT_MOST_ITEM,
+							type: SingleConditionType.AT_MOST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -63,7 +64,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 3',
 						nextBeat: 'beat 3',
 						conditions: [{
-							type: ConditionalType.AT_MOST_CHAR_TRAIT,
+							type: SingleConditionType.AT_MOST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -73,7 +74,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 4',
 						nextBeat: 'beat 4',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_CHAR_TRAIT,
+							type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -83,7 +84,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 5',
 						nextBeat: 'beat 5',
 						conditions: [{
-							type: ConditionalType.CHARACTER_AWARE,
+							type: SingleConditionType.CHARACTER_AWARE,
 							character: 'character',
 							memory: 'mem',
 						}],
@@ -92,7 +93,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 6',
 						nextBeat: 'beat 6',
 						conditions: [{
-							type: ConditionalType.CHARACTER_AWARE,
+							type: SingleConditionType.CHARACTER_AWARE,
 							character: 'character',
 							memory: 'mem',
 						}],
@@ -169,7 +170,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 1',
 						nextBeat: 'beat 1',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_ITEM,
+							type: SingleConditionType.AT_LEAST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -178,7 +179,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 2',
 						nextBeat: 'beat 2',
 						conditions: [{
-							type: ConditionalType.AT_MOST_ITEM,
+							type: SingleConditionType.AT_MOST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -187,7 +188,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 3',
 						nextBeat: 'beat 3',
 						conditions: [{
-							type: ConditionalType.AT_MOST_CHAR_TRAIT,
+							type: SingleConditionType.AT_MOST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -197,7 +198,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 4',
 						nextBeat: 'beat 4',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_CHAR_TRAIT,
+							type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -207,7 +208,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 5',
 						nextBeat: 'beat 5',
 						conditions: [{
-							type: ConditionalType.CHARACTER_AWARE,
+							type: SingleConditionType.CHARACTER_AWARE,
 							character: 'character',
 							memory: 'mem',
 						}],
@@ -216,7 +217,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 6',
 						nextBeat: 'beat 6',
 						conditions: [{
-							type: ConditionalType.CHARACTER_UNAWARE,
+							type: SingleConditionType.CHARACTER_UNAWARE,
 							character: 'character',
 							memory: 'mem',
 						}],
@@ -240,7 +241,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 1',
 						nextBeat: 'beat 1',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_ITEM,
+							type: SingleConditionType.AT_LEAST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -249,7 +250,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 2',
 						nextBeat: 'beat 2',
 						conditions: [{
-							type: ConditionalType.AT_MOST_ITEM,
+							type: SingleConditionType.AT_MOST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -265,6 +266,230 @@ describe('BeatFactory.fromDto', () => {
 		});
 	});
 	describe(`
+		received dto with conditional branches and default behavior with characters
+		and the greatest cross condition
+		`, () => {
+		it(`returns a Best Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					type: CrossConditionType.GREATEST_SENTIMENT,
+					trait: 'something',
+				},
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						character: '1',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						character: '2',
+						conditions: [{
+							type: SingleConditionType.AT_MOST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 3',
+						nextBeat: 'beat 3',
+						character: '3',
+						conditions: [{
+							type: SingleConditionType.AT_MOST_CHAR_TRAIT,
+							character: 'character',
+							value: 0.3,
+							trait: 'a feels',
+						}],
+					},
+					{
+						text: 'text 4',
+						nextBeat: 'beat 4',
+						character: '4',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
+							character: 'character',
+							value: 0.3,
+							trait: 'a feels',
+						}],
+					},
+					{
+						text: 'text 5',
+						nextBeat: 'beat 5',
+						character: '5',
+						conditions: [{
+							type: SingleConditionType.CHARACTER_AWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+					{
+						text: 'text 6',
+						nextBeat: 'beat 6',
+						character: '6',
+						conditions: [{
+							type: SingleConditionType.CHARACTER_UNAWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat',
+				},
+			});
+			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with conditional branches and default behavior without a character
+		and the greatest cross condition
+		`, () => {
+		it(`returns a Best Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					type: CrossConditionType.GREATEST_SENTIMENT,
+					trait: 'something',
+				},
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						character: '1',
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						character: '2',
+					},
+				],
+			});
+			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with conditional branches and default behavior with characters
+		and the least cross condition
+		`, () => {
+		it(`returns a Best Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					type: CrossConditionType.LEAST_SENTIMENT,
+					trait: 'something',
+				},
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						character: '1',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						character: '2',
+						conditions: [{
+							type: SingleConditionType.AT_MOST_ITEM,
+							item: 'itemKey',
+							quantity: 3,
+						}],
+					},
+					{
+						text: 'text 3',
+						nextBeat: 'beat 3',
+						character: '3',
+						conditions: [{
+							type: SingleConditionType.AT_MOST_CHAR_TRAIT,
+							character: 'character',
+							value: 0.3,
+							trait: 'a feels',
+						}],
+					},
+					{
+						text: 'text 4',
+						nextBeat: 'beat 4',
+						character: '4',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
+							character: 'character',
+							value: 0.3,
+							trait: 'a feels',
+						}],
+					},
+					{
+						text: 'text 5',
+						nextBeat: 'beat 5',
+						character: '5',
+						conditions: [{
+							type: SingleConditionType.CHARACTER_AWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+					{
+						text: 'text 6',
+						nextBeat: 'beat 6',
+						character: '6',
+						conditions: [{
+							type: SingleConditionType.CHARACTER_UNAWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat',
+				},
+			});
+			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with conditional branches and default behavior without a character
+		and the least cross condition
+		`, () => {
+		it(`returns a Best Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					type: CrossConditionType.LEAST_SENTIMENT,
+					trait: 'something',
+				},
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						character: '1',
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						character: '2',
+					},
+				],
+			});
+			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
 		received dto with all classes of conditional responses an a default behavior with a character
 		some responses have next beats, others don't
 	`, () => {
@@ -276,7 +501,7 @@ describe('BeatFactory.fromDto', () => {
 					{
 						text: 'text 1',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_ITEM,
+							type: SingleConditionType.AT_LEAST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -284,7 +509,7 @@ describe('BeatFactory.fromDto', () => {
 					{
 						text: 'text 2',
 						conditions: [{
-							type: ConditionalType.AT_MOST_ITEM,
+							type: SingleConditionType.AT_MOST_ITEM,
 							item: 'itemKey',
 							quantity: 3,
 						}],
@@ -292,7 +517,7 @@ describe('BeatFactory.fromDto', () => {
 					{
 						text: 'text 3',
 						conditions: [{
-							type: ConditionalType.AT_MOST_CHAR_TRAIT,
+							type: SingleConditionType.AT_MOST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -302,7 +527,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 4',
 						nextBeat: 'beat 4',
 						conditions: [{
-							type: ConditionalType.AT_LEAST_CHAR_TRAIT,
+							type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
 							character: 'character',
 							value: 0.3,
 							trait: 'a feels',
@@ -312,7 +537,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 5',
 						nextBeat: 'beat 5',
 						conditions: [{
-							type: ConditionalType.CHARACTER_AWARE,
+							type: SingleConditionType.CHARACTER_AWARE,
 							character: 'character',
 							memory: 'mem',
 						}],
@@ -321,7 +546,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 6',
 						nextBeat: 'beat 6',
 						conditions: [{
-							type: ConditionalType.CHARACTER_AWARE,
+							type: SingleConditionType.CHARACTER_AWARE,
 							character: 'character',
 							memory: 'mem',
 						}],

@@ -1,4 +1,4 @@
-import { BeatDto, ConditionalType } from '../../../src/Beat/BeatFactory';
+import { BeatDto, SingleConditionType } from '../../../src/Beat/BeatFactory';
 import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
 import { CharacterDto } from '../../../src/Character/Character';
 import { CharacterTemplate } from '../../../src/Character/CharacterTemplateFinder';
@@ -82,7 +82,7 @@ export const BeatData: BeatDto[] = [
 				nextBeat: 'lastBeat',
 				text: 'This is branch 1',
 				conditions: [{
-					type: ConditionalType.AT_LEAST_ITEM,
+					type: SingleConditionType.AT_LEAST_ITEM,
 					item: 'you do have it',
 					quantity: 1,
 				}],
@@ -91,7 +91,7 @@ export const BeatData: BeatDto[] = [
 				nextBeat: 'lastBeat',
 				text: 'This is branch 2',
 				conditions: [{
-					type: ConditionalType.AT_MOST_ITEM,
+					type: SingleConditionType.AT_MOST_ITEM,
 					item: 'you don\'t have it',
 					quantity: 0,
 				}],
