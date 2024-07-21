@@ -23,13 +23,11 @@ export class SimpleBeat extends Beat {
 
 	play (params: PlayParams): StandardBeatDisplay {
 		const { characters } = params;
-		const character = this.getCharacter({
-			character: this.#character,
+		return this.assembleStandardBeatDisplay({
+			text: this.#text,
 			characters,
-		});
-		return {
-			text: `${character}: ${this.#text}`,
+			character: this.#character,
 			nextBeat: this.#nextBeat,
-		};
+		});
 	}
 }

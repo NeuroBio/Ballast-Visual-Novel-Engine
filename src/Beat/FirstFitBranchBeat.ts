@@ -32,12 +32,12 @@ export class FirstFitBranchBeat extends Beat {
 			throw new Error('Branch Beats require at least 1 branch.');
 		}
 
-		const branchesHaveRequirements = branches.filter(x => x.conditions.length > 0);
-		if (branchesHaveRequirements.length === 0) {
+		const branchesWithRequirements = branches.filter(x => x.conditions.length > 0);
+		if (branchesWithRequirements.length === 0) {
 			throw new Error('When no branches are conditional, data should be formatted as a Simple Beat, not a Branch Beat.');
 		}
 
-		if (branchesHaveRequirements.length !== branches.length) {
+		if (branchesWithRequirements.length !== branches.length) {
 			throw new Error('All branches in a First Fit Branch Beat should be conditional.');
 		}
 	}
@@ -48,25 +48,20 @@ export class FirstFitBranchBeat extends Beat {
 		for (const branch of this.#branches) {
 			if (branch.conditions.every((condition) => condition(params))) {
 				const beat = branch.beat;
-				const character = this.getCharacter({
-					character: beat.character,
+				return this.assembleStandardBeatDisplay({
+					text: beat.text,
 					characters,
-				});
-
-				return {
-					text: `${character}: ${beat.text}`,
+					character: beat.character,
 					nextBeat: beat.nextBeat!,
-				};
+				});
 			}
 		}
 
-		const character = this.getCharacter({
-			character: this.#defaultBehavior!.character,
+		return this.assembleStandardBeatDisplay({
+			text: this.#defaultBehavior!.text,
 			characters,
-		});
-		return {
-			text: `${character}: ${this.#defaultBehavior!.text}`,
+			character: this.#defaultBehavior!.character,
 			nextBeat: this.#defaultBehavior!.nextBeat!,
-		};
+		});
 	}
 }

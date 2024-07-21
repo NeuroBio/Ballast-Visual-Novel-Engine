@@ -49,10 +49,10 @@ type CrossCondition = TraitMaxMinCondition;
 
 type SingleCriterion = ItemCondition | MemoryCondition | TraitLimitCondition;
 
-interface CrossConditionParams {
-	characters: { [key: string]: Character}
-	keys: Set<string>;
+export interface CrossConditionParams {
+	characters: Character[];
 }
+
 interface Choice {
 	text: string;
 	nextBeat: string;
@@ -62,6 +62,13 @@ interface Choice {
 interface Branch {
 	text: string;
 	character?: string,
+	nextBeat: string;
+	conditions?: SingleCriterion[];
+}
+
+interface BestFitBranch {
+	text: string;
+	character: string,
 	nextBeat: string;
 	conditions?: SingleCriterion[];
 }
@@ -113,12 +120,12 @@ interface ChoiceBeatParams extends SharedBeatParams {
 }
 
 interface FirstFitBranchBeatParams extends SharedBeatParams {
-	branches: Branch[];
+	branches: BestFitBranch[];
 	defaultBehavior: { text: string, character?: string, nextBeat: string };
 }
 
 interface BestFitBranchBeatParams extends SharedBeatParams {
-	branches: Branch[];
+	branches: BestFitBranch[];
 	crossBranchCondition: TraitMaxMinCondition;
 	defaultBehavior?: { text: string, character?: string, nextBeat: string };
 }
@@ -273,19 +280,9 @@ export class BeatFactory {
 		switch (condition.type) {
 		case CrossConditionType.GREATEST_SENTIMENT: {
 			return (params: CrossConditionParams): string => {
-				const { characters, keys } = params;
-				const characterKeys: string[] = Array.from(keys);
-				if (characterKeys.length === 0) {
-					return '';
-				}
-
-				if (characterKeys.length === 1) {
-					return characterKeys[0];
-				}
-
-				const relevantCharacters = characterKeys.map((key) => characters[key]);
-				let maxChar = relevantCharacters[0];
-				relevantCharacters.forEach((char) => {
+				const { characters } = params;
+				let maxChar = characters[0];
+				characters.forEach((char) => {
 					if (char.traits[condition.trait] > maxChar.traits[condition.trait]) {
 						maxChar = char;
 					}
@@ -297,19 +294,9 @@ export class BeatFactory {
 
 		case CrossConditionType.LEAST_SENTIMENT: {
 			return (params: CrossConditionParams): string => {
-				const { characters, keys } = params;
-				const characterKeys: string[] = Array.from(keys);
-				if (characterKeys.length === 0) {
-					return '';
-				}
-
-				if (characterKeys.length === 1) {
-					return characterKeys[0];
-				}
-
-				const relevantCharacters = characterKeys.map((key) => characters[key]);
-				let minChar = relevantCharacters[0];
-				relevantCharacters.forEach((char) => {
+				const { characters } = params;
+				let minChar = characters[0];
+				characters.forEach((char) => {
 					if (char.traits[condition.trait] < minChar.traits[condition.trait]) {
 						minChar = char;
 					}

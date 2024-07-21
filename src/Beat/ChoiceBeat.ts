@@ -32,14 +32,15 @@ export class ChoiceBeat extends Beat {
 			throw new Error('Choice beats require at least 2 choices.');
 		}
 
-		const choicesHaveRequirements = choices.filter(x => x.conditions.length > 0);
+		const choicesWithRequirements = choices.filter(x => x.conditions.length > 0);
 
-		if (choicesHaveRequirements.length === choices.length && !defaultBehavior) {
+		if (choicesWithRequirements.length === choices.length && !defaultBehavior) {
 			throw new Error('When all choices are conditional, a Default Behavior is required.');
 		}
 	}
 
 	play (params: PlayParams): ChoiceBeatDisplay | StandardBeatDisplay {
+		const { characters } = params;
 		const choices: StandardBeatDisplay[] = [];
 		this.#choices.forEach((choice) => {
 			const includeChoice = this.#mayPlay(choice, params);
@@ -53,24 +54,20 @@ export class ChoiceBeat extends Beat {
 		}
 
 		if (choices.length === 1) {
-			const character = this.getCharacter({
-				character: '',
-				characters: params.characters,
+			const beat = choices[0];
+			return this.assembleStandardBeatDisplay({
+				text: beat.text,
+				characters,
+				nextBeat: beat.nextBeat!,
 			});
-			return {
-				text: `${character}: ${choices[0].text}`,
-				nextBeat: choices[0].nextBeat!,
-			};
 		}
 
-		const character = this.getCharacter({
+		return this.assembleStandardBeatDisplay({
+			text: this.#defaultBehavior!.text,
+			characters,
 			character: this.#defaultBehavior!.character,
-			characters: params.characters,
-		});
-		return {
-			text: `${character}: ${this.#defaultBehavior!.text}`,
 			nextBeat: this.#defaultBehavior!.nextBeat!,
-		};
+		});
 	}
 
 	#mayPlay (choice: Choice, params: PlayParams): boolean {

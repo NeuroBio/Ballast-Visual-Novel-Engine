@@ -447,7 +447,7 @@ describe('BeatFactory.fromDto', () => {
 		});
 	});
 	describe(`
-		received dto with conditional branches and default behavior without a character
+		received dto without conditional branches and default behavior without a character
 		and the greatest cross condition
 		`, () => {
 		it(`returns a Best Fit Branch Beat`, () => {
@@ -472,6 +472,92 @@ describe('BeatFactory.fromDto', () => {
 				],
 			});
 			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with conditional branches and default behavior without a character
+		and the greatest cross condition, checking cross conditional behavior
+	`, () => {
+		const item = 'itemKey', defaultText = 'default text', defaultBeat = 'defaultBeat', trait = 'something';
+		let result: any;
+		beforeAll(() => {
+			const beatFactory = new BeatFactory();
+			result = beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					type: CrossConditionType.GREATEST_SENTIMENT,
+					trait,
+				},
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						character: '1',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item,
+							quantity: 1,
+						}],
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						character: '2',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item,
+							quantity: 2,
+						}],
+					},
+					{
+						text: 'text 3',
+						nextBeat: 'beat 3',
+						character: '2',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item,
+							quantity: 3,
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: defaultText,
+					nextBeat: defaultBeat,
+				},
+			});
+		});
+		it(`returns a Best Fit Branch Beat`, () => {
+			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+		describe(`two conditionals pass`, () => {
+			it(`returns the character with the greatest specified trait`, () => {
+				const characters = {
+					[1]: { traits: { [trait]: 1 }, key: '1' },
+					[2]: { traits: { [trait]: 2 }, key: '2' },
+				};
+				const inventory = {
+					[item]: 2,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `${NARRATOR}: text 2`,
+					nextBeat: 'beat 2',
+				});
+			});
+		});
+		describe(`three conditionals pass for 2 characters, where the two characters tie`, () => {
+			it(`returns the first character to come up in the tied the branches`, () => {
+				const characters = {
+					[1]: { traits: { [trait]: 2 }, key: '1' },
+					[2]: { traits: { [trait]: 2 }, key: '2' },
+				};
+				const inventory = {
+					[item]: 3,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `${NARRATOR}: text 1`,
+					nextBeat: 'beat 1',
+				});
+			});
 		});
 	});
 	describe(`
@@ -559,7 +645,7 @@ describe('BeatFactory.fromDto', () => {
 		});
 	});
 	describe(`
-		received dto with conditional branches and default behavior without a character
+		received dto without conditional branches and default behavior without a character
 		and the least cross condition
 		`, () => {
 		it(`returns a Best Fit Branch Beat`, () => {
@@ -584,6 +670,92 @@ describe('BeatFactory.fromDto', () => {
 				],
 			});
 			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with fake conditional branches and default behavior without a character
+		and the least cross condition, checking cross conditional behavior
+		`, () => {
+		const item = 'itemKey', defaultText = 'default text', defaultBeat = 'defaultBeat', trait = 'something';
+		let result: any;
+		beforeAll(() => {
+			const beatFactory = new BeatFactory();
+			result = beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					type: CrossConditionType.LEAST_SENTIMENT,
+					trait: 'something',
+				},
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						character: '1',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item,
+							quantity: 1,
+						}],
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						character: '2',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item,
+							quantity: 2,
+						}],
+					},
+					{
+						text: 'text 3',
+						nextBeat: 'beat 3',
+						character: '2',
+						conditions: [{
+							type: SingleConditionType.AT_LEAST_ITEM,
+							item,
+							quantity: 3,
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: defaultText,
+					nextBeat: defaultBeat,
+				},
+			});
+		});
+		it(`returns a Best Fit Branch Beat`, () => {
+			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+		describe(`two conditionals pass`, () => {
+			it(`returns the character with the greatest specified trait`, () => {
+				const characters = {
+					[1]: { traits: { [trait]: 2 }, key: '1' },
+					[2]: { traits: { [trait]: 1 }, key: '2' },
+				};
+				const inventory = {
+					[item]: 2,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `${NARRATOR}: text 2`,
+					nextBeat: 'beat 2',
+				});
+			});
+		});
+		describe(`three conditionals pass for 2 characters, where the two characters tie`, () => {
+			it(`returns the first character to come up in the tied the branches`, () => {
+				const characters = {
+					[1]: { traits: { [trait]: 1 }, key: '1' },
+					[2]: { traits: { [trait]: 1 }, key: '2' },
+				};
+				const inventory = {
+					[item]: 3,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `${NARRATOR}: text 1`,
+					nextBeat: 'beat 1',
+				});
+			});
 		});
 	});
 	describe(`

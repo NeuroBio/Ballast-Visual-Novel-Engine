@@ -27,6 +27,13 @@ interface GetCharacterParams {
 	character: string | undefined;
 }
 
+interface AssembleStandardBeatDisplayParams {
+	text: string;
+	character?: string;
+	characters: { [characterKey: string]: Character };
+	nextBeat: string;
+}
+
 export abstract class Beat {
 	protected key: string;
 	#defaultCharacter = NARRATOR;
@@ -62,6 +69,18 @@ export abstract class Beat {
 			return this.#defaultCharacter;
 		}
 		return characters[character]?.name || this.#defaultCharacter;
+	}
+
+	protected assembleStandardBeatDisplay (params: AssembleStandardBeatDisplayParams) {
+		const { text, characters, character, nextBeat } = params;
+		const characterName = this.getCharacter({
+			character,
+			characters,
+		});
+		return {
+			text: `${characterName}: ${text}`,
+			nextBeat,
+		};
 	}
 
 	get queuedScenes (): SceneParams[] {
