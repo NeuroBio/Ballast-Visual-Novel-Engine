@@ -6,6 +6,7 @@ import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedD
 import { FirstFitBranchBeat } from './FirstFitBranchBeat';
 import { MultiResponseBeat } from './MultiResponseBeat';
 import { BestFitBranchBeat } from './BestFitBranchBeat';
+import { Character } from '../Character/Character';
 
 export enum SingleConditionType {
 	AT_LEAST_ITEM = 'itemEqual+',
@@ -48,6 +49,10 @@ type CrossCondition = TraitMaxMinCondition;
 
 type SingleCriterion = ItemCondition | MemoryCondition | TraitLimitCondition;
 
+interface CrossConditionParams {
+	characters: { [key: string]: Character}
+	keys: Set<string>;
+}
 interface Choice {
 	text: string;
 	nextBeat: string;
@@ -238,25 +243,25 @@ export class BeatFactory {
 			case SingleConditionType.CHARACTER_AWARE: {
 				const { character, memory } = condition;
 				return (params: PlayParams) =>
-					params.characters[character].hasMemory(memory);
+					params.characters[character]?.hasMemory(memory) || false;
 			}
 
 			case SingleConditionType.CHARACTER_UNAWARE: {
 				const { character, memory } = condition;
 				return (params: PlayParams) =>
-					!params.characters[character].hasMemory(memory);
+					!params.characters[character]?.hasMemory(memory) || false;
 			}
 
 			case SingleConditionType.AT_LEAST_CHAR_TRAIT: {
 				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
-					params.characters[character].traits[trait] >= value;
+					params.characters[character]?.traits[trait] >= value || false;
 			}
 
 			case SingleConditionType.AT_MOST_CHAR_TRAIT: {
 				const { character, trait, value } = condition;
 				return (params: PlayParams) =>
-					params.characters[character].traits[trait] <= value;
+					params.characters[character]?.traits[trait] <= value || false;
 			}
 
 			default: throw new Error('Not a real condition'); // not tested
@@ -267,11 +272,51 @@ export class BeatFactory {
 	#createCrossCondition (condition: CrossCondition) {
 		switch (condition.type) {
 		case CrossConditionType.GREATEST_SENTIMENT: {
-			return () => true;
+			return (params: CrossConditionParams): string => {
+				const { characters, keys } = params;
+				const characterKeys: string[] = Array.from(keys);
+				if (characterKeys.length === 0) {
+					return '';
+				}
+
+				if (characterKeys.length === 1) {
+					return characterKeys[0];
+				}
+
+				const relevantCharacters = characterKeys.map((key) => characters[key]);
+				let maxChar = relevantCharacters[0];
+				relevantCharacters.forEach((char) => {
+					if (char.traits[condition.trait] > maxChar.traits[condition.trait]) {
+						maxChar = char;
+					}
+				});
+
+				return maxChar.key;
+			};
 		}
 
 		case CrossConditionType.LEAST_SENTIMENT: {
-			return () => true;
+			return (params: CrossConditionParams): string => {
+				const { characters, keys } = params;
+				const characterKeys: string[] = Array.from(keys);
+				if (characterKeys.length === 0) {
+					return '';
+				}
+
+				if (characterKeys.length === 1) {
+					return characterKeys[0];
+				}
+
+				const relevantCharacters = characterKeys.map((key) => characters[key]);
+				let minChar = relevantCharacters[0];
+				relevantCharacters.forEach((char) => {
+					if (char.traits[condition.trait] < minChar.traits[condition.trait]) {
+						minChar = char;
+					}
+				});
+
+				return minChar.key;
+			};
 		}
 
 		default: throw new Error('Not a real condition'); // not tested

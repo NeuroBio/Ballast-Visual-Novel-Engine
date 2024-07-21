@@ -1,3 +1,4 @@
+import { NARRATOR } from '../../../../../src/Beat/Beat';
 import { BeatFactory, SingleConditionType, CrossConditionType } from '../../../../../src/Beat/BeatFactory';
 import { BestFitBranchBeat } from '../../../../../src/Beat/BestFitBranchBeat';
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
@@ -37,9 +38,12 @@ describe('BeatFactory.fromDto', () => {
 		});
 	});
 	describe(`received dto with all classes of conditional choices an a default behavior`, () => {
-		it(`returns a Choice Beat`, () => {
+		const itemKey = 'itemKey', trait = 'a feels', character = 'char', memory1 = 'mem1', memory2 = 'mem2',
+			defaultText = 'default text', defaultBeat = 'default nextBeat';
+		let result: any;
+		beforeAll(() => {
 			const beatFactory = new BeatFactory();
-			const result = beatFactory.fromDto({
+			result = beatFactory.fromDto({
 				key: 'beatKey',
 				choices: [
 					{
@@ -47,7 +51,7 @@ describe('BeatFactory.fromDto', () => {
 						nextBeat: 'beat 1',
 						conditions: [{
 							type: SingleConditionType.AT_LEAST_ITEM,
-							item: 'itemKey',
+							item: itemKey,
 							quantity: 3,
 						}],
 					},
@@ -56,8 +60,8 @@ describe('BeatFactory.fromDto', () => {
 						nextBeat: 'beat 2',
 						conditions: [{
 							type: SingleConditionType.AT_MOST_ITEM,
-							item: 'itemKey',
-							quantity: 3,
+							item: itemKey,
+							quantity: 1,
 						}],
 					},
 					{
@@ -65,9 +69,9 @@ describe('BeatFactory.fromDto', () => {
 						nextBeat: 'beat 3',
 						conditions: [{
 							type: SingleConditionType.AT_MOST_CHAR_TRAIT,
-							character: 'character',
-							value: 0.3,
-							trait: 'a feels',
+							character,
+							value: 0.1,
+							trait,
 						}],
 					},
 					{
@@ -75,9 +79,9 @@ describe('BeatFactory.fromDto', () => {
 						nextBeat: 'beat 4',
 						conditions: [{
 							type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
-							character: 'character',
+							character,
 							value: 0.3,
-							trait: 'a feels',
+							trait,
 						}],
 					},
 					{
@@ -85,27 +89,120 @@ describe('BeatFactory.fromDto', () => {
 						nextBeat: 'beat 5',
 						conditions: [{
 							type: SingleConditionType.CHARACTER_AWARE,
-							character: 'character',
-							memory: 'mem',
+							character,
+							memory: memory1,
 						}],
 					},
 					{
 						text: 'text 6',
 						nextBeat: 'beat 6',
 						conditions: [{
-							type: SingleConditionType.CHARACTER_AWARE,
-							character: 'character',
-							memory: 'mem',
+							type: SingleConditionType.CHARACTER_UNAWARE,
+							character,
+							memory: memory2,
 						}],
 					},
 				],
 				defaultBehavior: {
-					text: 'default text',
-					nextBeat: 'default nextBeat',
-					character: 'characterKey',
+					text: defaultText,
+					nextBeat: defaultBeat,
+					character,
 				},
 			});
+		});
+		it(`returns a Choice Beat`, () => {
 			expect(result instanceof ChoiceBeat).toBe(true);
+		});
+		it(`all conditions can fail`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: {},
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 2 };
+			expect(result.play({ characters, inventory })).toEqual({
+				text: `${NARRATOR}: ${defaultText}`,
+				nextBeat: defaultBeat,
+			});
+		});
+		it(`item at least can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: {},
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 4 };
+			expect(result.play({ characters, inventory })).toEqual({
+				text:  `${NARRATOR}: text 1`,
+				nextBeat: 'beat 1',
+			});
+		});
+		it(`item at most can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: {},
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 1 };
+			expect(result.play({ characters, inventory })).toEqual({
+				text:  `${NARRATOR}: text 2`,
+				nextBeat: 'beat 2',
+			});
+		});
+		it(`character trait at most can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: { [trait]: 0.05 },
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 2 };
+			expect(result.play({ characters, inventory })).toEqual({
+				text:  `${NARRATOR}: text 3`,
+				nextBeat: 'beat 3',
+			});
+		});
+		it(`character trait at least can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: { [trait]: 0.35 },
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 2 };
+			expect(result.play({ characters, inventory })).toEqual({
+				text:  `${NARRATOR}: text 4`,
+				nextBeat: 'beat 4',
+			});
+		});
+		it(`character aware can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: { [trait]: 0.2 },
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 2 };
+			expect(result.play({ characters, inventory })).toEqual({
+				text:  `${NARRATOR}: text 5`,
+				nextBeat: 'beat 5',
+			});
+		});
+		it(`character unaware can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: { [trait]: 0.2 },
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			const inventory = { [itemKey]: 2 };
+			expect(result.play({ characters, inventory })).toEqual({
+				text:  `${NARRATOR}: text 6`,
+				nextBeat: 'beat 6',
+			});
 		});
 	});
 	describe(`received dto without choices without a character`, () => {
@@ -546,7 +643,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 6',
 						nextBeat: 'beat 6',
 						conditions: [{
-							type: SingleConditionType.CHARACTER_AWARE,
+							type: SingleConditionType.CHARACTER_UNAWARE,
 							character: 'character',
 							memory: 'mem',
 						}],

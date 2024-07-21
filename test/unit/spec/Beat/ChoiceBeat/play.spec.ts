@@ -1,3 +1,4 @@
+import { NARRATOR } from '../../../../../src/Beat/Beat';
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { Character } from '../../../../../src/Character/Character';
 import { CharacterData } from '../../../FakeData/TestData';
@@ -53,7 +54,10 @@ describe(`ChoiceBeat.play`, () => {
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices, defaultBehavior });
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(choice3.beat);
+			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+				text: `${NARRATOR}: ${choice3.beat.text}`,
+				nextBeat: choice3.beat.nextBeat,
+			});
 		});
 	});
 	describe(`beat has all choices with conditions and no condition is met`, () => {
@@ -92,7 +96,10 @@ describe(`ChoiceBeat.play`, () => {
 			const key = 'key';
 
 			const beat = new ChoiceBeat({ key, choices });
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual(choice2.beat);
+			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+				text: `${NARRATOR}: ${choice2.beat.text}`,
+				nextBeat: choice2.beat.nextBeat,
+			});
 		});
 	});
 });

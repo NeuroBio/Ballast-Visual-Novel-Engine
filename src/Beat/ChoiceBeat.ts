@@ -53,7 +53,14 @@ export class ChoiceBeat extends Beat {
 		}
 
 		if (choices.length === 1) {
-			return choices[0];
+			const character = this.getCharacter({
+				character: '',
+				characters: params.characters,
+			});
+			return {
+				text: `${character}: ${choices[0].text}`,
+				nextBeat: choices[0].nextBeat!,
+			};
 		}
 
 		const character = this.getCharacter({
