@@ -72,7 +72,7 @@ i.e. things the engine provides an interface for, but requires an implementation
 
 
 
-Note: "conditional" choices reference save data (characters and/or inventory) for conditions.
+Note: "conditional" choices reference save data (characters and/or inventory) for conditions.  See the interfaces for single options conditions and cross option conditions below.
 
 ### Simple Beat
 Owns one set of text.  Returns that and the next beat.  There is no real logic here.
@@ -100,7 +100,7 @@ Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given mult
 			character?: string,
 			text: string,
 			nextBeat: string,
-			conditions: Condition[], // min 1
+			conditions: SingleOptionCondition[], // min 1
 		}
 	],
 	defaultBehavior: {
@@ -144,7 +144,25 @@ branches:
 Friend and Friend2 both satisfy greatest friendship cross condition.  However, Friend has a branch before Friend 2, so the Friend beat with condition2 is used.
 
 ```typescript
-TBD
+{
+	key: string,
+	branches: [ // min 2
+		{
+			character: string, // this is the one beat where character is required
+			text: string,
+			nextBeat: string,
+			conditions: SingleOptionCondition[],
+		}
+	],
+	defaultBehavior?: { // required when all choices are conditional
+		character?: string,
+		text: string,
+		nextBeat: string,
+	}
+	crossBranchCondition: CrossOptionCondition,
+	// + side-effects
+}
+
 ```
 
 ### Multi Response Beat
@@ -180,7 +198,7 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 			text: string,
 			nextBeat: string,
 			character?: string,
-			conditions?: Condition[],
+			conditions?: SingleOptionCondition[],
 		}
 	],
 	defaultBehavior: {
@@ -202,7 +220,7 @@ Owns a set of choices.  Can return multiple options, but may not.  Conditional c
 		{
 			text: string,
 			nextBeat: string,
-			conditions?: Condition[],
+			conditions?: SingleOptionCondition[],
 		}
 	],
 	defaultBehavior?: { // required when all choices are conditional
@@ -237,7 +255,7 @@ choice 3: X AND Y
 ```
 Assume choices 1-3 lead to the same result.  The AND NOT sections are to ensure that the same choice does not return 3 times when X and Y are true.  In a first response branch beat, just `branch 1: X` and `branch 2: Y` would be sufficient, as only the first true branch is returned.
 
-AND/OR logic is NOT supported for the Best Fit Branch cross option conditions.  However, you CAN apply single option conditions on branches for Best Fit Branches.  E.g. Say you wanted to have the character in a scene with the highest romance that does not have a breakup memory to say something.  You can combine `GREATEST_SENTIMENT` on the beat with `CHARACTER_UNAWARE` set on each branch.
+AND/OR logic is NOT supported for the Best Fit Branch's cross option conditions.  However, you CAN apply single option conditions on branches for Best Fit Branches.  E.g. Say you wanted to have the character in a scene with the highest romance that does not have a breakup memory to say something.  You can combine `GREATEST_SENTIMENT` on the beat with `CHARACTER_UNAWARE` set on each branch.
 
 #### Single Option Conditions
 
@@ -275,7 +293,20 @@ AT_LEAST_CHAR_TRAIT/AT_MOST_CHAR_TRAIT
 ```
 
 #### Cross-Option Conditions (Best Fit Beat Only)
-TBD
+
+```typescript
+enum Types {
+	GREATEST_SENTIMENT = 'charMost',
+	LEAST_SENTIMENT = 'charLeast',
+}
+
+GREATEST_SENTIMENT/LEAST_SENTIMENT
+{
+	type: string, //enum value
+	trait: string;
+}
+
+```
 
 ### Configuring Side Effects
 Side effects are any save data change a beat results in.  All of them are optional.  Note: you can apply effects on choice beats, but they are NOT specific to any selected choice.  In those scenarios, it's best to wait for the user to make a selection and apply choice-specific side effects on the follow-up beat.
