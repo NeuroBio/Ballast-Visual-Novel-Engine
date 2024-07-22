@@ -49,19 +49,15 @@ export class FirstFitBranchBeat extends Beat {
 			if (branch.conditions.every((condition) => condition(params))) {
 				const beat = branch.beat;
 				return this.assembleStandardBeatDisplay({
-					text: beat.text,
+					beat,
 					characters,
-					character: beat.character,
-					nextBeat: beat.nextBeat!,
 				});
 			}
 		}
 
 		return this.assembleStandardBeatDisplay({
-			text: this.#defaultBehavior!.text,
+			beat: this.#defaultBehavior!,
 			characters,
-			character: this.#defaultBehavior!.character,
-			nextBeat: this.#defaultBehavior!.nextBeat!,
 		});
 	}
 }

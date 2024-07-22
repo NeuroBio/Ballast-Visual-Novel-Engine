@@ -166,9 +166,7 @@ export class BeatFactory {
 
 	#createSimpleBeat (dto: SimpleBeatParams): SimpleBeat {
 		const params = {
-			character: dto.defaultBehavior.character,
-			text: dto.defaultBehavior.text,
-			nextBeat: dto.defaultBehavior.nextBeat,
+			defaultBehavior: dto.defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
 		return new SimpleBeat(params);

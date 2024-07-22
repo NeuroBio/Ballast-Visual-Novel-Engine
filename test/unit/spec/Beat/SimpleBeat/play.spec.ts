@@ -13,7 +13,7 @@ describe(`SimpleBeat.play`, () => {
 			const text = 'Something a character would say';
 			const nextBeat = 'beater';
 			const key = 'key';
-			const beat = new SimpleBeat({ key, text, nextBeat });
+			const beat = new SimpleBeat({ key, defaultBehavior: { text, nextBeat } });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
 				text: `${NARRATOR}: ${text}`,
 				nextBeat,
@@ -27,7 +27,7 @@ describe(`SimpleBeat.play`, () => {
 			const characterKey = CharacterData[0].key;
 			const characterName = CharacterData[0].name;
 			const key = 'key';
-			const beat = new SimpleBeat({ key, character: characterKey, text, nextBeat });
+			const beat = new SimpleBeat({ key, defaultBehavior: { text, nextBeat, character: characterKey } });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
 				text: `${characterName}: ${text}`,
 				nextBeat,

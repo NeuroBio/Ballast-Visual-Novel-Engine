@@ -64,10 +64,8 @@ export class BestFitBranchBeat extends Beat {
 			const key = this.#crossBranchCondition({ characters: relevantCharacters });
 			const beat = validBranches.find(x => x.beat.character === key)!.beat;
 			return this.assembleStandardBeatDisplay({
-				text: beat.text,
+				beat,
 				characters,
-				character: beat.character,
-				nextBeat: beat.nextBeat!,
 			});
 		}
 
@@ -75,18 +73,14 @@ export class BestFitBranchBeat extends Beat {
 		if (keys.length === 1) {
 			const beat = validBranches[0].beat;
 			return this.assembleStandardBeatDisplay({
-				text: beat.text,
+				beat,
 				characters,
-				character: beat.character,
-				nextBeat: beat.nextBeat!,
 			});
 		}
 
 		return this.assembleStandardBeatDisplay({
-			text: this.#defaultBehavior!.text,
+			beat: this.#defaultBehavior!,
 			characters,
-			character: this.#defaultBehavior!.character,
-			nextBeat: this.#defaultBehavior!.nextBeat!,
 		});
 	}
 

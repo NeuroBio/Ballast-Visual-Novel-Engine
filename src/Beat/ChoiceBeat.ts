@@ -56,17 +56,14 @@ export class ChoiceBeat extends Beat {
 		if (choices.length === 1) {
 			const beat = choices[0];
 			return this.assembleStandardBeatDisplay({
-				text: beat.text,
+				beat,
 				characters,
-				nextBeat: beat.nextBeat!,
 			});
 		}
 
 		return this.assembleStandardBeatDisplay({
-			text: this.#defaultBehavior!.text,
+			beat: this.#defaultBehavior!,
 			characters,
-			character: this.#defaultBehavior!.character,
-			nextBeat: this.#defaultBehavior!.nextBeat!,
 		});
 	}
 

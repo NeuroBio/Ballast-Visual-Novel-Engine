@@ -59,19 +59,16 @@ export class MultiResponseBeat extends Beat {
 		this.#lastPlayed += 1;
 		if (nextResponse) {
 			const beat = nextResponse.beat;
+			beat.nextBeat ??= this.#getFallback();
 			return this.assembleStandardBeatDisplay({
-				text: beat.text,
+				beat: { ...beat, nextBeat: beat.nextBeat || this.#getFallback() },
 				characters,
-				character: beat.character,
-				nextBeat: beat.nextBeat || this.#getFallback(),
 			});
 		}
 
 		return this.assembleStandardBeatDisplay({
-			text: this.#defaultBehavior!.text,
+			beat: this.#defaultBehavior,
 			characters,
-			character: this.#defaultBehavior.character,
-			nextBeat: this.#defaultBehavior.nextBeat,
 		});
 	}
 

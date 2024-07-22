@@ -27,11 +27,15 @@ interface GetCharacterParams {
 	character: string | undefined;
 }
 
-interface AssembleStandardBeatDisplayParams {
+interface DisplayParams {
 	text: string;
 	character?: string;
-	characters: { [characterKey: string]: Character };
 	nextBeat: string;
+}
+
+interface AssembleStandardBeatDisplayParams {
+	characters: { [characterKey: string]: Character };
+	beat: DisplayParams;
 }
 
 export abstract class Beat {
@@ -72,7 +76,7 @@ export abstract class Beat {
 	}
 
 	protected assembleStandardBeatDisplay (params: AssembleStandardBeatDisplayParams) {
-		const { text, characters, character, nextBeat } = params;
+		const { characters, beat: { text, character, nextBeat } } = params;
 		const characterName = this.getCharacter({
 			character,
 			characters,

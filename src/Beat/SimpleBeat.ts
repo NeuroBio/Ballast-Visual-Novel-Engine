@@ -1,33 +1,30 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
 import { SharedBeatParams } from './BeatFactory';
 
+interface DefaultBehavior {
+	text: string,
+	character?: string,
+	nextBeat: string,
+}
 interface SimpleBeatParams extends SharedBeatParams {
-	character?: string;
-	text: string;
-	nextBeat: string;
+	defaultBehavior: DefaultBehavior;
 }
 
 export class SimpleBeat extends Beat {
-	#text: string;
-	#nextBeat: string;
-	#character: string | undefined;
+	#defaultBehavior: DefaultBehavior;
 
 	constructor (params: SimpleBeatParams) {
-		const { text, nextBeat, character } = params;
+		const { defaultBehavior } = params;
 		super(params);
 
-		this.#text = text;
-		this.#nextBeat = nextBeat;
-		this.#character = character;
+		this.#defaultBehavior = defaultBehavior;
 	}
 
 	play (params: PlayParams): StandardBeatDisplay {
 		const { characters } = params;
 		return this.assembleStandardBeatDisplay({
-			text: this.#text,
+			beat: this.#defaultBehavior,
 			characters,
-			character: this.#character,
-			nextBeat: this.#nextBeat,
 		});
 	}
 }
