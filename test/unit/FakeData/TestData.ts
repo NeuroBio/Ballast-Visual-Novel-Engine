@@ -36,6 +36,7 @@ export const BeatData: BeatDto[] = [
 			text: 'This is the second beat.',
 			nextBeat: 'choiceBeat',
 		},
+		unlockedAchievements: ['start'],
 	},
 	{ // choice beat
 		key: 'choiceBeat',
