@@ -38,7 +38,7 @@ export class Scene {
 	}
 
 	start (): Beat {
-		this.#currentBeat = this.#beats[this.#currentBeatKey];
+		this.#currentBeat = this.#beats[this.#firstBeatKey];
 		return this.#currentBeat;
 	}
 

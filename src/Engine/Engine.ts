@@ -103,6 +103,10 @@ export class Engine {
 
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
+		this.#currentSave.startNewChapter({
+			chapterKey: this.#currentChapter.key,
+			sceneKey: this.#currentScene.key,
+		});
 		const beat = this.#currentScene.start();
 		return beat.play({
 			characters: this.#currentSave.characters,
@@ -140,6 +144,19 @@ export class Engine {
 		currentBeat.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
 
 		return currentBeat.play({
+			characters: this.#currentSave.characters,
+			inventory: this.#currentSave.inventory,
+		});
+	}
+
+	restartScene () {
+		this.#currentSave = this.#originalSave.clone();
+		this.#currentSave.startNewChapter({
+			chapterKey: this.#currentChapter.key,
+			sceneKey: this.#currentScene.key,
+		});
+		const beat = this.#currentScene.start();
+		return beat.play({
 			characters: this.#currentSave.characters,
 			inventory: this.#currentSave.inventory,
 		});
