@@ -52,7 +52,7 @@ describe(`playing through the test data without save data`, () => {
 			speaker: NARRATOR,
 		});
 	});
-	it(`plays the branch 2 beat`, () => {
+	it(`plays the first fit branch 2 beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
 		expect(result.get()).toEqual({
 			nextBeat: BeatData[6].branches![1].nextBeat,
@@ -60,9 +60,49 @@ describe(`playing through the test data without save data`, () => {
 			speaker: NARRATOR,
 		});
 	});
+	it(`plays the best fit branch 2 beat`, () => {
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({
+			nextBeat: BeatData[7].branches![1].nextBeat,
+			text: BeatData[7].branches![1].text,
+			speaker: CharacterData[1].name,
+		});
+	});
+	it(`plays the first response in the multi response beat`, () => {
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({
+			nextBeat: BeatData[8].key,
+			text: BeatData[8].responses![0].text,
+			speaker: NARRATOR,
+		});
+	});
+	it(`plays the second response in the multi response beat`, () => {
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({
+			nextBeat: BeatData[8].key,
+			text: BeatData[8].responses![1].text,
+			speaker: NARRATOR,
+		});
+	});
+	it(`plays the third response in the multi response beat`, () => {
+		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
+		expect(result.get()).toEqual({
+			nextBeat: BeatData[8].defaultBehavior!.nextBeat,
+			text: BeatData[8].responses![2].text,
+			speaker: NARRATOR,
+		});
+	});
+	it(`accidentally returns to the multi response beat`, () => {
+		result.set(engine.advanceScene({ beatKey: BeatData[8].key }));
+		expect(result.get()).toEqual({
+			nextBeat: BeatData[8].defaultBehavior!.nextBeat,
+			text: BeatData[8].defaultBehavior!.text,
+			speaker: NARRATOR,
+		});
+	});
 	it(`plays the final beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
-		expect(result.get()).toEqual({ text: BeatData[7].defaultBehavior!.text, speaker: NARRATOR });
+		expect(result.get()).toEqual({ text: BeatData[9].defaultBehavior!.text, speaker: NARRATOR });
 	});
 	it(`completes scene and chapter`, () => {
 		engine.completeScene();

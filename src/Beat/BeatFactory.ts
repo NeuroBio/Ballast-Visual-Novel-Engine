@@ -57,6 +57,7 @@ interface Choice {
 	text: string;
 	nextBeat: string;
 	conditions?: SingleCriterion[];
+	SceneUpdates?: SceneUpdates;
 }
 
 interface Branch {
@@ -64,6 +65,7 @@ interface Branch {
 	character?: string,
 	nextBeat: string;
 	conditions?: SingleCriterion[];
+	SceneUpdates?: SceneUpdates;
 }
 
 interface BestFitBranch {
@@ -71,6 +73,7 @@ interface BestFitBranch {
 	character: string,
 	nextBeat: string;
 	conditions?: SingleCriterion[];
+	SceneUpdates?: SceneUpdates;
 }
 
 interface Response {
@@ -78,20 +81,22 @@ interface Response {
 	character?: string,
 	nextBeat?: string;
 	conditions?: SingleCriterion[];
+	SceneUpdates?: SceneUpdates
 }
 
 export interface DefaultBehavior {
 	text: string;
 	character?: string;
 	nextBeat?: string;
+	SceneUpdates?: SceneUpdates
 }
 
 interface SceneUpdates {
-	updateCharacterSprite: { character: string, sprite: string }[];
-	moveCharacter: { character: string, newPosition: number }[];
-	removeCharacter: { character: string }[];
-	addCharacter: { character: string, position: number, sprite: string }[];
-	setBackground: string;
+	setBackground?: string;
+	updateCharacterSprite?: { character: string, sprite: string }[];
+	moveCharacter?: { character: string, newPosition: number }[];
+	removeCharacter?: { character: string }[];
+	addCharacter?: { character: string, position: number, sprite: string }[];
 }
 export interface SharedBeatParams {
 	key: string;

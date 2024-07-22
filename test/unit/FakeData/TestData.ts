@@ -1,4 +1,4 @@
-import { BeatDto, SingleConditionType } from '../../../src/Beat/BeatFactory';
+import { BeatDto, CrossConditionType, SingleConditionType } from '../../../src/Beat/BeatFactory';
 import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
 import { CharacterDto } from '../../../src/Character/Character';
 import { CharacterTemplate } from '../../../src/Character/CharacterTemplateFinder';
@@ -23,21 +23,21 @@ export const ChapterData: ChapterDto[] = [
 ];
 
 export const BeatData: BeatDto[] = [
-	{
+	{ // simple beat
 		key: 'firstBeat',
 		defaultBehavior: {
 			text: 'This is the opening beat.',
 			nextBeat: 'secondBeat',
 		},
 	},
-	{
+	{ // simple beat
 		key: 'secondBeat',
 		defaultBehavior: {
 			text: 'This is the second beat.',
 			nextBeat: 'choiceBeat',
 		},
 	},
-	{
+	{ // choice beat
 		key: 'choiceBeat',
 		choices: [
 			{
@@ -54,28 +54,28 @@ export const BeatData: BeatDto[] = [
 			},
 		],
 	},
-	{
+	{ // simple beat
 		key: 'downStream1',
 		defaultBehavior: {
 			text: 'This is downstream of choice 1.',
 			nextBeat: 'firstFitBeat',
 		},
 	},
-	{
+	{ // simple beat
 		key: 'downStream2',
 		defaultBehavior: {
 			text: 'This is downstream of choice 2.',
 			nextBeat: 'firstFitBeat',
 		},
 	},
-	{
+	{ // simple beat
 		key: 'downStream3',
 		defaultBehavior: {
 			text: 'This is downstream of choice 3.',
 			nextBeat: 'firstFitBeat',
 		},
 	},
-	{
+	{ // first fit branch beat
 		key: 'firstFitBeat',
 		branches: [
 			{
@@ -88,7 +88,7 @@ export const BeatData: BeatDto[] = [
 				}],
 			},
 			{
-				nextBeat: 'lastBeat',
+				nextBeat: 'bestFitBeat',
 				text: 'This is branch 2',
 				conditions: [{
 					type: SingleConditionType.AT_MOST_ITEM,
@@ -99,10 +99,41 @@ export const BeatData: BeatDto[] = [
 		],
 		defaultBehavior: {
 			text: 'Default behavior for first fit.',
+			nextBeat: 'nope',
+		},
+	},
+	{ // best fit branch beat
+		key: 'bestFitBeat',
+		branches: [
+			{
+				character: 'test',
+				text: 'wrong beat',
+				nextBeat: 'notReal',
+			},
+			{
+				character: 'test2',
+				text: 'the correct beat',
+				nextBeat: 'multiResponseBeat',
+			},
+		],
+		crossBranchCondition: {
+			type: CrossConditionType.GREATEST_SENTIMENT,
+			trait: 'love',
+		},
+	},
+	{ // multi-response beat
+		key: 'multiResponseBeat',
+		responses: [
+			{ text: 'response 1' },
+			{ text: 'response 2' },
+			{ text: 'response 3' },
+		],
+		defaultBehavior: {
+			text: 'multi default',
 			nextBeat: 'lastBeat',
 		},
 	},
-	{
+	{ // final beat
 		key: 'lastBeat',
 		defaultBehavior: {
 			text: 'This is the final beat.',

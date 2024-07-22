@@ -196,7 +196,7 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 	responses: [ // min 2
 		{
 			text: string,
-			nextBeat: string,
+			nextBeat?: string,
 			character?: string,
 			conditions?: SingleOptionCondition[],
 		}
@@ -309,7 +309,7 @@ GREATEST_SENTIMENT/LEAST_SENTIMENT
 ```
 
 ## Side Effects
-Side effects are any save data changes or display changes a beat results in.  All of them are optional.  You can apply side effects on all beat types.  Display changes are stored on the option level for responses and branches.  Choices do not allow for display side effects.  Save data side effects are stored on the beat level.  In other words, you cannot tie save data side effects to a specific branch, choice, or response.  In scenarios where you want option-specific save data side effects, it is best to wait until the next beat plays to apply side effects.
+Side effects are any save data changes or display changes a beat results in.  All of them are optional.  You can apply side effects on all beat types.  Display changes are stored on the option level for responses and branches.  Choices do not allow for display side effects, but the default behavior on a choice beat DOES.  Save data side effects are stored on the beat level.  In other words, you cannot tie save data side effects to a specific branch, choice, or response.  In scenarios where you want option-specific save data side effects, it is best to wait until the next beat plays to apply side effects.
 
 ### Save Data Side Effects
 ```typescript
@@ -347,6 +347,7 @@ Side effects are any save data changes or display changes a beat results in.  Al
 ### Display Side Effects
 ```typescript
 {
+	setBackground: string;
 	updateCharacterSprite: [{
 		character: string,
 		sprite: string,
@@ -361,7 +362,6 @@ Side effects are any save data changes or display changes a beat results in.  Al
 		position: number,
 		sprite: string
 	}];
-	setBackground: string;
 }
 ```
 Listed in order of how the sister UI package will apply changes.  The engine also keeps track of added and removed characters for conditions but nothing else.  Edge cases like "What if I want to display the same character multiple times?" are a UI problem.  The Beats are more than happy to hold duplicate or even conflicting data however.
