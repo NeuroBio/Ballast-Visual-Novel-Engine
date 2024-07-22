@@ -45,19 +45,16 @@ export class FirstFitBranchBeat extends Beat {
 	play (params: PlayParams): StandardBeatDisplay {
 		const { characters } = params;
 
+		let beat;
 		for (const branch of this.#branches) {
 			if (branch.conditions.every((condition) => condition(params))) {
-				const beat = branch.beat;
-				return this.assembleStandardBeatDisplay({
-					beat,
-					characters,
-				});
+				beat = branch.beat;
+				break;
 			}
 		}
 
-		return this.assembleStandardBeatDisplay({
-			beat: this.#defaultBehavior!,
-			characters,
-		});
+		beat ??= this.#defaultBehavior!;
+
+		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
 }

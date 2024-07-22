@@ -55,21 +55,20 @@ export class MultiResponseBeat extends Beat {
 			});
 		}
 
+		let beat;
 		const nextResponse = this.#playableOptions[this.#lastPlayed];
 		this.#lastPlayed += 1;
 		if (nextResponse) {
-			const beat = nextResponse.beat;
-			beat.nextBeat ??= this.#getFallback();
-			return this.assembleStandardBeatDisplay({
-				beat: { ...beat, nextBeat: beat.nextBeat || this.#getFallback() },
-				characters,
-			});
+			beat = {
+				text: nextResponse.beat.text,
+				character: nextResponse.beat.character,
+				nextBeat: nextResponse.beat.nextBeat || this.#getFallback(),
+			};
 		}
 
-		return this.assembleStandardBeatDisplay({
-			beat: this.#defaultBehavior,
-			characters,
-		});
+		beat ??= this.#defaultBehavior;
+
+		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
 
 	#getFallback (): string {

@@ -53,18 +53,11 @@ export class ChoiceBeat extends Beat {
 			return { choices };
 		}
 
-		if (choices.length === 1) {
-			const beat = choices[0];
-			return this.assembleStandardBeatDisplay({
-				beat,
-				characters,
-			});
-		}
+		const beat = (choices.length === 1)
+			? choices[0]
+			: this.#defaultBehavior!;
 
-		return this.assembleStandardBeatDisplay({
-			beat: this.#defaultBehavior!,
-			characters,
-		});
+		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
 
 	#mayPlay (choice: Choice, params: PlayParams): boolean {

@@ -58,30 +58,22 @@ export class BestFitBranchBeat extends Beat {
 			}
 		});
 		const keys = Array.from(new Set(validBranches.map(x => x.beat.character)));
+		let beat;
 
 		if (keys.length > 1) {
 			const relevantCharacters = keys.map((key) => characters[key]);
 			const key = this.#crossBranchCondition({ characters: relevantCharacters });
-			const beat = validBranches.find(x => x.beat.character === key)!.beat;
-			return this.assembleStandardBeatDisplay({
-				beat,
-				characters,
-			});
+			beat = validBranches.find(x => x.beat.character === key)!.beat;
 		}
 
 
 		if (keys.length === 1) {
-			const beat = validBranches[0].beat;
-			return this.assembleStandardBeatDisplay({
-				beat,
-				characters,
-			});
+			beat = validBranches[0].beat;
 		}
 
-		return this.assembleStandardBeatDisplay({
-			beat: this.#defaultBehavior!,
-			characters,
-		});
+		beat ??= this.#defaultBehavior!;
+
+		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
 
 	#mayPlay (branch: Branch, params: PlayParams): boolean {
