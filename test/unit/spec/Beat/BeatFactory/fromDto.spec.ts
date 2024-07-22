@@ -122,8 +122,9 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text: `${NARRATOR}: ${defaultText}`,
+				text: defaultText,
 				nextBeat: defaultBeat,
+				speaker: NARRATOR,
 			});
 		});
 		it(`item at least can pass`, () => {
@@ -135,8 +136,9 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 4 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `${NARRATOR}: text 1`,
+				text:  `text 1`,
 				nextBeat: 'beat 1',
+				speaker: NARRATOR,
 			});
 		});
 		it(`item at most can pass`, () => {
@@ -148,8 +150,9 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 1 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `${NARRATOR}: text 2`,
+				text:  `text 2`,
 				nextBeat: 'beat 2',
+				speaker: NARRATOR,
 			});
 		});
 		it(`character trait at most can pass`, () => {
@@ -161,8 +164,9 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `${NARRATOR}: text 3`,
+				text:  `text 3`,
 				nextBeat: 'beat 3',
+				speaker: NARRATOR,
 			});
 		});
 		it(`character trait at least can pass`, () => {
@@ -174,8 +178,9 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `${NARRATOR}: text 4`,
+				text:  `text 4`,
 				nextBeat: 'beat 4',
+				speaker: NARRATOR,
 			});
 		});
 		it(`character aware can pass`, () => {
@@ -187,8 +192,9 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `${NARRATOR}: text 5`,
+				text:  `text 5`,
 				nextBeat: 'beat 5',
+				speaker: NARRATOR,
 			});
 		});
 		it(`character unaware can pass`, () => {
@@ -200,8 +206,9 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `${NARRATOR}: text 6`,
+				text:  `text 6`,
 				nextBeat: 'beat 6',
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -539,8 +546,9 @@ describe('BeatFactory.fromDto', () => {
 					[item]: 2,
 				};
 				expect(result.play({ characters, inventory })).toEqual({
-					text: `${NARRATOR}: text 2`,
+					text: `text 2`,
 					nextBeat: 'beat 2',
+					speaker: NARRATOR,
 				});
 			});
 		});
@@ -554,8 +562,9 @@ describe('BeatFactory.fromDto', () => {
 					[item]: 3,
 				};
 				expect(result.play({ characters, inventory })).toEqual({
-					text: `${NARRATOR}: text 1`,
+					text: `text 1`,
 					nextBeat: 'beat 1',
+					speaker: NARRATOR,
 				});
 			});
 		});
@@ -737,8 +746,9 @@ describe('BeatFactory.fromDto', () => {
 					[item]: 2,
 				};
 				expect(result.play({ characters, inventory })).toEqual({
-					text: `${NARRATOR}: text 2`,
+					text: `text 2`,
 					nextBeat: 'beat 2',
+					speaker: NARRATOR,
 				});
 			});
 		});
@@ -752,8 +762,9 @@ describe('BeatFactory.fromDto', () => {
 					[item]: 3,
 				};
 				expect(result.play({ characters, inventory })).toEqual({
-					text: `${NARRATOR}: text 1`,
+					text: `text 1`,
 					nextBeat: 'beat 1',
+					speaker: NARRATOR,
 				});
 			});
 		});

@@ -55,8 +55,9 @@ describe(`ChoiceBeat.play`, () => {
 
 			const beat = new ChoiceBeat({ key, choices, defaultBehavior });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${choice3.beat.text}`,
+				text: choice3.beat.text,
 				nextBeat: choice3.beat.nextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -72,8 +73,9 @@ describe(`ChoiceBeat.play`, () => {
 
 			const beat = new ChoiceBeat({ key, choices, defaultBehavior });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${CharacterData[0].name}: ${defaultBehavior.text}`,
+				text: defaultBehavior.text,
 				nextBeat: defaultBehavior.nextBeat,
+				speaker: CharacterData[0].name,
 			});
 		});
 	});
@@ -97,8 +99,9 @@ describe(`ChoiceBeat.play`, () => {
 
 			const beat = new ChoiceBeat({ key, choices });
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${choice2.beat.text}`,
+				text: choice2.beat.text,
 				nextBeat: choice2.beat.nextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});

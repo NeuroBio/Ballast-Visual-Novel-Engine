@@ -24,6 +24,6 @@ export class FinalBeat extends Beat {
 			character: this.#character,
 			characters,
 		});
-		return { text: `${character}: ${this.#text}` };
+		return { text: this.#text, speaker: character };
 	}
 }

@@ -17,8 +17,9 @@ describe(`BestFitBranchBeat.play`, () => {
 				],
 			});
 			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
-				text: `${NARRATOR}: text2`,
+				text: `text2`,
 				nextBeat: 'beat2',
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -37,8 +38,9 @@ describe(`BestFitBranchBeat.play`, () => {
 				],
 			});
 			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
-				text: `${NARRATOR}: text1`,
+				text: `text1`,
 				nextBeat: 'beat1',
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -59,8 +61,9 @@ describe(`BestFitBranchBeat.play`, () => {
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
 			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
-				text: `${NARRATOR}: text2`,
+				text: `text2`,
 				nextBeat: 'beat2',
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -81,8 +84,9 @@ describe(`BestFitBranchBeat.play`, () => {
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
 			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
-				text: `${NARRATOR}: text1`,
+				text: `text1`,
 				nextBeat: 'beat1',
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -103,8 +107,9 @@ describe(`BestFitBranchBeat.play`, () => {
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
 			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
-				text: `${NARRATOR}: text3`,
+				text: `text3`,
 				nextBeat: 'beat3',
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -125,8 +130,9 @@ describe(`BestFitBranchBeat.play`, () => {
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
 			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
-				text: `${NARRATOR}: default`,
+				text: `default`,
 				nextBeat: 'defaultBeat',
+				speaker: NARRATOR,
 			});
 		});
 	});

@@ -31,7 +31,8 @@ describe(`playing through the test data without save data`, () => {
 		result.set(start);
 		expect(result.get()).toEqual({
 			nextBeat: BeatData[0].defaultBehavior!.nextBeat,
-			text: `${NARRATOR}: ${BeatData[0].defaultBehavior!.text}`,
+			text: BeatData[0].defaultBehavior!.text,
+			speaker: NARRATOR,
 		});
 	});
 });

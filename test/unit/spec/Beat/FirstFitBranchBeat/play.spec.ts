@@ -29,8 +29,9 @@ describe(`FirstFitBranchBeat.play`, () => {
 			});
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${firstBranch.text}`,
+				text: firstBranch.text,
 				nextBeat: firstBranch.nextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -55,8 +56,9 @@ describe(`FirstFitBranchBeat.play`, () => {
 			});
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${secondBranch.text}`,
+				text: secondBranch.text,
 				nextBeat: secondBranch.nextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -81,8 +83,9 @@ describe(`FirstFitBranchBeat.play`, () => {
 			});
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${defaultBehavior.text}`,
+				text: defaultBehavior.text,
 				nextBeat: defaultBehavior.nextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});

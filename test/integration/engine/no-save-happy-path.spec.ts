@@ -28,14 +28,16 @@ describe(`playing through the test data without save data`, () => {
 		result.set(start);
 		expect(result.get()).toEqual({
 			nextBeat: BeatData[0].defaultBehavior!.nextBeat,
-			text: `${NARRATOR}: ${BeatData[0].defaultBehavior!.text}`,
+			text: BeatData[0].defaultBehavior!.text,
+			speaker: NARRATOR,
 		});
 	});
 	it(`plays the second beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
 		expect(result.get()).toEqual({
 			nextBeat: BeatData[1].defaultBehavior!.nextBeat,
-			text: `${NARRATOR}: ${BeatData[1].defaultBehavior!.text}`,
+			text: BeatData[1].defaultBehavior!.text,
+			speaker: NARRATOR,
 		});
 	});
 	it(`plays the third beat`, () => {
@@ -46,19 +48,21 @@ describe(`playing through the test data without save data`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().choices[1].nextBeat }));
 		expect(result.get()).toEqual({
 			nextBeat: BeatData[4].defaultBehavior!.nextBeat,
-			text: `${NARRATOR}: ${BeatData[4].defaultBehavior!.text}`,
+			text: BeatData[4].defaultBehavior!.text,
+			speaker: NARRATOR,
 		});
 	});
 	it(`plays the branch 2 beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
 		expect(result.get()).toEqual({
 			nextBeat: BeatData[6].branches![1].nextBeat,
-			text: `${NARRATOR}: ${BeatData[6].branches![1].text}`,
+			text: BeatData[6].branches![1].text,
+			speaker: NARRATOR,
 		});
 	});
 	it(`plays the final beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
-		expect(result.get()).toEqual({ text: `${NARRATOR}: ${BeatData[7].defaultBehavior!.text}` });
+		expect(result.get()).toEqual({ text: BeatData[7].defaultBehavior!.text, speaker: NARRATOR });
 	});
 	it(`completes scene and chapter`, () => {
 		engine.completeScene();

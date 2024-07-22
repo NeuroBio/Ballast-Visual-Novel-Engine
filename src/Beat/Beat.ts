@@ -5,6 +5,7 @@ import { SharedBeatParams } from './BeatFactory';
 export const NARRATOR = 'Narrator';
 
 export interface StandardBeatDisplay {
+	speaker?: string;
 	text: string;
 	nextBeat: string;
 }
@@ -14,6 +15,7 @@ export interface ChoiceBeatDisplay {
 }
 
 export interface FinalBeatDisplay {
+	speaker: string;
 	text: string;
 }
 
@@ -82,7 +84,8 @@ export abstract class Beat {
 			characters,
 		});
 		return {
-			text: `${characterName}: ${text}`,
+			speaker: characterName,
+			text,
 			nextBeat,
 		};
 	}

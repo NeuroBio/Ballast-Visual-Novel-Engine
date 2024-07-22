@@ -26,8 +26,9 @@ describe(`MultiResponseBeat.play`, () => {
 			});
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${response1.beat.text}`,
+				text: response1.beat.text,
 				nextBeat: parentBeatKey,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -50,8 +51,9 @@ describe(`MultiResponseBeat.play`, () => {
 			beat.play({ characters: keyedCharacters, inventory: {} });
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${response2.beat.text}`,
+				text: response2.beat.text,
 				nextBeat: defaultNextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -73,8 +75,9 @@ describe(`MultiResponseBeat.play`, () => {
 			});
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${response1.beat.text}`,
+				text: response1.beat.text,
 				nextBeat: response1.beat.nextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -97,8 +100,9 @@ describe(`MultiResponseBeat.play`, () => {
 			beat.play({ characters: keyedCharacters, inventory: {} });
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${response2.beat.text}`,
+				text: response2.beat.text,
 				nextBeat: response2.beat.nextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -121,8 +125,9 @@ describe(`MultiResponseBeat.play`, () => {
 			});
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${response2.beat.text}`,
+				text: response2.beat.text,
 				nextBeat: defaultNextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -147,8 +152,9 @@ describe(`MultiResponseBeat.play`, () => {
 			beat.play({ characters: keyedCharacters, inventory: {} });
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${defaultText}`,
+				text: defaultText,
 				nextBeat: defaultNextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
@@ -173,8 +179,9 @@ describe(`MultiResponseBeat.play`, () => {
 			beat.play({ characters: keyedCharacters, inventory: {} });
 
 			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
-				text: `${NARRATOR}: ${defaultText}`,
+				text: defaultText,
 				nextBeat: defaultNextBeat,
+				speaker: NARRATOR,
 			});
 		});
 	});
