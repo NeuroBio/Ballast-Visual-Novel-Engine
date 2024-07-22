@@ -4,6 +4,7 @@ describe(`BestFitBranchBeat.construction`, () => {
 	const Error = Object.freeze({
 		DEFAULT_REQUIRED: 'When all branches are conditional, a Default Behavior is required.',
 		USE_SIMPLE_BEAT: 'Best Fit Branch beats require at least 2 branches.',
+		USE_FIRST_FIT_BEAT: 'Only one unique character found on branches.  Use a First Fit Branch Beat instead.',
 	});
 	describe(`constructing without branches`, () => {
 		it(`throws an error`, () => {
@@ -29,12 +30,27 @@ describe(`BestFitBranchBeat.construction`, () => {
 				key: 'key',
 				crossBranchCondition: () => '',
 				branches: [
-					{ beat: { text: '', character: '', nextBeat: '' }, conditions:[] },
-					{ beat: { text: '', character: '', nextBeat: '' }, conditions:[] },
+					{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[] },
+					{ beat: { text: '', character: '2', nextBeat: '' }, conditions:[] },
 				],
 			});
 
 			expect(beat instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`constructing when branches only have 1 unique character`, () => {
+		it(`throws an error`, () => {
+			expect(() => {
+				new BestFitBranchBeat({
+					key: 'key',
+					crossBranchCondition: () => '',
+					branches: [
+						{ beat: { text: '', character: '', nextBeat: '' }, conditions:[] },
+						{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[] },
+						{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[] },
+					],
+				});
+			}).toThrow(Error.USE_FIRST_FIT_BEAT);
 		});
 	});
 	describe(`constructing with 2 conditional branches and no default behavior`, () => {
@@ -44,8 +60,8 @@ describe(`BestFitBranchBeat.construction`, () => {
 					key: 'key',
 					crossBranchCondition: () => '',
 					branches: [
-						{ beat: { text: '', character: '', nextBeat: '' }, conditions:[() => true] },
-						{ beat: { text: '', character: '', nextBeat: '' }, conditions:[() => true] },
+						{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[() => true] },
+						{ beat: { text: '', character: '2', nextBeat: '' }, conditions:[() => true] },
 					],
 				});
 			}).toThrow(Error.DEFAULT_REQUIRED);
@@ -57,8 +73,8 @@ describe(`BestFitBranchBeat.construction`, () => {
 				key: 'key',
 				crossBranchCondition: () => '',
 				branches: [
-					{ beat: { text: '', character: '', nextBeat: '' }, conditions:[() => true] },
-					{ beat: { text: '', character: '', nextBeat: '' }, conditions:[() => true] },
+					{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[() => true] },
+					{ beat: { text: '', character: '2', nextBeat: '' }, conditions:[() => true] },
 				],
 				defaultBehavior: { text: '', nextBeat: '' },
 			});

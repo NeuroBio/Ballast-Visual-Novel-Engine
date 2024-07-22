@@ -45,6 +45,18 @@ export class BestFitBranchBeat extends Beat {
 		if (branchesWithRequirements.length === branches.length && !defaultBehavior) {
 			throw new Error('When all branches are conditional, a Default Behavior is required.');
 		}
+
+		const uniqueCharacters = new Set();
+		branches.forEach(branch => {
+			const char = branch.beat.character;
+			if (char) {
+				uniqueCharacters.add(char);
+			}
+		});
+
+		if (uniqueCharacters.size < 2) {
+			throw new Error('Only one unique character found on branches.  Use a First Fit Branch Beat instead.');
+		}
 	}
 
 	play (params: PlayParams): StandardBeatDisplay {
