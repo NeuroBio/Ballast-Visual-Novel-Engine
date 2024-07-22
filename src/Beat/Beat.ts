@@ -67,29 +67,6 @@ export abstract class Beat {
 		this.#updatedCharacterTraits = updatedCharacterTraits || [];
 	}
 
-	abstract play (params: PlayParams): StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
-
-	protected getCharacter (params: GetCharacterParams): string {
-		const { character, characters } = params;
-		if (!character) {
-			return this.#defaultCharacter;
-		}
-		return characters[character]?.name || this.#defaultCharacter;
-	}
-
-	protected assembleStandardBeatDisplay (params: AssembleStandardBeatDisplayParams) {
-		const { characters, beat: { text, character, nextBeat } } = params;
-		const characterName = this.getCharacter({
-			character,
-			characters,
-		});
-		return {
-			speaker: characterName,
-			text,
-			nextBeat,
-		};
-	}
-
 	get queuedScenes (): SceneParams[] {
 		return this.#queuedScenes.map((x) => ({ ...x }));
 	}
@@ -120,5 +97,29 @@ export abstract class Beat {
 
 	get updatedCharacterTraits (): TraitParams[] {
 		return this.#updatedCharacterTraits.map((x) => ({ ...x }));
+	}
+
+	abstract play (params: PlayParams): StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
+
+	protected getCharacter (params: GetCharacterParams): string {
+		const { character, characters } = params;
+		if (!character) {
+			return this.#defaultCharacter;
+		}
+		return characters[character]?.name || this.#defaultCharacter;
+	}
+
+	protected assembleStandardBeatDisplay (params: AssembleStandardBeatDisplayParams) {
+		const { characters, beat: { text, character, nextBeat } } = params;
+		const characterName = this.getCharacter({
+			character,
+			characters,
+		});
+		return {
+			speaker: characterName,
+			text,
+			nextBeat,
+			// add side effects
+		};
 	}
 }

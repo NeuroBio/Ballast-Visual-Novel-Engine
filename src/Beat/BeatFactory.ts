@@ -86,6 +86,13 @@ export interface DefaultBehavior {
 	nextBeat?: string;
 }
 
+interface SceneUpdates {
+	updateCharacterSprite: { character: string, sprite: string }[];
+	moveCharacter: { character: string, newPosition: number }[];
+	removeCharacter: { character: string }[];
+	addCharacter: { character: string, position: number, sprite: string }[];
+	setBackground: string;
+}
 export interface SharedBeatParams {
 	key: string;
 	queuedScenes?: SceneParams[];

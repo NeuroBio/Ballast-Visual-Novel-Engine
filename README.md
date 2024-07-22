@@ -308,8 +308,10 @@ GREATEST_SENTIMENT/LEAST_SENTIMENT
 
 ```
 
-### Configuring Side Effects
-Side effects are any save data change a beat results in.  All of them are optional.  Note: you can apply effects on choice beats, but they are NOT specific to any selected choice.  In those scenarios, it's best to wait for the user to make a selection and apply choice-specific side effects on the follow-up beat.
+## Side Effects
+Side effects are any save data changes or display changes a beat results in.  All of them are optional.  You can apply side effects on all beat types.  Display changes are stored on the option level for responses and branches.  Choices do not allow for display side effects.  Save data side effects are stored on the beat level.  In other words, you cannot tie save data side effects to a specific branch, choice, or response.  In scenarios where you want option-specific save data side effects, it is best to wait until the next beat plays to apply side effects.
+
+### Save Data Side Effects
 ```typescript
 {
 	queuedScenes: [{
@@ -340,9 +342,29 @@ Side effects are any save data change a beat results in.  All of them are option
 		change: number,
 	}];
 }
-
 ```
 
+### Display Side Effects
+```typescript
+{
+	updateCharacterSprite: [{
+		character: string,
+		sprite: string,
+	}];
+	moveCharacter: [{
+		character: string,
+		newPosition: number
+	}];
+	removeCharacter: [{ character: string }];
+	addCharacter: [{
+		character: string,
+		position: number,
+		sprite: string
+	}];
+	setBackground: string;
+}
+```
+Listed in order of how the sister UI package will apply changes.  The engine also keeps track of added and removed characters for conditions but nothing else.  Edge cases like "What if I want to display the same character multiple times?" are a UI problem.  The Beats are more than happy to hold duplicate or even conflicting data however.
 
 # Intended Use-Cases that are not Typical of VNs
 - Allow non-linear, randomized story structure
