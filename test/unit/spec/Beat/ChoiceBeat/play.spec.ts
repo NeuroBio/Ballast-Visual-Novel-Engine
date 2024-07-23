@@ -5,7 +5,7 @@ import { CharacterData } from '../../../FakeData/TestData';
 
 describe(`ChoiceBeat.play`, () => {
 	const keyedCharacters = CharacterData.reduce((keyed: { [key: string]: Character}, char) => {
-		keyed[char.key] = new Character(char);
+		keyed[char.key] = new Character({ ...char, memories: [] });
 		return keyed;
 	}, {});
 	describe(`beat has three choices without conditions`, () => {

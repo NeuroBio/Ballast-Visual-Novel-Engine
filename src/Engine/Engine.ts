@@ -1,7 +1,7 @@
+import { Beat } from '../Beat/Beat';
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
-import { CharacterDto } from '../Character/Character';
-import { CharacterTemplateFinder } from '../Character/CharacterTemplateFinder';
+import { CharacterTemplate, CharacterTemplateFinder } from '../Character/CharacterTemplateFinder';
 import { SavedDataDto, SavedDataRepo } from '../SavedData/SaveDataRepo';
 import { SavedData } from '../SavedData/SavedData';
 import { Scene } from '../Scene/Scene';
@@ -10,7 +10,7 @@ import { SceneDto, SceneFinder } from '../Scene/SceneFinder';
 interface EngineParams {
 	findChapterData: (key?: string) => Promise<ChapterDto[]>;
 	findSceneData: (key?: string) => Promise<SceneDto[]>;
-	findCharacterData: () => Promise<CharacterDto[]>;
+	findCharacterData: () => Promise<CharacterTemplate[]>;
 	findSavedData: () => Promise<SavedDataDto | void>;
 	createSavedData?: () => Promise<SavedDataDto>;
 	saveSavedData: (saveData: SavedDataDto) => Promise<void>;
@@ -108,6 +108,7 @@ export class Engine {
 			sceneKey: this.#currentScene.key,
 		});
 		const beat = this.#currentScene.start();
+		this.#applySaveDataSideEffects(beat);
 		return beat.play({
 			characters: this.#currentSave.characters,
 			inventory: this.#currentSave.inventory,
@@ -132,21 +133,24 @@ export class Engine {
 		}
 
 		const { beatKey } = params;
-		const currentBeat = this.#currentScene.next(beatKey);
+		const beat = this.#currentScene.next(beatKey);
 
-		currentBeat.queuedScenes.forEach(x => this.#currentSave.queueScene(x));
-		currentBeat.unlockedChapters.forEach(x => this.#currentSave.unlockChapter(x));
-		currentBeat.unlockedAchievements.forEach(x => this.#currentSave.unlockAchievement(x));
-		currentBeat.addedItems.forEach(x => this.#currentSave.addInventoryItem(x));
-		currentBeat.removedItems.forEach(x => this.#currentSave.removeInventoryItem(x));
-		currentBeat.addedMemories.forEach(x => this.#currentSave.addMemoryToCharacter(x));
-		currentBeat.removedMemories.forEach(x => this.#currentSave.removeMemoryFromCharacter(x));
-		currentBeat.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
-
-		return currentBeat.play({
+		this.#applySaveDataSideEffects(beat);
+		return beat.play({
 			characters: this.#currentSave.characters,
 			inventory: this.#currentSave.inventory,
 		});
+	}
+
+	#applySaveDataSideEffects (beat: Beat) {
+		beat.queuedScenes.forEach(x => this.#currentSave.queueScene(x));
+		beat.unlockedChapters.forEach(x => this.#currentSave.unlockChapter(x));
+		beat.unlockedAchievements.forEach(x => this.#currentSave.unlockAchievement(x));
+		beat.addedItems.forEach(x => this.#currentSave.addInventoryItem(x));
+		beat.removedItems.forEach(x => this.#currentSave.removeInventoryItem(x));
+		beat.addedMemories.forEach(x => this.#currentSave.addMemoryToCharacter(x));
+		beat.removedMemories.forEach(x => this.#currentSave.removeMemoryFromCharacter(x));
+		beat.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
 	}
 
 	restartScene () {

@@ -168,7 +168,7 @@ export const SavedDataData: SavedDataDto = {
 	characters: [],
 };
 
-export const CharacterData: CharacterDto[] = [
+export const CharacterData: CharacterTemplate[] = [
 	{
 		name: 'tester',
 		key: 'test',
@@ -176,7 +176,7 @@ export const CharacterData: CharacterDto[] = [
 			like: 0,
 			love: 0,
 		},
-		memories: [ 'thinking' ],
+		// memories: [ 'thinking' ],
 	},
 	{
 		name: 'tester2',
@@ -185,7 +185,7 @@ export const CharacterData: CharacterDto[] = [
 			like: -0.5,
 			love: 0.5,
 		},
-		memories: [ ],
+		// memories: [ ],
 	},
 ];
 
