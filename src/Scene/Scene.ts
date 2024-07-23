@@ -6,7 +6,7 @@ interface SceneParams {
 	firstBeatKey: string;
 	name: string;
 	key: string;
-	locked: boolean;
+	locked?: boolean;
 }
 
 export class Scene {
@@ -24,7 +24,7 @@ export class Scene {
 		this.#key = key;
 		this.#name = name;
 		this.#beats = beats;
-		this.#locked = locked;
+		this.#locked = locked ?? true;
 		this.#firstBeatKey = firstBeatKey;
 		this.#currentBeatKey = firstBeatKey;
 	}

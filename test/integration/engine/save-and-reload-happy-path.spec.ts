@@ -2,7 +2,10 @@ import { NARRATOR } from '../../../src/Beat/Beat';
 import { Engine } from '../../../src/Engine/Engine';
 import { BeatData, ChapterData, CharacterData, CharacterTemplateData, SceneData } from '../../unit/FakeData/TestData';
 
-describe(`playing through the test data without save data`, () => {
+describe(`
+	playing through the test data without save data
+	saving data, restarting, and reloading
+`, () => {
 	const saveFunction = jest.fn(() => Promise.resolve());
 	const engine = new Engine({
 		findChapterData: () => Promise.resolve(ChapterData),
