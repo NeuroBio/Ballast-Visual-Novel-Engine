@@ -5,6 +5,8 @@
 	"javascript.validate.enable": false,
 	"eslint.validate": ["javascript", "typsecript"],
 	"cSpell.words": [
+		"firsto",
+		"seconda",
 		"tseslint"
 	],
 }

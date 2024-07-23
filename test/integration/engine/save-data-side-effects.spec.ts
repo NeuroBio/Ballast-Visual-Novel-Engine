@@ -212,11 +212,40 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 		});
 	});
-	it(`save data excludes removed item`, async () => {
+	it(`save data includes the two memories`, async () => {
 		await engine.save();
 		const character = currentSave.characters.find((x) => x.key === beatData[5].addedMemories![0].character);
-		character?.memories.push(...beatData[5].addedMemories!.map(x => x.memory));
+		character!.memories.push(...beatData[5].addedMemories!.map(x => x.memory));
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
-	// still have 7 + 8 todo
+	it(`plays the seventh beat that removes a memory`, () => {
+		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(start);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[6].defaultBehavior!.nextBeat,
+			text: beatData[6].defaultBehavior!.text,
+			speaker: NARRATOR,
+		});
+	});
+	it(`save data excludes removed memory`, async () => {
+		await engine.save();
+		const character = currentSave.characters.find((x) => x.key === beatData[6].removedMemories![0].character);
+		character!.memories = character!.memories.filter((x => x !== beatData[6].removedMemories![0].memory));
+		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
+	});
+	it(`plays the eighth beat that changes a character trait`, () => {
+		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(start);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[7].defaultBehavior!.nextBeat,
+			text: beatData[7].defaultBehavior!.text,
+			speaker: NARRATOR,
+		});
+	});
+	it(`save data respects character trait changes`, async () => {
+		await engine.save();
+		const character = currentSave.characters.find((x) => x.key === beatData[7].updatedCharacterTraits![0].character);
+		character!.traits[beatData[7].updatedCharacterTraits![0].trait] = beatData[7].updatedCharacterTraits![0].change;
+		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
+	});
 });
