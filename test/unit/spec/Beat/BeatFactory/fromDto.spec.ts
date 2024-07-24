@@ -10,6 +10,7 @@ import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
 describe('BeatFactory.fromDto', () => {
 	const Error = Object.freeze({
 		NON_BEAT: 'Received malformed beat data for beatKey.  See the documentation for expected shapes for different beat types.',
+		SIDE_EFFECTS_BAD: 'Received malformed display side effect data for beatKey.  See the documentation for expected shapes for side effects.',
 	});
 	describe(`received invalid dto`, () => {
 		it(`throws error`, () => {
@@ -863,6 +864,121 @@ describe('BeatFactory.fromDto', () => {
 				},
 			});
 			expect(result instanceof MultiResponseBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto without choices without a character and with default behavior
+		with valid data for all display side effects
+	`, () => {
+		it(`returns a Simple Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					setBackground: 'background',
+					updateCharacterSprites: [{
+						character: 'char',
+						sprite: 'emotion',
+					}],
+					moveCharacters: [{
+						character: 'char',
+						newPosition: 0,
+					}],
+					removeCharacters: [{ character: 'char' }],
+					addCharacters: [{
+						character: 'char',
+						position: 0,
+						sprite: 'emotion',
+					}],
+				},
+			});
+			expect(result instanceof SimpleBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto without choices without a character and with default behavior
+		with invalid data for background display side effect
+		`, () => {
+		it(`throws an error`, () => {
+			const beatFactory = new BeatFactory();
+			expect(() => beatFactory.fromDto({
+				key: 'beatKey',
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					setBackground: '',
+				},
+			})).toThrow(Error.SIDE_EFFECTS_BAD);
+		});
+	});
+	describe(`
+		received dto without choices without a character and with default behavior
+		with invalid data for update character sprites display side effect
+		`, () => {
+		it(`returns a Simple Beat`, () => {
+			const beatFactory = new BeatFactory();
+			expect(() => beatFactory.fromDto({
+				key: 'beatKey',
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					// @ts-expect-error intentionally passing bad data
+					updateCharacterSprites: [{}],
+				},
+			})).toThrow(Error.SIDE_EFFECTS_BAD);
+		});
+	});
+	describe(`
+		received dto without choices without a character and with default behavior
+		with invalid data for move characters display side effect
+		`, () => {
+		it(`returns a Simple Beat`, () => {
+			const beatFactory = new BeatFactory();
+			expect(() => beatFactory.fromDto({
+				key: 'beatKey',
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					// @ts-expect-error intentionally passing bad data
+					moveCharacters: [{}],
+				},
+			})).toThrow(Error.SIDE_EFFECTS_BAD);
+		});
+	});
+	describe(`
+		received dto without choices without a character and with default behavior
+		with invalid data for remove characters display side effect
+		`, () => {
+		it(`returns a Simple Beat`, () => {
+			const beatFactory = new BeatFactory();
+			expect(() => beatFactory.fromDto({
+				key: 'beatKey',
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					// @ts-expect-error intentionally passing bad data
+					removeCharacters: [{}],
+				},
+			})).toThrow(Error.SIDE_EFFECTS_BAD);
+		});
+	});
+	describe(`
+		received dto without choices without a character and with default behavior
+		with invalid data for add characters display side effect
+		`, () => {
+		it(`returns a Simple Beat`, () => {
+			const beatFactory = new BeatFactory();
+			expect(() => beatFactory.fromDto({
+				key: 'beatKey',
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					// @ts-expect-error intentionally passing bad data
+					addCharacters: [{}],
+				},
+			})).toThrow(Error.SIDE_EFFECTS_BAD);
 		});
 	});
 });

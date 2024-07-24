@@ -348,16 +348,16 @@ Side effects are any save data changes or display changes a beat results in.  Al
 ```typescript
 {
 	setBackground: string;
-	updateCharacterSprite: [{
+	updateCharacterSprites: [{
 		character: string,
 		sprite: string,
 	}];
-	moveCharacter: [{
+	moveCharacters: [{
 		character: string,
 		newPosition: number
 	}];
-	removeCharacter: [{ character: string }];
-	addCharacter: [{
+	removeCharacters: [{ character: string }];
+	addCharacters: [{
 		character: string,
 		position: number,
 		sprite: string

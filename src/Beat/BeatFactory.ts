@@ -60,7 +60,7 @@ interface Choice {
 	SceneUpdates?: SceneUpdates;
 }
 
-interface Branch {
+interface Branch extends DisplaySideEffects {
 	text: string;
 	character?: string,
 	nextBeat: string;
@@ -68,7 +68,7 @@ interface Branch {
 	SceneUpdates?: SceneUpdates;
 }
 
-interface BestFitBranch {
+interface BestFitBranch extends DisplaySideEffects {
 	text: string;
 	character: string,
 	nextBeat: string;
@@ -76,7 +76,7 @@ interface BestFitBranch {
 	SceneUpdates?: SceneUpdates;
 }
 
-interface Response {
+interface Response extends DisplaySideEffects {
 	text: string,
 	character?: string,
 	nextBeat?: string;
@@ -84,7 +84,7 @@ interface Response {
 	SceneUpdates?: SceneUpdates
 }
 
-export interface DefaultBehavior {
+export interface DefaultBehavior extends DisplaySideEffects {
 	text: string;
 	character?: string;
 	nextBeat?: string;
@@ -97,6 +97,24 @@ interface SceneUpdates {
 	moveCharacter?: { character: string, newPosition: number }[];
 	removeCharacter?: { character: string }[];
 	addCharacter?: { character: string, position: number, sprite: string }[];
+}
+
+export interface DisplaySideEffects {
+	setBackground?: string;
+	updateCharacterSprites?: [{
+		character: string,
+		sprite: string,
+	}];
+	moveCharacters?: [{
+		character: string,
+		newPosition: number
+	}];
+	removeCharacters?: [{ character: string }];
+	addCharacters?: [{
+		character: string,
+		position: number,
+		sprite: string
+	}];
 }
 export interface SharedBeatParams {
 	key: string;
@@ -118,33 +136,43 @@ export interface BeatDto extends SharedBeatParams {
 	responses?: Response[]
 }
 
+interface DefaultBehaviorStandard extends DisplaySideEffects{
+	text: string;
+	character?: string;
+	nextBeat: string;
+}
+
+interface DefaultBehaviorFinal extends DisplaySideEffects{
+	text: string;
+	character?: string;
+}
 interface SimpleBeatParams extends SharedBeatParams {
-	defaultBehavior: { nextBeat: string, text: string, character?: string };
+	defaultBehavior: DefaultBehaviorStandard;
 }
 
 interface FinalBeatParams extends SharedBeatParams {
-	defaultBehavior: { text: string, character?: string };
+	defaultBehavior: DefaultBehaviorFinal;
 }
 
 interface ChoiceBeatParams extends SharedBeatParams {
 	choices: Choice[];
-	defaultBehavior?: { text: string, character?: string, nextBeat: string };
+	defaultBehavior?: DefaultBehaviorStandard;
 }
 
 interface FirstFitBranchBeatParams extends SharedBeatParams {
 	branches: BestFitBranch[];
-	defaultBehavior: { text: string, character?: string, nextBeat: string };
+	defaultBehavior: DefaultBehaviorStandard;
 }
 
 interface BestFitBranchBeatParams extends SharedBeatParams {
 	branches: BestFitBranch[];
 	crossBranchCondition: TraitMaxMinCondition;
-	defaultBehavior?: { text: string, character?: string, nextBeat: string };
+	defaultBehavior?: DefaultBehaviorStandard;
 }
 
 interface MultiResponseBeatParams extends SharedBeatParams {
 	responses: Response[];
-	defaultBehavior: { text: string, character?: string, nextBeat: string };
+	defaultBehavior: DefaultBehaviorStandard;
 }
 
 export class BeatFactory {
@@ -343,6 +371,8 @@ export class BeatFactory {
 			return false;
 		}
 
+		this.#validateSideEffects(dto.key, dto.defaultBehavior);
+
 		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 	}
 
@@ -424,5 +454,62 @@ export class BeatFactory {
 		}
 
 		return true;
+	}
+
+	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+	#validateSideEffects (key: string, data: any): boolean {
+		const errorMessage = `Received malformed display side effect data for ${key}.  See the documentation for expected shapes for side effects.`;
+
+		if (Object.hasOwn(data, 'setBackground')) {
+			if (!data.setBackground) {
+				throw new Error(errorMessage);
+			}
+		}
+
+		if (Object.hasOwn(data, 'updateCharacterSprites')) {
+			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+			data.updateCharacterSprites.forEach((x: any) => {
+				if (!x.character || !x.sprite) {
+					throw new Error(errorMessage);
+				}
+			});
+		}
+
+		if (Object.hasOwn(data, 'moveCharacters')) {
+			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+			data.moveCharacters.forEach((x: any) => {
+				if (!x.character || !_isInt(x.newPosition)) {
+					throw new Error(errorMessage);
+				}
+			});
+		}
+
+		if (Object.hasOwn(data, 'removeCharacters')) {
+			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+			data.removeCharacters.forEach((x: any) => {
+				if (!x.character) {
+					throw new Error(errorMessage);
+				}
+			});
+		}
+
+		if (Object.hasOwn(data, 'addCharacters')) {
+			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+			data.addCharacters.forEach((x: any) => {
+				if (!x.character || !x.sprite || !_isInt(x.position)) {
+					throw new Error(errorMessage);
+				}
+			});
+		}
+		return true;
+
+		/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+		function _isInt (data: any): boolean {
+			if (!data && data !== 0) {
+				return false;
+			}
+
+			return data % 1 === 0;
+		}
 	}
 }

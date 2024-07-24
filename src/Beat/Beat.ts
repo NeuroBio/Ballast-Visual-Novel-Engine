@@ -1,10 +1,10 @@
 import { Character } from '../Character/Character';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
-import { SharedBeatParams } from './BeatFactory';
+import { DisplaySideEffects, SharedBeatParams } from './BeatFactory';
 
 export const NARRATOR = 'Narrator';
 
-export interface StandardBeatDisplay {
+export interface StandardBeatDisplay extends DisplaySideEffects {
 	speaker?: string;
 	text: string;
 	nextBeat: string;
@@ -14,7 +14,7 @@ export interface ChoiceBeatDisplay {
 	choices: StandardBeatDisplay[];
 }
 
-export interface FinalBeatDisplay {
+export interface FinalBeatDisplay extends DisplaySideEffects {
 	speaker: string;
 	text: string;
 }
@@ -115,11 +115,12 @@ export abstract class Beat {
 			character,
 			characters,
 		});
-		return {
+		const display = {
 			speaker: characterName,
 			text,
 			nextBeat,
-			// add side effects
 		};
+
+		return display;
 	}
 }
