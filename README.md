@@ -46,25 +46,35 @@ i.e. things the engine provides an interface for, but requires an implementation
 
 ## Save Data
 - Active Chapters
-	- a keyed dictionary of chapter key: queued chapter
 	- the queued chapter will be equivalent to the engine's current chapter most of the time
-		- the two disconnect when a final beat dictates what the next scene should be
+	- the two disconnect when a final beat dictates what the next scene should be
 	- Once a chapter is complete, it is removed from Active Chapters and moves to Completed Chapters
-- Completed Chapters
-	- array of chapter keys
-- Unlocked Chapters
-	- array of chapter keys
 - Characters
-	- array of character data
-		- memories: key for a specific beat; allows referencing events across chapters
-			- e.g: you helped a character, so they can bring that up later (or act differently if you if not help)
-		- traits: dict of a "trait" and it's numeric value (e.g. like: .324)
-			- references across chapters to affect general responses, display sprite sets, or relationship-driven branches
+	- memories: key for a specific beat; allows referencing events across chapters
+		- e.g: you helped a character, so they can bring that up later (or act differently if you if not help)
+	- traits: dict of "traits" and their numeric values (e.g. `like: .324`)
+		- referenced across chapters to affect general responses, display sprite sets, or relationship-driven branches
+	- Characters are always checked against the game data.
+		- If a character in the game dat is missing from the dave data, it is added to the save data.
+		- Once a character is in the save data, the game data cannot overwrite it
 - Inventory
-	- dict of item keys + qty
 	- Items are mostly for use in PnC parts of a game, but this allows items to be gained/lost in conversation
-- Achievements
-	- array of achievement keys
+
+```typescript
+{
+	activeChapters: { [chapterKey: string]: string };
+	unlockedChapters: string[];
+	completedChapters: string[];
+	inventory: { [itemKey: string]: number };
+	achievements: string[];
+	characters: [{
+		name: string;
+		key: string;
+		traits: { [key:string]: number };
+		memories: string[];
+	}];
+}
+```
 
 
 ## Beats
