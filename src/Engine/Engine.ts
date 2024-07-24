@@ -1,4 +1,4 @@
-import { Beat } from '../Beat/Beat';
+import { Beat, ChoiceBeatDisplay, FinalBeatDisplay, StandardBeatDisplay } from '../Beat/Beat';
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
 import { CharacterTemplate, CharacterTemplateFinder } from '../Character/CharacterTemplateFinder';
@@ -33,6 +33,11 @@ interface getChaptersParams {
 	excludeUnlocked?: boolean;
 }
 
+interface SceneState {
+	characters: Set<string>;
+}
+
+type DisplayData = StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
 export class Engine {
 	#chapterFinder: ChapterFinder;
 	#sceneFinder: SceneFinder;
@@ -43,6 +48,7 @@ export class Engine {
 	#currentSave: SavedData;
 	#currentChapter: Chapter;
 	#currentScene: Scene;
+	#sceneState: SceneState;
 
 	constructor (params: EngineParams) {
 		const { findChapterData, findSceneData, findSavedData, findCharacterData,
@@ -58,19 +64,19 @@ export class Engine {
 		});
 	}
 
-	async loadSavedData () {
+	async loadSavedData (): Promise<void> {
 		const latestSaveData = await this.#savedDataRepo.findOrCreate();
 		const characterTemplates = await this.#characterTemplateFinder.all();
 		latestSaveData.addMissingCharacters(characterTemplates);
 		this.#refreshSave(latestSaveData);
 	}
 
-	#refreshSave (latestSaveData: SavedData) {
+	#refreshSave (latestSaveData: SavedData): void {
 		this.#originalSave = latestSaveData;
 		this.#currentSave = this.#originalSave.clone();
 	}
 
-	async getChapters (params: getChaptersParams = {}) {
+	async getChapters (params: getChaptersParams = {}): Promise<Chapter[]> {
 		const { excludeLocked, excludeUnlocked } = params;
 
 		if (!this.#currentSave) {
@@ -92,7 +98,7 @@ export class Engine {
 		return chapters;
 	}
 
-	async startChapter (params: LoadChapterParams) {
+	async startChapter (params: LoadChapterParams): Promise<DisplayData> {
 		const { chapterKey } = params;
 
 		if (!this.#currentSave) {
@@ -103,16 +109,15 @@ export class Engine {
 
 		const sceneKey = this.#currentChapter.start();
 		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
+		// needs a find scene else throw
 		this.#currentSave.startNewChapter({
 			chapterKey: this.#currentChapter.key,
 			sceneKey: this.#currentScene.key,
 		});
+		this.#clearSceneState();
 		const beat = this.#currentScene.start();
-		this.#applySaveDataSideEffects(beat);
-		return beat.play({
-			characters: this.#currentSave.characters,
-			inventory: this.#currentSave.inventory,
-		});
+
+		return this.#playBeat(beat);
 	}
 
 	async #findChapterElseThrow (chapterKey: string): Promise<Chapter> {
@@ -127,22 +132,17 @@ export class Engine {
 		return chapter;
 	}
 
-	advanceScene (params: AdvanceSceneParams) {
+	advanceScene (params: AdvanceSceneParams): DisplayData {
 		if (!this.#currentScene) {
 			throw new Error('You cannot call advance scene prior to starting a chapter.');
 		}
 
 		const { beatKey } = params;
 		const beat = this.#currentScene.next(beatKey);
-
-		this.#applySaveDataSideEffects(beat);
-		return beat.play({
-			characters: this.#currentSave.characters,
-			inventory: this.#currentSave.inventory,
-		});
+		return this.#playBeat(beat);
 	}
 
-	#applySaveDataSideEffects (beat: Beat) {
+	#applySaveDataSideEffects (beat: Beat): void {
 		beat.queuedScenes.forEach(x => this.#currentSave.queueScene(x));
 		beat.unlockedChapters.forEach(x => this.#currentSave.unlockChapter(x));
 		beat.unlockedAchievements.forEach(x => this.#currentSave.unlockAchievement(x));
@@ -153,20 +153,19 @@ export class Engine {
 		beat.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
 	}
 
-	restartScene () {
+	restartScene (): DisplayData {
+		this.#clearSceneState();
 		this.#currentSave = this.#originalSave.clone();
 		this.#currentSave.startNewChapter({
 			chapterKey: this.#currentChapter.key,
 			sceneKey: this.#currentScene.key,
 		});
+
 		const beat = this.#currentScene.start();
-		return beat.play({
-			characters: this.#currentSave.characters,
-			inventory: this.#currentSave.inventory,
-		});
+		return this.#playBeat(beat);
 	}
 
-	async completeScene () {
+	async completeScene (): Promise<void> {
 		if (!this.#currentScene) {
 			throw new Error('You cannot call complete scene prior to starting a chapter.');
 		}
@@ -182,9 +181,44 @@ export class Engine {
 
 		await this.#savedDataRepo.autosave(this.#currentSave);
 		this.#refreshSave(this.#currentSave);
+		this.#clearSceneState();
 	}
 
-	async save () {
+	#playBeat (beat: Beat): DisplayData {
+		this.#applySaveDataSideEffects(beat);
+		const result = beat.play({
+			characters: this.#currentSave.characters,
+			inventory: this.#currentSave.inventory,
+			scene: this.#sceneState,
+		});
+		this.#updateSceneState(result);
+		return result;
+	}
+
+	#clearSceneState (): void {
+		this.#sceneState = { characters: new Set() };
+	}
+
+	#updateSceneState (display: DisplayData): void {
+		if (!_canAffectDisplayData(display)) {
+			return;
+		}
+
+		if (display.addCharacters) {
+			display.addCharacters.forEach((x) =>
+				this.#sceneState.characters.add(x.character));
+		}
+		if (display.removeCharacters) {
+			display.removeCharacters.forEach((x) =>
+				this.#sceneState.characters.delete(x.character));
+		}
+
+		function _canAffectDisplayData (display: DisplayData): display is StandardBeatDisplay | FinalBeatDisplay {
+			return (!!display && (Object.hasOwn(display, 'addCharacters') || Object.hasOwn(display, 'removeCharacters')));
+		}
+	}
+
+	async save (): Promise<void> {
 		if (!this.#currentSave) {
 			throw new Error('You cannot save data prior to loading save data.');
 		}

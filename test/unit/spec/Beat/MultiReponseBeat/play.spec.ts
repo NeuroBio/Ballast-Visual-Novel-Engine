@@ -25,7 +25,11 @@ describe(`MultiResponseBeat.play`, () => {
 				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
 			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: response1.beat.text,
 				nextBeat: parentBeatKey,
 				speaker: NARRATOR,
@@ -48,9 +52,17 @@ describe(`MultiResponseBeat.play`, () => {
 				responses: [response1, response2],
 				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
 			});
-			beat.play({ characters: keyedCharacters, inventory: {} });
+			beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: response2.beat.text,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
@@ -74,7 +86,11 @@ describe(`MultiResponseBeat.play`, () => {
 				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
 			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: response1.beat.text,
 				nextBeat: response1.beat.nextBeat,
 				speaker: NARRATOR,
@@ -97,9 +113,17 @@ describe(`MultiResponseBeat.play`, () => {
 				responses: [response1, response2],
 				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
 			});
-			beat.play({ characters: keyedCharacters, inventory: {} });
+			beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: response2.beat.text,
 				nextBeat: response2.beat.nextBeat,
 				speaker: NARRATOR,
@@ -124,7 +148,11 @@ describe(`MultiResponseBeat.play`, () => {
 				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
 			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: response2.beat.text,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
@@ -149,9 +177,17 @@ describe(`MultiResponseBeat.play`, () => {
 				responses: [response1, response2, response3],
 				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
 			});
-			beat.play({ characters: keyedCharacters, inventory: {} });
+			beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: defaultText,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
@@ -176,9 +212,17 @@ describe(`MultiResponseBeat.play`, () => {
 				responses: [response1, response2, response3],
 				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
 			});
-			beat.play({ characters: keyedCharacters, inventory: {} });
+			beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: defaultText,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,

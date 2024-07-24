@@ -13,7 +13,11 @@ describe(`FinalBeat.play`, () => {
 			const text = 'Something a character would say';
 			const key = 'key';
 			const beat = new FinalBeat({ key, text });
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text,
 				speaker: NARRATOR,
 			});
@@ -26,7 +30,11 @@ describe(`FinalBeat.play`, () => {
 			const characterName = CharacterData[0].name;
 			const key = 'key';
 			const beat = new FinalBeat({ key, character: characterKey, text });
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text,
 				speaker: characterName,
 			});

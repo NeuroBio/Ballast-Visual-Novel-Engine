@@ -22,6 +22,7 @@ export interface FinalBeatDisplay extends DisplaySideEffects {
 export interface PlayParams {
 	characters: { [characterKey: string]: Character };
 	inventory: { [itemKey: string]: number };
+	scene: { characters: Set<string> };
 }
 
 interface GetCharacterParams {
@@ -120,6 +121,8 @@ export abstract class Beat {
 			text,
 			nextBeat,
 		};
+		// apply display
+		// update all beats to pass display
 
 		return display;
 	}

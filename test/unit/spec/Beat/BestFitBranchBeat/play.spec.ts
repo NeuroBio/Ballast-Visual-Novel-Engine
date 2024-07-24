@@ -16,7 +16,11 @@ describe(`BestFitBranchBeat.play`, () => {
 					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3' }, conditions: [] },
 				],
 			});
-			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: {},
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: `text2`,
 				nextBeat: 'beat2',
 				speaker: NARRATOR,
@@ -37,7 +41,11 @@ describe(`BestFitBranchBeat.play`, () => {
 					{ beat: { nextBeat: 'beat3', character: 'char1', text: 'text3' }, conditions: [] },
 				],
 			});
-			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: {},
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: `text1`,
 				nextBeat: 'beat1',
 				speaker: NARRATOR,
@@ -60,7 +68,11 @@ describe(`BestFitBranchBeat.play`, () => {
 				],
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
-			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: {},
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: `text2`,
 				nextBeat: 'beat2',
 				speaker: NARRATOR,
@@ -83,7 +95,11 @@ describe(`BestFitBranchBeat.play`, () => {
 				],
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
-			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: {},
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: `text1`,
 				nextBeat: 'beat1',
 				speaker: NARRATOR,
@@ -106,7 +122,11 @@ describe(`BestFitBranchBeat.play`, () => {
 				],
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
-			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: {},
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: `text3`,
 				nextBeat: 'beat3',
 				speaker: NARRATOR,
@@ -129,7 +149,11 @@ describe(`BestFitBranchBeat.play`, () => {
 				],
 				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
 			});
-			expect(beat.play({ characters: {}, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: {},
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: `default`,
 				nextBeat: 'defaultBeat',
 				speaker: NARRATOR,

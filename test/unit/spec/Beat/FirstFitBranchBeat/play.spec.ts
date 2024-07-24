@@ -28,7 +28,11 @@ describe(`FirstFitBranchBeat.play`, () => {
 				defaultBehavior,
 			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: firstBranch.text,
 				nextBeat: firstBranch.nextBeat,
 				speaker: NARRATOR,
@@ -55,7 +59,11 @@ describe(`FirstFitBranchBeat.play`, () => {
 				defaultBehavior,
 			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: secondBranch.text,
 				nextBeat: secondBranch.nextBeat,
 				speaker: NARRATOR,
@@ -82,7 +90,11 @@ describe(`FirstFitBranchBeat.play`, () => {
 				defaultBehavior,
 			});
 
-			expect(beat.play({ characters: keyedCharacters, inventory: {} })).toEqual({
+			expect(beat.play({
+				characters: keyedCharacters,
+				inventory: {},
+				scene: { characters: new Set() },
+			})).toEqual({
 				text: defaultBehavior.text,
 				nextBeat: defaultBehavior.nextBeat,
 				speaker: NARRATOR,
