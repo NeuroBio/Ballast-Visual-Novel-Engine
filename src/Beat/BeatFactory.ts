@@ -116,8 +116,8 @@ export interface DisplaySideEffects {
 		sprite: string
 	}];
 }
-export interface SharedBeatParams {
-	key: string;
+
+export interface SaveDataSideEffectsDto {
 	queuedScenes?: SceneParams[];
 	unlockedChapters?: string[];
 	unlockedAchievements?: string[];
@@ -126,6 +126,10 @@ export interface SharedBeatParams {
 	addedMemories?: MemoryParams[];
 	removedMemories?: MemoryParams[];
 	updatedCharacterTraits?: TraitParams[];
+}
+export interface SharedBeatParams {
+	key: string;
+	saveDataSideEffects?: SaveDataSideEffectsDto;
 }
 
 export interface BeatDto extends SharedBeatParams {
@@ -351,14 +355,16 @@ export class BeatFactory {
 	#setSharedParams (dto: BeatDto): SharedBeatParams {
 		return {
 			key: dto.key,
-			queuedScenes: dto.queuedScenes,
-			unlockedChapters: dto.unlockedChapters,
-			unlockedAchievements: dto.unlockedAchievements,
-			addedItems: dto.addedItems,
-			removedItems: dto.removedItems,
-			addedMemories: dto.addedMemories,
-			removedMemories: dto.removedMemories,
-			updatedCharacterTraits: dto.updatedCharacterTraits,
+			saveDataSideEffects: {
+				queuedScenes: dto.saveDataSideEffects?.queuedScenes,
+				unlockedChapters: dto.saveDataSideEffects?.unlockedChapters,
+				unlockedAchievements: dto.saveDataSideEffects?.unlockedAchievements,
+				addedItems: dto.saveDataSideEffects?.addedItems,
+				removedItems: dto.saveDataSideEffects?.removedItems,
+				addedMemories: dto.saveDataSideEffects?.addedMemories,
+				removedMemories: dto.saveDataSideEffects?.removedMemories,
+				updatedCharacterTraits: dto.saveDataSideEffects?.updatedCharacterTraits,
+			},
 		};
 	}
 

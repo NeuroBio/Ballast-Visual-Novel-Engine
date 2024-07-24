@@ -115,14 +115,16 @@ describe(`Engine.advanceScene`, () => {
 
 		const newBeat = new Fakes.SimpleBeat({
 			key: 'key',
-			queuedScenes,
-			unlockedChapters,
-			unlockedAchievements,
-			addedItems,
-			removedItems,
-			addedMemories,
-			removedMemories,
-			updatedCharacterTraits,
+			saveDataSideEffects: {
+				queuedScenes,
+				unlockedChapters,
+				unlockedAchievements,
+				addedItems,
+				removedItems,
+				addedMemories,
+				removedMemories,
+				updatedCharacterTraits,
+			},
 		});
 		const playResponse = { text: 'result' };
 		let result: any;

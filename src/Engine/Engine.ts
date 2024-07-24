@@ -1,4 +1,4 @@
-import { Beat, ChoiceBeatDisplay, FinalBeatDisplay, StandardBeatDisplay } from '../Beat/Beat';
+import { Beat, ChoiceBeatDisplay, FinalBeatDisplay, SaveDataSideEffects, StandardBeatDisplay } from '../Beat/Beat';
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
 import { CharacterTemplate, CharacterTemplateFinder } from '../Character/CharacterTemplateFinder';
@@ -149,15 +149,15 @@ export class Engine {
 		return this.#playBeat(beat);
 	}
 
-	#applySaveDataSideEffects (beat: Beat): void {
-		beat.queuedScenes.forEach(x => this.#currentSave.queueScene(x));
-		beat.unlockedChapters.forEach(x => this.#currentSave.unlockChapter(x));
-		beat.unlockedAchievements.forEach(x => this.#currentSave.unlockAchievement(x));
-		beat.addedItems.forEach(x => this.#currentSave.addInventoryItem(x));
-		beat.removedItems.forEach(x => this.#currentSave.removeInventoryItem(x));
-		beat.addedMemories.forEach(x => this.#currentSave.addMemoryToCharacter(x));
-		beat.removedMemories.forEach(x => this.#currentSave.removeMemoryFromCharacter(x));
-		beat.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
+	#applySaveDataSideEffects (effects: SaveDataSideEffects): void {
+		effects.queuedScenes.forEach(x => this.#currentSave.queueScene(x));
+		effects.unlockedChapters.forEach(x => this.#currentSave.unlockChapter(x));
+		effects.unlockedAchievements.forEach(x => this.#currentSave.unlockAchievement(x));
+		effects.addedItems.forEach(x => this.#currentSave.addInventoryItem(x));
+		effects.removedItems.forEach(x => this.#currentSave.removeInventoryItem(x));
+		effects.addedMemories.forEach(x => this.#currentSave.addMemoryToCharacter(x));
+		effects.removedMemories.forEach(x => this.#currentSave.removeMemoryFromCharacter(x));
+		effects.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
 	}
 
 	restartScene (): DisplayData {
@@ -192,7 +192,7 @@ export class Engine {
 	}
 
 	#playBeat (beat: Beat): DisplayData {
-		this.#applySaveDataSideEffects(beat);
+		this.#applySaveDataSideEffects(beat.saveDataSideEffects);
 		const result = beat.play({
 			characters: this.#currentSave.characters,
 			inventory: this.#currentSave.inventory,

@@ -47,7 +47,7 @@ describe(`
 	it(`saves save data`, async () => {
 		await engine.save();
 		expect(saveFunction).toHaveBeenCalledWith({
-			achievements: BeatData[1].unlockedAchievements,
+			achievements: BeatData[1].saveDataSideEffects!.unlockedAchievements,
 			activeChapters: { [ChapterData[0].key]: SceneData[0].key },
 			characters: CharacterTemplateData.map(char => ({ ...char, memories: [] })),
 			completedChapters: [],

@@ -19,6 +19,17 @@ export interface FinalBeatDisplay extends DisplaySideEffects {
 	text: string;
 }
 
+export interface SaveDataSideEffects {
+	queuedScenes: SceneParams[];
+	unlockedChapters: string[];
+	unlockedAchievements: string[];
+	addedItems: InventoryItem[];
+	removedItems: InventoryItem[];
+	addedMemories: MemoryParams[];
+	removedMemories: MemoryParams[];
+	updatedCharacterTraits: TraitParams[];
+}
+
 export interface PlayParams {
 	characters: { [characterKey: string]: Character };
 	inventory: { [itemKey: string]: number };
@@ -54,51 +65,32 @@ export abstract class Beat {
 	#updatedCharacterTraits: TraitParams[];
 
 	constructor (params: SharedBeatParams) {
-		const { key, queuedScenes, unlockedChapters, unlockedAchievements,
-			addedItems, removedItems, addedMemories, removedMemories,
-			updatedCharacterTraits } = params;
+		const { key, saveDataSideEffects } = params;
+
 		this.key = key;
-		this.#queuedScenes = queuedScenes || [];
-		this.#unlockedChapters = unlockedChapters || [];
-		this.#unlockedAchievements = unlockedAchievements || [];
-		this.#addedItems = addedItems || [];
-		this.#removedItems = removedItems || [];
-		this.#addedMemories = addedMemories || [];
-		this.#removedMemories = removedMemories || [];
-		this.#updatedCharacterTraits = updatedCharacterTraits || [];
+		this.#queuedScenes = saveDataSideEffects?.queuedScenes || [];
+		this.#unlockedChapters = saveDataSideEffects?.unlockedChapters || [];
+		this.#unlockedAchievements = saveDataSideEffects?.unlockedAchievements || [];
+		this.#addedItems = saveDataSideEffects?.addedItems || [];
+		this.#removedItems = saveDataSideEffects?.removedItems || [];
+		this.#addedMemories = saveDataSideEffects?.addedMemories || [];
+		this.#removedMemories = saveDataSideEffects?.removedMemories || [];
+		this.#updatedCharacterTraits = saveDataSideEffects?.updatedCharacterTraits || [];
 	}
 
-	get queuedScenes (): SceneParams[] {
-		return this.#queuedScenes.map((x) => ({ ...x }));
+	get saveDataSideEffects (): SaveDataSideEffects {
+		return {
+			queuedScenes: this.#queuedScenes.map((x) => ({ ...x })),
+			unlockedChapters: [...this.#unlockedChapters],
+			unlockedAchievements: [...this.#unlockedAchievements],
+			addedItems: this.#addedItems.map((x) => ({ ...x })),
+			removedItems: this.#removedItems.map((x) => ({ ...x })),
+			addedMemories: this.#addedMemories.map((x) => ({ ...x })),
+			removedMemories: this.#removedMemories.map((x) => ({ ...x })),
+			updatedCharacterTraits: this.#updatedCharacterTraits.map((x) => ({ ...x })),
+		};
 	}
 
-	get unlockedChapters (): string[] {
-		return [...this.#unlockedChapters];
-	}
-
-	get unlockedAchievements (): string[] {
-		return [...this.#unlockedAchievements];
-	}
-
-	get addedItems (): InventoryItem[] {
-		return this.#addedItems.map((x) => ({ ...x }));
-	}
-
-	get removedItems (): InventoryItem[] {
-		return this.#removedItems.map((x) => ({ ...x }));
-	}
-
-	get addedMemories (): MemoryParams[] {
-		return this.#addedMemories.map((x) => ({ ...x }));
-	}
-
-	get removedMemories (): MemoryParams[] {
-		return this.#removedMemories.map((x) => ({ ...x }));
-	}
-
-	get updatedCharacterTraits (): TraitParams[] {
-		return this.#updatedCharacterTraits.map((x) => ({ ...x }));
-	}
 
 	abstract play (params: PlayParams): StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
 

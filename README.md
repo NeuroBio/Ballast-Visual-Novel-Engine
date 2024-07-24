@@ -95,8 +95,8 @@ Owns one set of text.  Returns that and the next beat.  There is no real logic h
 		text: string,
 		nextBeat: string,
 		// + display side-effects
-	}
-	// + save side-effects
+	},
+	saveDataSideEffects?: {}, // see below
 }
 ```
 
@@ -120,8 +120,8 @@ Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given mult
 		text: string,
 		nextBeat: string,
 		// + display side-effects
-	}
-	// + save side-effects
+	},
+	saveDataSideEffects?: {}, // see below
 }
 ```
 
@@ -175,7 +175,7 @@ Friend and Friend2 both satisfy greatest friendship cross condition.  However, F
 		// + display side-effects
 	},
 	crossBranchCondition: CrossOptionCondition,
-	// + save side-effects
+	saveDataSideEffects?: {}, // see below
 }
 
 ```
@@ -222,8 +222,8 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 		text: string,
 		nextBeat: string,
 		// + display side-effects
-	}
-	// + save side-effects
+	},
+	saveDataSideEffects?: {}, // see below
 }
 ```
 
@@ -245,8 +245,8 @@ Owns a set of choices.  Can return multiple options, but may not.  Conditional c
 		text: string,
 		nextBeat: string,
 		// + display side-effects
-	}
-	// + save side-effects
+	},
+	saveDataSideEffects?: {}, // see below
 }
 ```
 
@@ -260,8 +260,8 @@ Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  T
 		character?: string,
 		text: string,
 		// + display side-effects
-	}
-	// + save side-effects
+	},
+	saveDataSideEffects?: {}, // see below
 }
 ```
 
@@ -332,40 +332,35 @@ Side effects are any save data changes or display changes a beat results in.  Al
 
 ### Save Data Side Effects
 ```typescript
-queuedScenes: [{
-	chapterKey: string,
-	sceneKey: string,
-}];
-
-unlockedChapters: string[];
-
-unlockedAchievements: string[];
-
-addedItems: [{
-	item: string,
-	quantity: number,
-}];
-
-removedItems: [{
-	item: string,
-	quantity: number,
-}];
-
-addedMemories: [{
-	character: string,
-	memory: string,
-}];
-
-removedMemories: [{
-	character: string,
-	memory: string,
-}];
-
-updatedCharacterTraits: [{
-	character: string,
-	trait: string,
-	change: number,
-}];
+{
+	queuedScenes: [{
+		chapterKey: string,
+		sceneKey: string,
+	}];
+	unlockedChapters: string[];
+	unlockedAchievements: string[];
+	addedItems: [{
+		item: string,
+		quantity: number,
+	}];
+	removedItems: [{
+		item: string,
+		quantity: number,
+	}];
+	addedMemories: [{
+		character: string,
+		memory: string,
+	}];
+	removedMemories: [{
+		character: string,
+		memory: string,
+	}];
+	updatedCharacterTraits: [{
+		character: string,
+		trait: string,
+		change: number,
+	}];
+}
 ```
 
 ### Display Side Effects
