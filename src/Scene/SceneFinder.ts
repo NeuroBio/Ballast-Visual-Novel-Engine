@@ -23,14 +23,14 @@ export class SceneFinder {
 		this.#findData = findData;
 	}
 
-	async byKey (sceneKey: string): Promise<Scene> {
+	async byKey (sceneKey: string): Promise<Scene|void> {
 		if (!this.#cache || !this.#cache[sceneKey]) {
 			await this.#refreshData(sceneKey);
 		}
 
 		const data = this.#cache[sceneKey];
 		if (!data) {
-			throw new Error('Requested scene was not found.');
+			return;
 		}
 
 		const beats = data.beats.reduce((keyed: { [key: string]: Beat}, beat) => {

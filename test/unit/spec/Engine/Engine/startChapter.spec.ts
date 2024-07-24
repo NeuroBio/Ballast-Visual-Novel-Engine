@@ -4,7 +4,8 @@ import { Fakes } from '../../../fakes/index';
 
 fdescribe(`Engine.startChapter`, () => {
 	const Error = Object.freeze({
-		NOT_FOUND: 'Requested chapter was not found.',
+		CHAP_NOT_FOUND: 'Requested chapter was not found.',
+		SCENE_NOT_FOUND: 'Requested scene was not found.',
 	});
 
 	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any,
@@ -35,7 +36,18 @@ fdescribe(`Engine.startChapter`, () => {
 			const engine = await _createEngine();
 			await expect(async () => {
 				await engine.startChapter({ chapterKey });
-			}).rejects.toThrow(Error.NOT_FOUND);
+			}).rejects.toThrow(Error.CHAP_NOT_FOUND);
+		});
+	});
+	describe(`scene is not found`, () => {
+		it(`throws and error`, async () => {
+			const chapterKey = 'noChapter';
+			const engine = await _createEngine();
+			const chapter = new Fakes.Chapter();
+			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
+			await expect(async () => {
+				await engine.startChapter({ chapterKey });
+			}).rejects.toThrow(Error.SCENE_NOT_FOUND);
 		});
 	});
 	describe(`loading valid chapter for the first time`, () => {

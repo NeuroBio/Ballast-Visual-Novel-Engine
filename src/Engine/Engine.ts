@@ -106,17 +106,15 @@ export class Engine {
 		}
 
 		this.#currentChapter = await this.#findChapterElseThrow(chapterKey);
+		this.#currentScene = await this.#findSceneElseThrow(this.#currentChapter.start());
 
-		const sceneKey = this.#currentChapter.start();
-		this.#currentScene = await this.#sceneFinder.byKey(sceneKey);
-		// needs a find scene else throw
 		this.#currentSave.startNewChapter({
 			chapterKey: this.#currentChapter.key,
 			sceneKey: this.#currentScene.key,
 		});
 		this.#clearSceneState();
-		const beat = this.#currentScene.start();
 
+		const beat = this.#currentScene.start();
 		return this.#playBeat(beat);
 	}
 
@@ -128,8 +126,17 @@ export class Engine {
 		}
 
 		chapter.reload(this.#currentSave.getChapterData(chapter.key));
-
 		return chapter;
+	}
+
+	async #findSceneElseThrow (sceneKey: string): Promise<Scene> {
+		const scene = await this.#sceneFinder.byKey(sceneKey);
+
+		if (!scene) {
+			throw new Error('Requested scene was not found.');
+		}
+
+		return scene;
 	}
 
 	advanceScene (params: AdvanceSceneParams): DisplayData {
