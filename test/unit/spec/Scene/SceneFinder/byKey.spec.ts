@@ -5,7 +5,6 @@ import { SceneData } from '../../../FakeData/TestData';
 describe(`SceneFinder.byKey`, () => {
 	const Error = Object.freeze({
 		NOT_FOUND: 'Requested scene was not found.',
-		LOCKED: 'This scene has not yet been unlocked.',
 	});
 
 	describe(`loading a valid scene`, () => {
@@ -18,7 +17,7 @@ describe(`SceneFinder.byKey`, () => {
 			expect(scene instanceof Scene).toBe(true);
 		});
 	});
-	describe(`chapter is not found`, () => {
+	describe(`Scene is not found`, () => {
 		it(`throws an error`, async () => {
 			const sceneKey = 'missingSceneKey';
 			const sceneFinder = new SceneFinder({
@@ -27,23 +26,6 @@ describe(`SceneFinder.byKey`, () => {
 			await expect(async () => {
 				await sceneFinder.byKey(sceneKey);
 			}).rejects.toThrow(Error.NOT_FOUND);
-		});
-	});
-	describe(`chapter is locked`, () => {
-		it(`throws an error`, async () => {
-			const sceneKey = 'lockedSceneKey';
-			const sceneFinder = new SceneFinder({
-				findData: () => Promise.resolve([{
-					name: 'locked scene',
-					key: sceneKey,
-					firstBeatKey: sceneKey,
-					locked: true,
-					beats: [],
-				}]),
-			});
-			await expect(async () => {
-				await sceneFinder.byKey(sceneKey);
-			}).rejects.toThrow(Error.LOCKED);
 		});
 	});
 });

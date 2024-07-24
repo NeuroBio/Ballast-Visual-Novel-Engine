@@ -7,7 +7,6 @@ export interface SceneDto {
 	name: string,
 	key: string,
 	firstBeatKey: string,
-	locked: boolean,
 	beats: BeatDto[],
 }
 
@@ -32,10 +31,6 @@ export class SceneFinder {
 		const data = this.#cache[sceneKey];
 		if (!data) {
 			throw new Error('Requested scene was not found.');
-		}
-
-		if (data.locked) {
-			throw new Error('This scene has not yet been unlocked.');
 		}
 
 		const beats = data.beats.reduce((keyed: { [key: string]: Beat}, beat) => {

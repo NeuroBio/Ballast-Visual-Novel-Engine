@@ -14,7 +14,6 @@ describe(`Scene.isComplete`, () => {
 				firstBeatKey,
 				name: 'Scene Name',
 				key: 'sceneKey',
-				locked: false,
 			});
 			scene.start();
 
@@ -32,7 +31,6 @@ describe(`Scene.isComplete`, () => {
 				firstBeatKey,
 				name: 'Scene Name',
 				key: 'sceneKey',
-				locked: false,
 			});
 			scene.start();
 

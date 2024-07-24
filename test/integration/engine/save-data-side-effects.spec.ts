@@ -94,7 +94,6 @@ describe(`playing beats with save data side effects`, () => {
 	const sceneData: SceneDto[] = [{
 		key: 'leScene',
 		name: 'something occurred!',
-		locked: false,
 		firstBeatKey: beatData[0].key,
 		beats: beatData,
 	}];

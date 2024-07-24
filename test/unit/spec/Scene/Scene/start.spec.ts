@@ -10,7 +10,6 @@ describe(`Scene.start`, () => {
 			firstBeatKey,
 			name: 'Scene Name',
 			key: 'sceneKey',
-			locked: false,
 		});
 		expect(scene.start()).toEqual(firstBeat);
 	});

@@ -1,6 +1,5 @@
 import { BeatDto, CrossConditionType, SingleConditionType } from '../../../src/Beat/BeatFactory';
 import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
-import { CharacterDto } from '../../../src/Character/Character';
 import { CharacterTemplate } from '../../../src/Character/CharacterTemplateFinder';
 import { SavedDataDto } from '../../../src/SavedData/SaveDataRepo';
 import { SceneDto } from '../../../src/Scene/SceneFinder';
@@ -147,14 +146,12 @@ export const SceneData: SceneDto[] = [
 		name: 'scene name',
 		key: 'sceneKey',
 		firstBeatKey: 'firstBeat',
-		locked: false,
 		beats: BeatData,
 	},
 	{
 		name: 'another scene name',
 		key: 'secondSceneKey',
 		firstBeatKey: 'firstBeat',
-		locked: false,
 		beats: BeatData,
 	},
 ];
