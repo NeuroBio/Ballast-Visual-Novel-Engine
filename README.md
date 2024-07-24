@@ -55,7 +55,7 @@ i.e. things the engine provides an interface for, but requires an implementation
 	- traits: dict of "traits" and their numeric values (e.g. `like: .324`)
 		- referenced across chapters to affect general responses, display sprite sets, or relationship-driven branches
 	- Characters are always checked against the game data.
-		- If a character in the game dat is missing from the dave data, it is added to the save data.
+		- If a character in the game data is missing from the dave data, it is added to the save data.
 		- Once a character is in the save data, the game data cannot overwrite it
 - Inventory
 	- Items are mostly for use in PnC parts of a game, but this allows items to be gained/lost in conversation
