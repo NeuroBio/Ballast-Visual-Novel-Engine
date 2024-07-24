@@ -385,6 +385,8 @@ export class BeatFactory {
 			return false;
 		}
 
+		this.#validateSideEffects(dto.key, dto.defaultBehavior);
+
 		return !!(dto.defaultBehavior.text && !dto.defaultBehavior.nextBeat);
 	}
 
@@ -415,9 +417,11 @@ export class BeatFactory {
 			if (!branch.text || !branch.nextBeat || !branch.conditions) {
 				return false;
 			}
+			this.#validateSideEffects(dto.key, dto.defaultBehavior);
 		}
 
 		if (dto.defaultBehavior) {
+			this.#validateSideEffects(dto.key, dto.defaultBehavior);
 			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 		}
 
@@ -433,8 +437,10 @@ export class BeatFactory {
 			if (!response.text) {
 				return false;
 			}
+			this.#validateSideEffects(dto.key, dto.defaultBehavior);
 		}
 
+		this.#validateSideEffects(dto.key, dto.defaultBehavior);
 		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 	}
 

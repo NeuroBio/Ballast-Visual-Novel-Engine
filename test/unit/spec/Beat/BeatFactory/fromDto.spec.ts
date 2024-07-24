@@ -917,7 +917,7 @@ describe('BeatFactory.fromDto', () => {
 		received dto without choices without a character and with default behavior
 		with invalid data for update character sprites display side effect
 		`, () => {
-		it(`returns a Simple Beat`, () => {
+		it(`throws an error`, () => {
 			const beatFactory = new BeatFactory();
 			expect(() => beatFactory.fromDto({
 				key: 'beatKey',
@@ -934,7 +934,7 @@ describe('BeatFactory.fromDto', () => {
 		received dto without choices without a character and with default behavior
 		with invalid data for move characters display side effect
 		`, () => {
-		it(`returns a Simple Beat`, () => {
+		it(`throws an error`, () => {
 			const beatFactory = new BeatFactory();
 			expect(() => beatFactory.fromDto({
 				key: 'beatKey',
@@ -951,7 +951,7 @@ describe('BeatFactory.fromDto', () => {
 		received dto without choices without a character and with default behavior
 		with invalid data for remove characters display side effect
 		`, () => {
-		it(`returns a Simple Beat`, () => {
+		it(`throws an error`, () => {
 			const beatFactory = new BeatFactory();
 			expect(() => beatFactory.fromDto({
 				key: 'beatKey',
@@ -968,7 +968,7 @@ describe('BeatFactory.fromDto', () => {
 		received dto without choices without a character and with default behavior
 		with invalid data for add characters display side effect
 		`, () => {
-		it(`returns a Simple Beat`, () => {
+		it(`throws an error`, () => {
 			const beatFactory = new BeatFactory();
 			expect(() => beatFactory.fromDto({
 				key: 'beatKey',
@@ -979,6 +979,261 @@ describe('BeatFactory.fromDto', () => {
 					addCharacters: [{}],
 				},
 			})).toThrow(Error.SIDE_EFFECTS_BAD);
+		});
+	});
+	describe(`
+		received dto without choices without a character and with default behavior
+		with valid data for all display side effects
+	`, () => {
+		it(`returns a Final Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				defaultBehavior: {
+					text: 'test text',
+					setBackground: 'background',
+					updateCharacterSprites: [{
+						character: 'char',
+						sprite: 'emotion',
+					}],
+					moveCharacters: [{
+						character: 'char',
+						newPosition: 0,
+					}],
+					removeCharacters: [{ character: 'char' }],
+					addCharacters: [{
+						character: 'char',
+						position: 0,
+						sprite: 'emotion',
+					}],
+				},
+			});
+			expect(result instanceof FinalBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with choices without a character and with default behavior
+		with valid data for all display side effects
+	`, () => {
+		it(`returns a Choice Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				choices: [
+					{
+						text: 'text for this choice',
+						nextBeat: 'choice followup beat',
+					},
+					{
+						text: 'text for this other choice',
+						nextBeat: 'other choice followup beat',
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					setBackground: 'background',
+					updateCharacterSprites: [{
+						character: 'char',
+						sprite: 'emotion',
+					}],
+					moveCharacters: [{
+						character: 'char',
+						newPosition: 0,
+					}],
+					removeCharacters: [{ character: 'char' }],
+					addCharacters: [{
+						character: 'char',
+						position: 0,
+						sprite: 'emotion',
+					}],
+				},
+			});
+			expect(result instanceof ChoiceBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with responses without a character and with default behavior
+		with valid data for all display side effects
+	`, () => {
+		it(`returns a Multi Response Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				responses: [
+					{
+						text: 'text 1',
+					},
+					{
+						text: 'text 2',
+						setBackground: 'background',
+						updateCharacterSprites: [{
+							character: 'char',
+							sprite: 'emotion',
+						}],
+						moveCharacters: [{
+							character: 'char',
+							newPosition: 0,
+						}],
+						removeCharacters: [{ character: 'char' }],
+						addCharacters: [{
+							character: 'char',
+							position: 0,
+							sprite: 'emotion',
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					setBackground: 'background',
+					updateCharacterSprites: [{
+						character: 'char',
+						sprite: 'emotion',
+					}],
+					moveCharacters: [{
+						character: 'char',
+						newPosition: 0,
+					}],
+					removeCharacters: [{ character: 'char' }],
+					addCharacters: [{
+						character: 'char',
+						position: 0,
+						sprite: 'emotion',
+					}],
+				},
+			});
+			expect(result instanceof MultiResponseBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with branches and cross condition without a character and with default behavior
+		with valid data for all display side effects
+	`, () => {
+		it(`returns a Best Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					type: CrossConditionType.GREATEST_SENTIMENT,
+					trait: 'something',
+				},
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						character: '1',
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						character: '2',
+						setBackground: 'background',
+						updateCharacterSprites: [{
+							character: 'char',
+							sprite: 'emotion',
+						}],
+						moveCharacters: [{
+							character: 'char',
+							newPosition: 0,
+						}],
+						removeCharacters: [{ character: 'char' }],
+						addCharacters: [{
+							character: 'char',
+							position: 0,
+							sprite: 'emotion',
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					setBackground: 'background',
+					updateCharacterSprites: [{
+						character: 'char',
+						sprite: 'emotion',
+					}],
+					moveCharacters: [{
+						character: 'char',
+						newPosition: 0,
+					}],
+					removeCharacters: [{ character: 'char' }],
+					addCharacters: [{
+						character: 'char',
+						position: 0,
+						sprite: 'emotion',
+					}],
+				},
+			});
+			expect(result instanceof BestFitBranchBeat).toBe(true);
+		});
+	});
+	describe(`
+		received dto with branches without a character and with default behavior
+		with valid data for all display side effects
+	`, () => {
+		it(`returns a First Fit Branch Beat`, () => {
+			const beatFactory = new BeatFactory();
+			const result = beatFactory.fromDto({
+				key: 'beatKey',
+				branches: [
+					{
+						text: 'text 1',
+						nextBeat: 'beat 1',
+						conditions: [{
+							type: SingleConditionType.CHARACTER_UNAWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+						character: '1',
+					},
+					{
+						text: 'text 2',
+						nextBeat: 'beat 2',
+						conditions: [{
+							type: SingleConditionType.CHARACTER_UNAWARE,
+							character: 'character',
+							memory: 'mem',
+						}],
+						character: '2',
+						setBackground: 'background',
+						updateCharacterSprites: [{
+							character: 'char',
+							sprite: 'emotion',
+						}],
+						moveCharacters: [{
+							character: 'char',
+							newPosition: 0,
+						}],
+						removeCharacters: [{ character: 'char' }],
+						addCharacters: [{
+							character: 'char',
+							position: 0,
+							sprite: 'emotion',
+						}],
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					setBackground: 'background',
+					updateCharacterSprites: [{
+						character: 'char',
+						sprite: 'emotion',
+					}],
+					moveCharacters: [{
+						character: 'char',
+						newPosition: 0,
+					}],
+					removeCharacters: [{ character: 'char' }],
+					addCharacters: [{
+						character: 'char',
+						position: 0,
+						sprite: 'emotion',
+					}],
+				},
+			});
+			expect(result instanceof FirstFitBranchBeat).toBe(true);
 		});
 	});
 });
