@@ -35,7 +35,7 @@ interface DisplayParams {
 	nextBeat: string;
 }
 
-interface AssembleStandardBeatDisplayParams {
+interface AssembleStandardBeatDisplayParams extends DisplaySideEffects {
 	characters: { [characterKey: string]: Character };
 	beat: DisplayParams;
 }

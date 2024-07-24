@@ -84,8 +84,9 @@ Owns one set of text.  Returns that and the next beat.  There is no real logic h
 		character?: string,
 		text: string,
 		nextBeat: string,
+		// + display side-effects
 	}
-	// + side-effects
+	// + save side-effects
 }
 ```
 
@@ -101,14 +102,16 @@ Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given mult
 			text: string,
 			nextBeat: string,
 			conditions: SingleOptionCondition[], // min 1
+			// + display side-effects
 		}
 	],
 	defaultBehavior: {
 		character?: string,
 		text: string,
 		nextBeat: string,
+		// + display side-effects
 	}
-	// + side-effects
+	// + save side-effects
 }
 ```
 
@@ -152,15 +155,17 @@ Friend and Friend2 both satisfy greatest friendship cross condition.  However, F
 			text: string,
 			nextBeat: string,
 			conditions: SingleOptionCondition[],
+			// + display side-effects
 		}
 	],
 	defaultBehavior?: { // required when all choices are conditional
 		character?: string,
 		text: string,
 		nextBeat: string,
+		// + display side-effects
 	}
 	crossBranchCondition: CrossOptionCondition,
-	// + side-effects
+	// + save side-effects
 }
 
 ```
@@ -199,14 +204,16 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 			nextBeat?: string,
 			character?: string,
 			conditions?: SingleOptionCondition[],
+			// + display side-effects
 		}
 	],
 	defaultBehavior: {
 		character?: string,
 		text: string,
 		nextBeat: string,
+		// + display side-effects
 	}
-	// + side-effects
+	// + save side-effects
 }
 ```
 
@@ -227,8 +234,9 @@ Owns a set of choices.  Can return multiple options, but may not.  Conditional c
 		character?: string,
 		text: string,
 		nextBeat: string,
+		// + display side-effects
 	}
-	// + side-effects
+	// + save side-effects
 }
 ```
 
@@ -241,8 +249,9 @@ Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  T
 	defaultBehavior: {
 		character?: string,
 		text: string,
+		// + display side-effects
 	}
-	// + side-effects
+	// + save side-effects
 }
 ```
 
@@ -313,56 +322,63 @@ Side effects are any save data changes or display changes a beat results in.  Al
 
 ### Save Data Side Effects
 ```typescript
-{
-	queuedScenes: [{
-		chapterKey: string,
-		sceneKey: string,
-	}],
-	unlockedChapters: string[],
-	unlockedAchievements: string[],
-	addedItems: [{
-		item: string,
-		quantity: number,
-	}],
-	removedItems: [{
-		item: string,
-		quantity: number,
-	}],
-	addedMemories: [{
-		character: string,
-		memory: string,
-	}],
-	removedMemories: [{
-		character: string,
-		memory: string,
-	}],
-	updatedCharacterTraits: [{
-		character: string,
-		trait: string,
-		change: number,
-	}];
-}
+queuedScenes: [{
+	chapterKey: string,
+	sceneKey: string,
+}];
+
+unlockedChapters: string[];
+
+unlockedAchievements: string[];
+
+addedItems: [{
+	item: string,
+	quantity: number,
+}];
+
+removedItems: [{
+	item: string,
+	quantity: number,
+}];
+
+addedMemories: [{
+	character: string,
+	memory: string,
+}];
+
+removedMemories: [{
+	character: string,
+	memory: string,
+}];
+
+updatedCharacterTraits: [{
+	character: string,
+	trait: string,
+	change: number,
+}];
 ```
 
 ### Display Side Effects
 ```typescript
-{
-	setBackground: string;
-	updateCharacterSprites: [{
-		character: string,
-		sprite: string,
-	}];
-	moveCharacters: [{
-		character: string,
-		newPosition: number
-	}];
-	removeCharacters: [{ character: string }];
-	addCharacters: [{
-		character: string,
-		position: number,
-		sprite: string
-	}];
-}
+setBackground: string;
+
+updateCharacterSprites: [{
+	character: string,
+	sprite: string,
+}];
+
+moveCharacters: [{
+	character: string,
+	newPosition: number
+}];
+
+removeCharacters: [{ character: string }];
+
+addCharacters: [{
+	character: string,
+	position: number,
+	sprite: string
+}];
 ```
 Listed in order of how the sister UI package will apply changes.  The engine also keeps track of added and removed characters for conditions but nothing else.  Edge cases like "What if I want to display the same character multiple times?" are a UI problem.  The Beats are more than happy to hold duplicate or even conflicting data however.
 
