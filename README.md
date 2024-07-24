@@ -62,17 +62,17 @@ i.e. things the engine provides an interface for, but requires an implementation
 
 ```typescript
 {
-	activeChapters: { [chapterKey: string]: string };
-	unlockedChapters: string[];
-	completedChapters: string[];
-	inventory: { [itemKey: string]: number };
-	achievements: string[];
+	activeChapters: { [chapterKey: string]: string },
+	unlockedChapters: string[],
+	completedChapters: string[],
+	inventory: { [itemKey: string]: number },
+	achievements: string[],
 	characters: [{
-		name: string;
-		key: string;
-		traits: { [key:string]: number };
-		memories: string[];
-	}];
+		name: string,
+		key: string,
+		traits: { [key:string]: number },
+		memories: string[],
+	}],
 }
 ```
 
@@ -173,7 +173,7 @@ Friend and Friend2 both satisfy greatest friendship cross condition.  However, F
 		text: string,
 		nextBeat: string,
 		// + display side-effects
-	}
+	},
 	crossBranchCondition: CrossOptionCondition,
 	// + save side-effects
 }
