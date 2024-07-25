@@ -140,6 +140,16 @@ describe(`playing beats with save data side effects`, () => {
 		saveSavedData,
 	});
 	let priorResult: any;
+	const defaultSaveData = {
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	};
 	const currentSave = { ...savedData, characters: characterData.map((x) => ({ ...x, memories: [] as string[] })) };
 	const result = {
 		get: () => priorResult,
@@ -155,6 +165,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[0].defaultBehavior!.nextBeat,
 			text: beatData[0].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				unlockedChapters: beatData[0].saveDataSideEffects!.unlockedChapters,
+			},
 		});
 	});
 	it(`save data includes the unlocked chapter`, async () => {
@@ -169,6 +183,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[1].defaultBehavior!.nextBeat,
 			text: beatData[1].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				unlockedAchievements: beatData[1].saveDataSideEffects!.unlockedAchievements,
+			},
 		});
 	});
 	it(`save data includes the unlocked achievement`, async () => {
@@ -183,6 +201,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[2].defaultBehavior!.nextBeat,
 			text: beatData[2].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				queuedScenes: beatData[2].saveDataSideEffects!.queuedScenes,
+			},
 		});
 	});
 	it(`save data includes the queued scene`, async () => {
@@ -197,6 +219,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[3].defaultBehavior!.nextBeat,
 			text: beatData[3].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				addedItems: beatData[3].saveDataSideEffects!.addedItems,
+			},
 		});
 	});
 	it(`save data includes added item`, async () => {
@@ -211,6 +237,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[4].defaultBehavior!.nextBeat,
 			text: beatData[4].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				removedItems: beatData[4].saveDataSideEffects!.removedItems,
+			},
 		});
 	});
 	it(`save data excludes removed item`, async () => {
@@ -225,6 +255,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[5].defaultBehavior!.nextBeat,
 			text: beatData[5].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				addedMemories: beatData[5].saveDataSideEffects!.addedMemories,
+			},
 		});
 	});
 	it(`save data includes the two memories`, async () => {
@@ -240,6 +274,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[6].defaultBehavior!.nextBeat,
 			text: beatData[6].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				removedMemories: beatData[6].saveDataSideEffects!.removedMemories,
+			},
 		});
 	});
 	it(`save data excludes removed memory`, async () => {
@@ -255,6 +293,10 @@ describe(`playing beats with save data side effects`, () => {
 			nextBeat: beatData[7].defaultBehavior!.nextBeat,
 			text: beatData[7].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: {
+				...defaultSaveData,
+				updatedCharacterTraits: beatData[7].saveDataSideEffects!.updatedCharacterTraits,
+			},
 		});
 	});
 	it(`save data respects character trait changes`, async () => {

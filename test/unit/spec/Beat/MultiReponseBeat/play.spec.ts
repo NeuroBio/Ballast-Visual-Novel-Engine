@@ -33,6 +33,7 @@ describe(`MultiResponseBeat.play`, () => {
 				text: response1.beat.text,
 				nextBeat: parentBeatKey,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -66,6 +67,7 @@ describe(`MultiResponseBeat.play`, () => {
 				text: response2.beat.text,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -94,6 +96,7 @@ describe(`MultiResponseBeat.play`, () => {
 				text: response1.beat.text,
 				nextBeat: response1.beat.nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -127,6 +130,7 @@ describe(`MultiResponseBeat.play`, () => {
 				text: response2.beat.text,
 				nextBeat: response2.beat.nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -156,6 +160,7 @@ describe(`MultiResponseBeat.play`, () => {
 				text: response2.beat.text,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -191,6 +196,7 @@ describe(`MultiResponseBeat.play`, () => {
 				text: defaultText,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -226,6 +232,7 @@ describe(`MultiResponseBeat.play`, () => {
 				text: defaultText,
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});

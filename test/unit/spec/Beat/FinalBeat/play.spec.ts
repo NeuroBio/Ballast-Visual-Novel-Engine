@@ -20,6 +20,7 @@ describe(`FinalBeat.play`, () => {
 			})).toEqual({
 				text,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -37,6 +38,7 @@ describe(`FinalBeat.play`, () => {
 			})).toEqual({
 				text,
 				speaker: characterName,
+				saveData: expect.any(Object),
 			});
 		});
 	});

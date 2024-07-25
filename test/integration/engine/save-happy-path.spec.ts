@@ -33,6 +33,7 @@ describe(`playing through the test data without save data`, () => {
 			nextBeat: BeatData[0].defaultBehavior!.nextBeat,
 			text: BeatData[0].defaultBehavior!.text,
 			speaker: NARRATOR,
+			saveData: expect.any(Object),
 		});
 	});
 });

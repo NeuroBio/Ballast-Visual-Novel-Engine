@@ -36,6 +36,7 @@ describe(`FirstFitBranchBeat.play`, () => {
 				text: firstBranch.text,
 				nextBeat: firstBranch.nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -67,6 +68,7 @@ describe(`FirstFitBranchBeat.play`, () => {
 				text: secondBranch.text,
 				nextBeat: secondBranch.nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -98,6 +100,7 @@ describe(`FirstFitBranchBeat.play`, () => {
 				text: defaultBehavior.text,
 				nextBeat: defaultBehavior.nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});

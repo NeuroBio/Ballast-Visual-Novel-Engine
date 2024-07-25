@@ -24,6 +24,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				text: `text2`,
 				nextBeat: 'beat2',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -49,6 +50,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				text: `text1`,
 				nextBeat: 'beat1',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -76,6 +78,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				text: `text2`,
 				nextBeat: 'beat2',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -103,6 +106,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				text: `text1`,
 				nextBeat: 'beat1',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -130,6 +134,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				text: `text3`,
 				nextBeat: 'beat3',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -157,6 +162,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				text: `default`,
 				nextBeat: 'defaultBeat',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});

@@ -22,6 +22,7 @@ describe(`SimpleBeat.play`, () => {
 				text,
 				nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -41,6 +42,7 @@ describe(`SimpleBeat.play`, () => {
 				text,
 				nextBeat,
 				speaker: characterName,
+				saveData: expect.any(Object),
 			});
 		});
 	});

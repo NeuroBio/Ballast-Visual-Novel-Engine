@@ -1,6 +1,6 @@
 import { Character } from '../Character/Character';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
-import { DisplaySideEffects, SharedBeatParams } from './BeatFactory';
+import { DefaultBehavior, DisplaySideEffects, SharedBeatParams } from './BeatFactory';
 
 export const NARRATOR = 'Narrator';
 
@@ -8,15 +8,18 @@ export interface StandardBeatDisplay extends DisplaySideEffects {
 	speaker?: string;
 	text: string;
 	nextBeat: string;
+	saveData: SaveDataSideEffects;
 }
 
 export interface ChoiceBeatDisplay {
-	choices: StandardBeatDisplay[];
+	choices: DefaultBehavior[];
+	saveData: SaveDataSideEffects;
 }
 
 export interface FinalBeatDisplay extends DisplaySideEffects {
 	speaker: string;
 	text: string;
+	saveData: SaveDataSideEffects;
 }
 
 export interface SaveDataSideEffects {
@@ -79,6 +82,10 @@ export abstract class Beat {
 	}
 
 	get saveDataSideEffects (): SaveDataSideEffects {
+		return this.createSaveDataSideEffects();
+	}
+
+	protected createSaveDataSideEffects (): SaveDataSideEffects {
 		return {
 			queuedScenes: this.#queuedScenes.map((x) => ({ ...x })),
 			unlockedChapters: [...this.#unlockedChapters],
@@ -108,14 +115,14 @@ export abstract class Beat {
 			character,
 			characters,
 		});
-		const display = {
+		const saveData = this.createSaveDataSideEffects();
+		return {
 			speaker: characterName,
 			text,
 			nextBeat,
+			saveData,
 		};
 		// apply display
 		// update all beats to pass display
-
-		return display;
 	}
 }

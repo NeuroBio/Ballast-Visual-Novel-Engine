@@ -21,7 +21,10 @@ describe(`ChoiceBeat.play`, () => {
 				characters: keyedCharacters,
 				inventory: {},
 				scene: { characters: new Set() },
-			})).toEqual({ choices: choices.map(x => x.beat) });
+			})).toEqual({
+				choices: choices.map(x => x.beat),
+				saveData: expect.any(Object),
+			});
 		});
 	});
 	describe(`beat has two choices with a condition and all conditions met`, () => {
@@ -37,7 +40,10 @@ describe(`ChoiceBeat.play`, () => {
 				characters: keyedCharacters,
 				inventory: {},
 				scene: { characters: new Set() },
-			})).toEqual({ choices: choices.map(x => x.beat) });
+			})).toEqual({
+				choices: choices.map(x => x.beat),
+				saveData: expect.any(Object),
+			});
 		});
 	});
 	describe(`beat has two choices with a condition and second condition not met`, () => {
@@ -53,7 +59,10 @@ describe(`ChoiceBeat.play`, () => {
 				characters: keyedCharacters,
 				inventory: {},
 				scene: { characters: new Set() },
-			})).toEqual({ choices: [ choice1.beat, choice3.beat ] });
+			})).toEqual({
+				choices: [ choice1.beat, choice3.beat ],
+				saveData: expect.any(Object),
+			});
 		});
 	});
 	describe(`beat has two choices with conditions and no condition is met`, () => {
@@ -74,6 +83,7 @@ describe(`ChoiceBeat.play`, () => {
 				text: choice3.beat.text,
 				nextBeat: choice3.beat.nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -96,6 +106,7 @@ describe(`ChoiceBeat.play`, () => {
 				text: defaultBehavior.text,
 				nextBeat: defaultBehavior.nextBeat,
 				speaker: CharacterData[0].name,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -111,7 +122,10 @@ describe(`ChoiceBeat.play`, () => {
 				characters: keyedCharacters,
 				inventory: {},
 				scene: { characters: new Set() },
-			})).toEqual({ choices: [choice1.beat, choice2.beat] });
+			})).toEqual({
+				choices: [choice1.beat, choice2.beat],
+				saveData: expect.any(Object),
+			});
 		});
 	});
 	describe(`beat one choice with two conditions and one conditions is unmet`, () => {
@@ -130,6 +144,7 @@ describe(`ChoiceBeat.play`, () => {
 				text: choice2.beat.text,
 				nextBeat: choice2.beat.nextBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});

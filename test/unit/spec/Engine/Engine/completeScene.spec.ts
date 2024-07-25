@@ -1,5 +1,6 @@
 import { Engine } from '../../../../../src/Engine/Engine';
 import { ChapterData, CharacterData, SavedDataData, SceneData } from '../../../FakeData/TestData';
+import { SimpleBeat } from '../../../fakes/Beat';
 import { Fakes } from '../../../fakes/index';
 import { SavedData } from '../../../fakes/SavedData';
 import { Scene } from '../../../fakes/Scene';
@@ -9,7 +10,7 @@ describe(`Engine.completeScene`, () => {
 		NO_SCENE: 'You cannot call complete scene prior to starting a chapter.',
 		TOO_EARLY: 'You cannot call complete scene while the scene is in progress.',
 	});
-	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene,
+	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene, beat: SimpleBeat,
 		characterTemplateFinderFake: any, saveData: SavedData, savedDataRepoFake: any;
 	async function _createEngine (): Promise<Engine> {
 		chapterFinderFake = new Fakes.ChapterFinder();
@@ -17,7 +18,7 @@ describe(`Engine.completeScene`, () => {
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		const chapter = new Fakes.Chapter();
 		scene = new Fakes.Scene();
-		const beat = new Fakes.SimpleBeat({ key: 'key' });
+		beat = new Fakes.SimpleBeat({ key: 'key' });
 		scene.start.mockReturnValueOnce(beat);
 		saveData = new Fakes.SavedData();
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
@@ -49,6 +50,18 @@ describe(`Engine.completeScene`, () => {
 		it(`throws an error`, async () => {
 			const engine = await _createEngine();
 			Object.defineProperty(scene, 'isComplete', { get: jest.fn(() => false) });
+			const saveDataSideEffects = {
+				queuedScenes: [],
+				unlockedChapters: [],
+				unlockedAchievements: [],
+				addedItems: [],
+				removedItems: [],
+				addedMemories: [],
+				removedMemories: [],
+				updatedCharacterTraits: [],
+			};
+			const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
+			beat.play.mockReturnValueOnce(playResponse);
 			await engine.startChapter({ chapterKey: '' });
 			await expect(async () => {
 				await engine.completeScene();
@@ -64,6 +77,18 @@ describe(`Engine.completeScene`, () => {
 			const currentScene = 'currentScene';
 			Object.defineProperty(scene, 'isComplete', { get: jest.fn(() => true) });
 			Object.defineProperty(scene, 'key', { get: jest.fn(() => currentScene) });
+			const saveDataSideEffects = {
+				queuedScenes: [],
+				unlockedChapters: [],
+				unlockedAchievements: [],
+				addedItems: [],
+				removedItems: [],
+				addedMemories: [],
+				removedMemories: [],
+				updatedCharacterTraits: [],
+			};
+			const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
+			beat.play.mockReturnValueOnce(playResponse);
 			saveData.startNewChapter(currentScene);
 			saveData.getQueuedSceneForChapter.mockReturnValueOnce('nextScene');
 			await engine.startChapter({ chapterKey: '' });
@@ -88,6 +113,18 @@ describe(`Engine.completeScene`, () => {
 			const currentScene = 'currentScene';
 			Object.defineProperty(scene, 'isComplete', { get: jest.fn(() => true) });
 			Object.defineProperty(scene, 'key', { get: jest.fn(() => currentScene) });
+			const saveDataSideEffects = {
+				queuedScenes: [],
+				unlockedChapters: [],
+				unlockedAchievements: [],
+				addedItems: [],
+				removedItems: [],
+				addedMemories: [],
+				removedMemories: [],
+				updatedCharacterTraits: [],
+			};
+			const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
+			beat.play.mockReturnValueOnce(playResponse);
 			saveData.startNewChapter(currentScene);
 			saveData.getQueuedSceneForChapter.mockReturnValueOnce('');
 			await engine.startChapter({ chapterKey: '' });
@@ -112,6 +149,18 @@ describe(`Engine.completeScene`, () => {
 			const currentScene = 'currentScene';
 			Object.defineProperty(scene, 'isComplete', { get: jest.fn(() => true) });
 			Object.defineProperty(scene, 'key', { get: jest.fn(() => currentScene) });
+			const saveDataSideEffects = {
+				queuedScenes: [],
+				unlockedChapters: [],
+				unlockedAchievements: [],
+				addedItems: [],
+				removedItems: [],
+				addedMemories: [],
+				removedMemories: [],
+				updatedCharacterTraits: [],
+			};
+			const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
+			beat.play.mockReturnValueOnce(playResponse);
 			saveData.startNewChapter(currentScene);
 			saveData.getQueuedSceneForChapter.mockReturnValueOnce('currentScene');
 			await engine.startChapter({ chapterKey: '' });

@@ -192,12 +192,12 @@ export class Engine {
 	}
 
 	#playBeat (beat: Beat): DisplayData {
-		this.#applySaveDataSideEffects(beat.saveDataSideEffects);
 		const result = beat.play({
 			characters: this.#currentSave.characters,
 			inventory: this.#currentSave.inventory,
 			scene: this.#sceneState,
 		});
+		this.#applySaveDataSideEffects(result.saveData);
 		this.#updateSceneState(result);
 		return result;
 	}

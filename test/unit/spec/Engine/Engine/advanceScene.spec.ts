@@ -15,7 +15,19 @@ describe(`Engine.advanceScene`, () => {
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		const chapter = new Fakes.Chapter();
+		const saveDataSideEffects = {
+			queuedScenes: [],
+			unlockedChapters: [],
+			unlockedAchievements: [],
+			addedItems: [],
+			removedItems: [],
+			addedMemories: [],
+			removedMemories: [],
+			updatedCharacterTraits: [],
+		};
+		const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
 		const beat = new Fakes.SimpleBeat({ key: 'key' });
+		beat.play.mockReturnValueOnce(playResponse);
 		scene = new Fakes.Scene();
 		scene.start.mockReturnValueOnce(beat);
 		chapterFinderFake.byKey.mockReturnValueOnce(chapter);
@@ -61,7 +73,17 @@ describe(`Engine.advanceScene`, () => {
 	describe(`playing a beat with a next beat and no side effects`, () => {
 		const beatKey = 'beatKey';
 		const newBeat = new Fakes.SimpleBeat({ key: 'key' });
-		const playResponse = { text: 'result', nextBeat: 'beater' };
+		const saveDataSideEffects = {
+			queuedScenes: [],
+			unlockedChapters: [],
+			unlockedAchievements: [],
+			addedItems: [],
+			removedItems: [],
+			addedMemories: [],
+			removedMemories: [],
+			updatedCharacterTraits: [],
+		};
+		const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
 		let result: any;
 
 		beforeAll(async () => {
@@ -113,20 +135,21 @@ describe(`Engine.advanceScene`, () => {
 			removedMemories = [{ character: 'char', memory: 'oldMem' }],
 			updatedCharacterTraits = [{ character: 'char', trait: 'feeling', change: 0.002 }] ;
 
+		const saveDataSideEffects = {
+			queuedScenes,
+			unlockedChapters,
+			unlockedAchievements,
+			addedItems,
+			removedItems,
+			addedMemories,
+			removedMemories,
+			updatedCharacterTraits,
+		};
 		const newBeat = new Fakes.SimpleBeat({
 			key: 'key',
-			saveDataSideEffects: {
-				queuedScenes,
-				unlockedChapters,
-				unlockedAchievements,
-				addedItems,
-				removedItems,
-				addedMemories,
-				removedMemories,
-				updatedCharacterTraits,
-			},
+			saveDataSideEffects,
 		});
-		const playResponse = { text: 'result' };
+		const playResponse = { text: 'result', saveData: saveDataSideEffects };
 		let result: any;
 
 		beforeAll(async () => {

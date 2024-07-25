@@ -126,6 +126,7 @@ describe('BeatFactory.fromDto', () => {
 				text: defaultText,
 				nextBeat: defaultBeat,
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 		it(`item at least can pass`, () => {
@@ -140,6 +141,7 @@ describe('BeatFactory.fromDto', () => {
 				text:  `text 1`,
 				nextBeat: 'beat 1',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 		it(`item at most can pass`, () => {
@@ -154,6 +156,7 @@ describe('BeatFactory.fromDto', () => {
 				text:  `text 2`,
 				nextBeat: 'beat 2',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 		it(`character trait at most can pass`, () => {
@@ -168,6 +171,7 @@ describe('BeatFactory.fromDto', () => {
 				text:  `text 3`,
 				nextBeat: 'beat 3',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 		it(`character trait at least can pass`, () => {
@@ -182,6 +186,7 @@ describe('BeatFactory.fromDto', () => {
 				text:  `text 4`,
 				nextBeat: 'beat 4',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 		it(`character aware can pass`, () => {
@@ -196,6 +201,7 @@ describe('BeatFactory.fromDto', () => {
 				text:  `text 5`,
 				nextBeat: 'beat 5',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 		it(`character unaware can pass`, () => {
@@ -210,6 +216,7 @@ describe('BeatFactory.fromDto', () => {
 				text:  `text 6`,
 				nextBeat: 'beat 6',
 				speaker: NARRATOR,
+				saveData: expect.any(Object),
 			});
 		});
 	});
@@ -550,6 +557,7 @@ describe('BeatFactory.fromDto', () => {
 					text: `text 2`,
 					nextBeat: 'beat 2',
 					speaker: NARRATOR,
+					saveData: expect.any(Object),
 				});
 			});
 		});
@@ -566,6 +574,7 @@ describe('BeatFactory.fromDto', () => {
 					text: `text 1`,
 					nextBeat: 'beat 1',
 					speaker: NARRATOR,
+					saveData: expect.any(Object),
 				});
 			});
 		});
@@ -750,6 +759,7 @@ describe('BeatFactory.fromDto', () => {
 					text: `text 2`,
 					nextBeat: 'beat 2',
 					speaker: NARRATOR,
+					saveData: expect.any(Object),
 				});
 			});
 		});
@@ -766,6 +776,7 @@ describe('BeatFactory.fromDto', () => {
 					text: `text 1`,
 					nextBeat: 'beat 1',
 					speaker: NARRATOR,
+					saveData: expect.any(Object),
 				});
 			});
 		});

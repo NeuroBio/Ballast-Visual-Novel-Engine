@@ -8,7 +8,7 @@ interface DefaultBehavior {
 }
 
 interface Choice {
-	beat: StandardBeatDisplay;
+	beat: DefaultBehavior;
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
@@ -41,7 +41,7 @@ export class ChoiceBeat extends Beat {
 
 	play (params: PlayParams): ChoiceBeatDisplay | StandardBeatDisplay {
 		const { characters } = params;
-		const choices: StandardBeatDisplay[] = [];
+		const choices: DefaultBehavior[] = [];
 		this.#choices.forEach((choice) => {
 			const includeChoice = this.#mayPlay(choice, params);
 			if (includeChoice) {
@@ -50,11 +50,11 @@ export class ChoiceBeat extends Beat {
 		});
 
 		if (choices.length > 1) {
-			return { choices };
+			return { choices, saveData: this.createSaveDataSideEffects() };
 		}
 
 		const beat = (choices.length === 1)
-			? choices[0]
+			? { ...choices[0], saveData: this.createSaveDataSideEffects() }
 			: this.#defaultBehavior!;
 
 		return this.assembleStandardBeatDisplay({ beat, characters });
