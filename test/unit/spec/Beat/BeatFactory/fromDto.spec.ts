@@ -877,21 +877,23 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					setBackground: 'background',
-					updateCharacterSprites: [{
-						character: 'char',
-						sprite: 'emotion',
-					}],
-					moveCharacters: [{
-						character: 'char',
-						newPosition: 0,
-					}],
-					removeCharacters: [{ character: 'char' }],
-					addCharacters: [{
-						character: 'char',
-						position: 0,
-						sprite: 'emotion',
-					}],
+					displaySideEffects: {
+						setBackground: 'background',
+						updateCharacterSprites: [{
+							character: 'char',
+							sprite: 'emotion',
+						}],
+						moveCharacters: [{
+							character: 'char',
+							newPosition: 0,
+						}],
+						removeCharacters: [{ character: 'char' }],
+						addCharacters: [{
+							character: 'char',
+							position: 0,
+							sprite: 'emotion',
+						}],
+					},
 				},
 			});
 			expect(result instanceof SimpleBeat).toBe(true);
@@ -908,7 +910,9 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					setBackground: '',
+					displaySideEffects: {
+						setBackground: '',
+					},
 				},
 			})).toThrow(Error.SIDE_EFFECTS_BAD);
 		});
@@ -924,8 +928,10 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
+					displaySideEffects: {
 					// @ts-expect-error intentionally passing bad data
-					updateCharacterSprites: [{}],
+						updateCharacterSprites: [{}],
+					},
 				},
 			})).toThrow(Error.SIDE_EFFECTS_BAD);
 		});
@@ -941,8 +947,10 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					// @ts-expect-error intentionally passing bad data
-					moveCharacters: [{}],
+					displaySideEffects: {
+						// @ts-expect-error intentionally passing bad data
+						moveCharacters: [{}],
+					},
 				},
 			})).toThrow(Error.SIDE_EFFECTS_BAD);
 		});
@@ -958,8 +966,10 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
+					displaySideEffects: {
 					// @ts-expect-error intentionally passing bad data
-					removeCharacters: [{}],
+						removeCharacters: [{}],
+					},
 				},
 			})).toThrow(Error.SIDE_EFFECTS_BAD);
 		});
@@ -975,8 +985,10 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
+					displaySideEffects: {
 					// @ts-expect-error intentionally passing bad data
-					addCharacters: [{}],
+						addCharacters: [{}],
+					},
 				},
 			})).toThrow(Error.SIDE_EFFECTS_BAD);
 		});
@@ -991,21 +1003,23 @@ describe('BeatFactory.fromDto', () => {
 				key: 'beatKey',
 				defaultBehavior: {
 					text: 'test text',
-					setBackground: 'background',
-					updateCharacterSprites: [{
-						character: 'char',
-						sprite: 'emotion',
-					}],
-					moveCharacters: [{
-						character: 'char',
-						newPosition: 0,
-					}],
-					removeCharacters: [{ character: 'char' }],
-					addCharacters: [{
-						character: 'char',
-						position: 0,
-						sprite: 'emotion',
-					}],
+					displaySideEffects: {
+						setBackground: 'background',
+						updateCharacterSprites: [{
+							character: 'char',
+							sprite: 'emotion',
+						}],
+						moveCharacters: [{
+							character: 'char',
+							newPosition: 0,
+						}],
+						removeCharacters: [{ character: 'char' }],
+						addCharacters: [{
+							character: 'char',
+							position: 0,
+							sprite: 'emotion',
+						}],
+					},
 				},
 			});
 			expect(result instanceof FinalBeat).toBe(true);
@@ -1032,21 +1046,23 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					setBackground: 'background',
-					updateCharacterSprites: [{
-						character: 'char',
-						sprite: 'emotion',
-					}],
-					moveCharacters: [{
-						character: 'char',
-						newPosition: 0,
-					}],
-					removeCharacters: [{ character: 'char' }],
-					addCharacters: [{
-						character: 'char',
-						position: 0,
-						sprite: 'emotion',
-					}],
+					displaySideEffects: {
+						setBackground: 'background',
+						updateCharacterSprites: [{
+							character: 'char',
+							sprite: 'emotion',
+						}],
+						moveCharacters: [{
+							character: 'char',
+							newPosition: 0,
+						}],
+						removeCharacters: [{ character: 'char' }],
+						addCharacters: [{
+							character: 'char',
+							position: 0,
+							sprite: 'emotion',
+						}],
+					},
 				},
 			});
 			expect(result instanceof ChoiceBeat).toBe(true);
@@ -1066,6 +1082,29 @@ describe('BeatFactory.fromDto', () => {
 					},
 					{
 						text: 'text 2',
+						displaySideEffects: {
+							setBackground: 'background',
+							updateCharacterSprites: [{
+								character: 'char',
+								sprite: 'emotion',
+							}],
+							moveCharacters: [{
+								character: 'char',
+								newPosition: 0,
+							}],
+							removeCharacters: [{ character: 'char' }],
+							addCharacters: [{
+								character: 'char',
+								position: 0,
+								sprite: 'emotion',
+							}],
+						},
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					displaySideEffects: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -1082,25 +1121,6 @@ describe('BeatFactory.fromDto', () => {
 							sprite: 'emotion',
 						}],
 					},
-				],
-				defaultBehavior: {
-					text: 'test text',
-					nextBeat: 'beat key',
-					setBackground: 'background',
-					updateCharacterSprites: [{
-						character: 'char',
-						sprite: 'emotion',
-					}],
-					moveCharacters: [{
-						character: 'char',
-						newPosition: 0,
-					}],
-					removeCharacters: [{ character: 'char' }],
-					addCharacters: [{
-						character: 'char',
-						position: 0,
-						sprite: 'emotion',
-					}],
 				},
 			});
 			expect(result instanceof MultiResponseBeat).toBe(true);
@@ -1128,6 +1148,29 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 2',
 						nextBeat: 'beat 2',
 						character: '2',
+						displaySideEffects: {
+							setBackground: 'background',
+							updateCharacterSprites: [{
+								character: 'char',
+								sprite: 'emotion',
+							}],
+							moveCharacters: [{
+								character: 'char',
+								newPosition: 0,
+							}],
+							removeCharacters: [{ character: 'char' }],
+							addCharacters: [{
+								character: 'char',
+								position: 0,
+								sprite: 'emotion',
+							}],
+						},
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					displaySideEffects: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -1144,25 +1187,6 @@ describe('BeatFactory.fromDto', () => {
 							sprite: 'emotion',
 						}],
 					},
-				],
-				defaultBehavior: {
-					text: 'test text',
-					nextBeat: 'beat key',
-					setBackground: 'background',
-					updateCharacterSprites: [{
-						character: 'char',
-						sprite: 'emotion',
-					}],
-					moveCharacters: [{
-						character: 'char',
-						newPosition: 0,
-					}],
-					removeCharacters: [{ character: 'char' }],
-					addCharacters: [{
-						character: 'char',
-						position: 0,
-						sprite: 'emotion',
-					}],
 				},
 			});
 			expect(result instanceof BestFitBranchBeat).toBe(true);
@@ -1196,6 +1220,29 @@ describe('BeatFactory.fromDto', () => {
 							memory: 'mem',
 						}],
 						character: '2',
+						displaySideEffects: {
+							setBackground: 'background',
+							updateCharacterSprites: [{
+								character: 'char',
+								sprite: 'emotion',
+							}],
+							moveCharacters: [{
+								character: 'char',
+								newPosition: 0,
+							}],
+							removeCharacters: [{ character: 'char' }],
+							addCharacters: [{
+								character: 'char',
+								position: 0,
+								sprite: 'emotion',
+							}],
+						},
+					},
+				],
+				defaultBehavior: {
+					text: 'test text',
+					nextBeat: 'beat key',
+					displaySideEffects: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -1212,25 +1259,6 @@ describe('BeatFactory.fromDto', () => {
 							sprite: 'emotion',
 						}],
 					},
-				],
-				defaultBehavior: {
-					text: 'test text',
-					nextBeat: 'beat key',
-					setBackground: 'background',
-					updateCharacterSprites: [{
-						character: 'char',
-						sprite: 'emotion',
-					}],
-					moveCharacters: [{
-						character: 'char',
-						newPosition: 0,
-					}],
-					removeCharacters: [{ character: 'char' }],
-					addCharacters: [{
-						character: 'char',
-						position: 0,
-						sprite: 'emotion',
-					}],
 				},
 			});
 			expect(result instanceof FirstFitBranchBeat).toBe(true);

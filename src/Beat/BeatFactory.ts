@@ -57,46 +57,37 @@ interface Choice {
 	text: string;
 	nextBeat: string;
 	conditions?: SingleCriterion[];
-	SceneUpdates?: SceneUpdates;
 }
 
-interface Branch extends DisplaySideEffects {
+interface Branch {
 	text: string;
 	character?: string,
 	nextBeat: string;
 	conditions?: SingleCriterion[];
-	SceneUpdates?: SceneUpdates;
+	displaySideEffects?: DisplaySideEffects;
 }
 
-interface BestFitBranch extends DisplaySideEffects {
+interface BestFitBranch {
 	text: string;
 	character: string,
 	nextBeat: string;
 	conditions?: SingleCriterion[];
-	SceneUpdates?: SceneUpdates;
+	displaySideEffects?: DisplaySideEffects;
 }
 
-interface Response extends DisplaySideEffects {
+interface Response {
 	text: string,
 	character?: string,
 	nextBeat?: string;
 	conditions?: SingleCriterion[];
-	SceneUpdates?: SceneUpdates
+	displaySideEffects?: DisplaySideEffects;
 }
 
-export interface DefaultBehavior extends DisplaySideEffects {
+export interface DefaultBehavior {
 	text: string;
 	character?: string;
 	nextBeat?: string;
-	SceneUpdates?: SceneUpdates
-}
-
-interface SceneUpdates {
-	setBackground?: string;
-	updateCharacterSprite?: { character: string, sprite: string }[];
-	moveCharacter?: { character: string, newPosition: number }[];
-	removeCharacter?: { character: string }[];
-	addCharacter?: { character: string, position: number, sprite: string }[];
+	displaySideEffects?: DisplaySideEffects;
 }
 
 export interface DisplaySideEffects {
@@ -470,44 +461,46 @@ export class BeatFactory {
 
 	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 	#validateSideEffects (key: string, data: any): boolean {
+		const check: DisplaySideEffects = data.displaySideEffects;
+		if (!check) {
+			return true;
+		}
+
+
 		const errorMessage = `Received malformed display side effect data for ${key}.  See the documentation for expected shapes for side effects.`;
 
-		if (Object.hasOwn(data, 'setBackground')) {
-			if (!data.setBackground) {
+		if (Object.hasOwn(check, 'setBackground')) {
+			if (!check.setBackground) {
 				throw new Error(errorMessage);
 			}
 		}
 
-		if (Object.hasOwn(data, 'updateCharacterSprites')) {
-			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-			data.updateCharacterSprites.forEach((x: any) => {
+		if (Object.hasOwn(check, 'updateCharacterSprites')) {
+			check.updateCharacterSprites!.forEach((x) => {
 				if (!x.character || !x.sprite) {
 					throw new Error(errorMessage);
 				}
 			});
 		}
 
-		if (Object.hasOwn(data, 'moveCharacters')) {
-			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-			data.moveCharacters.forEach((x: any) => {
+		if (Object.hasOwn(check, 'moveCharacters')) {
+			check.moveCharacters!.forEach((x) => {
 				if (!x.character || !_isInt(x.newPosition)) {
 					throw new Error(errorMessage);
 				}
 			});
 		}
 
-		if (Object.hasOwn(data, 'removeCharacters')) {
-			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-			data.removeCharacters.forEach((x: any) => {
+		if (Object.hasOwn(check, 'removeCharacters')) {
+			check.removeCharacters!.forEach((x) => {
 				if (!x.character) {
 					throw new Error(errorMessage);
 				}
 			});
 		}
 
-		if (Object.hasOwn(data, 'addCharacters')) {
-			/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-			data.addCharacters.forEach((x: any) => {
+		if (Object.hasOwn(check, 'addCharacters')) {
+			check.addCharacters!.forEach((x) => {
 				if (!x.character || !x.sprite || !_isInt(x.position)) {
 					throw new Error(errorMessage);
 				}
@@ -515,8 +508,7 @@ export class BeatFactory {
 		}
 		return true;
 
-		/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-		function _isInt (data: any): boolean {
+		function _isInt (data: number): boolean {
 			if (!data && data !== 0) {
 				return false;
 			}

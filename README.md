@@ -94,7 +94,7 @@ Owns one set of text.  Returns that and the next beat.  There is no real logic h
 		character?: string,
 		text: string,
 		nextBeat: string,
-		// + display side-effects
+		saveDataSideEffects: {}, // see below
 	},
 	saveDataSideEffects?: {}, // see below
 }
@@ -112,14 +112,14 @@ Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given mult
 			text: string,
 			nextBeat: string,
 			conditions: SingleOptionCondition[], // min 1
-			// + display side-effects
+			saveDataSideEffects: {}, // see below
 		}
 	],
 	defaultBehavior: {
 		character?: string,
 		text: string,
 		nextBeat: string,
-		// + display side-effects
+		saveDataSideEffects: {}, // see below
 	},
 	saveDataSideEffects?: {}, // see below
 }
@@ -165,14 +165,14 @@ Friend and Friend2 both satisfy greatest friendship cross condition.  However, F
 			text: string,
 			nextBeat: string,
 			conditions: SingleOptionCondition[],
-			// + display side-effects
+			saveDataSideEffects: {}, // see below
 		}
 	],
 	defaultBehavior?: { // required when all choices are conditional
 		character?: string,
 		text: string,
 		nextBeat: string,
-		// + display side-effects
+		saveDataSideEffects: {}, // see below
 	},
 	crossBranchCondition: CrossOptionCondition,
 	saveDataSideEffects?: {}, // see below
@@ -214,14 +214,14 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 			nextBeat?: string,
 			character?: string,
 			conditions?: SingleOptionCondition[],
-			// + display side-effects
+			saveDataSideEffects: {}, // see below
 		}
 	],
 	defaultBehavior: {
 		character?: string,
 		text: string,
 		nextBeat: string,
-		// + display side-effects
+		saveDataSideEffects: {}, // see below
 	},
 	saveDataSideEffects?: {}, // see below
 }
@@ -244,7 +244,7 @@ Owns a set of choices.  Can return multiple options, but may not.  Conditional c
 		character?: string,
 		text: string,
 		nextBeat: string,
-		// + display side-effects
+		saveDataSideEffects: {}, // see below
 	},
 	saveDataSideEffects?: {}, // see below
 }
@@ -259,7 +259,7 @@ Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  T
 	defaultBehavior: {
 		character?: string,
 		text: string,
-		// + display side-effects
+		saveDataSideEffects: {}, // see below
 	},
 	saveDataSideEffects?: {}, // see below
 }
