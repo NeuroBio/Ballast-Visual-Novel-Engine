@@ -1,6 +1,6 @@
 import { Character } from '../Character/Character';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
-import { DefaultBehavior, DisplaySideEffects, SharedBeatParams } from './BeatFactory';
+import { DisplaySideEffects, SharedBeatParams } from './BeatFactory';
 
 export const NARRATOR = 'Narrator';
 
@@ -11,8 +11,12 @@ export interface StandardBeatDisplay extends DisplaySideEffects {
 	saveData: SaveDataSideEffects;
 }
 
+interface ChoiceBehavior extends DisplaySideEffects{
+	mayPlay: boolean;
+}
+
 export interface ChoiceBeatDisplay {
-	choices: DefaultBehavior[];
+	choices: ChoiceBehavior[];
 	saveData: SaveDataSideEffects;
 }
 

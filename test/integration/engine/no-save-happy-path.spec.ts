@@ -45,7 +45,7 @@ describe(`playing through the test data without save data`, () => {
 	it(`plays the third beat`, () => {
 		result.set(engine.advanceScene({ beatKey: result.get().nextBeat }));
 		expect(result.get()).toEqual({
-			choices: BeatData[2].choices,
+			choices: BeatData[2].choices!.map(x => ({ text: x.text, nextBeat: x.nextBeat, mayPlay: true })),
 			saveData: expect.any(Object),
 		});
 	});

@@ -53,7 +53,7 @@ export interface CrossConditionParams {
 	characters: Character[];
 }
 
-interface Choice {
+export interface Choice {
 	text: string;
 	nextBeat: string;
 	conditions?: SingleCriterion[];
@@ -219,7 +219,7 @@ export class BeatFactory {
 	#createChoiceBeat (dto: ChoiceBeatParams): ChoiceBeat {
 		const params = {
 			choices: dto.choices.map((choice) => ({
-				beat: { text: choice.text, nextBeat: choice.nextBeat },
+				beat: { text: choice.text, nextBeat: choice.nextBeat, mayPlay: false },
 				conditions: this.#createSingleCondition(choice.conditions || []) || [],
 			})),
 			defaultBehavior: dto.defaultBehavior,

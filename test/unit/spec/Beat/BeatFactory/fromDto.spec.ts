@@ -1,5 +1,5 @@
 import { NARRATOR } from '../../../../../src/Beat/Beat';
-import { BeatFactory, SingleConditionType, CrossConditionType } from '../../../../../src/Beat/BeatFactory';
+import { BeatFactory, SingleConditionType, CrossConditionType, Choice } from '../../../../../src/Beat/BeatFactory';
 import { BestFitBranchBeat } from '../../../../../src/Beat/BestFitBranchBeat';
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { FinalBeat } from '../../../../../src/Beat/FinalBeat';
@@ -41,69 +41,70 @@ describe('BeatFactory.fromDto', () => {
 	describe(`received dto with all classes of conditional choices an a default behavior`, () => {
 		const itemKey = 'itemKey', trait = 'a feels', character = 'char', memory1 = 'mem1', memory2 = 'mem2',
 			defaultText = 'default text', defaultBeat = 'default nextBeat';
+		const choices: Choice[] = [
+			{
+				text: 'text 1',
+				nextBeat: 'beat 1',
+				conditions: [{
+					type: SingleConditionType.AT_LEAST_ITEM,
+					item: itemKey,
+					quantity: 3,
+				}],
+			},
+			{
+				text: 'text 2',
+				nextBeat: 'beat 2',
+				conditions: [{
+					type: SingleConditionType.AT_MOST_ITEM,
+					item: itemKey,
+					quantity: 1,
+				}],
+			},
+			{
+				text: 'text 3',
+				nextBeat: 'beat 3',
+				conditions: [{
+					type: SingleConditionType.AT_MOST_CHAR_TRAIT,
+					character,
+					value: 0.1,
+					trait,
+				}],
+			},
+			{
+				text: 'text 4',
+				nextBeat: 'beat 4',
+				conditions: [{
+					type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
+					character,
+					value: 0.3,
+					trait,
+				}],
+			},
+			{
+				text: 'text 5',
+				nextBeat: 'beat 5',
+				conditions: [{
+					type: SingleConditionType.CHARACTER_AWARE,
+					character,
+					memory: memory1,
+				}],
+			},
+			{
+				text: 'text 6',
+				nextBeat: 'beat 6',
+				conditions: [{
+					type: SingleConditionType.CHARACTER_UNAWARE,
+					character,
+					memory: memory2,
+				}],
+			},
+		];
 		let result: any;
 		beforeAll(() => {
 			const beatFactory = new BeatFactory();
 			result = beatFactory.fromDto({
 				key: 'beatKey',
-				choices: [
-					{
-						text: 'text 1',
-						nextBeat: 'beat 1',
-						conditions: [{
-							type: SingleConditionType.AT_LEAST_ITEM,
-							item: itemKey,
-							quantity: 3,
-						}],
-					},
-					{
-						text: 'text 2',
-						nextBeat: 'beat 2',
-						conditions: [{
-							type: SingleConditionType.AT_MOST_ITEM,
-							item: itemKey,
-							quantity: 1,
-						}],
-					},
-					{
-						text: 'text 3',
-						nextBeat: 'beat 3',
-						conditions: [{
-							type: SingleConditionType.AT_MOST_CHAR_TRAIT,
-							character,
-							value: 0.1,
-							trait,
-						}],
-					},
-					{
-						text: 'text 4',
-						nextBeat: 'beat 4',
-						conditions: [{
-							type: SingleConditionType.AT_LEAST_CHAR_TRAIT,
-							character,
-							value: 0.3,
-							trait,
-						}],
-					},
-					{
-						text: 'text 5',
-						nextBeat: 'beat 5',
-						conditions: [{
-							type: SingleConditionType.CHARACTER_AWARE,
-							character,
-							memory: memory1,
-						}],
-					},
-					{
-						text: 'text 6',
-						nextBeat: 'beat 6',
-						conditions: [{
-							type: SingleConditionType.CHARACTER_UNAWARE,
-							character,
-							memory: memory2,
-						}],
-					},
-				],
+				choices,
 				defaultBehavior: {
 					text: defaultText,
 					nextBeat: defaultBeat,
@@ -138,9 +139,13 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 4 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `text 1`,
-				nextBeat: 'beat 1',
-				speaker: NARRATOR,
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 1') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
 				saveData: expect.any(Object),
 			});
 		});
@@ -153,9 +158,13 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 1 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `text 2`,
-				nextBeat: 'beat 2',
-				speaker: NARRATOR,
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 2') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
 				saveData: expect.any(Object),
 			});
 		});
@@ -168,9 +177,13 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `text 3`,
-				nextBeat: 'beat 3',
-				speaker: NARRATOR,
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 3') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
 				saveData: expect.any(Object),
 			});
 		});
@@ -183,9 +196,13 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `text 4`,
-				nextBeat: 'beat 4',
-				speaker: NARRATOR,
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 4') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
 				saveData: expect.any(Object),
 			});
 		});
@@ -198,9 +215,13 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `text 5`,
-				nextBeat: 'beat 5',
-				speaker: NARRATOR,
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 5') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
 				saveData: expect.any(Object),
 			});
 		});
@@ -213,9 +234,13 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text:  `text 6`,
-				nextBeat: 'beat 6',
-				speaker: NARRATOR,
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 6') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
 				saveData: expect.any(Object),
 			});
 		});

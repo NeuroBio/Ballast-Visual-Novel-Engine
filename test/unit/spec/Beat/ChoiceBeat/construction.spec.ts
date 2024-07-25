@@ -15,7 +15,7 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has only one choice`, () => {
 		it(`throws invalid error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [] };
+			const choice1 = { beat: { text:'1', nextBeat: 'A', mayPlay: false }, conditions: [] };
 			const choices = [ choice1];
 
 			expect(() => {
@@ -25,9 +25,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has choices without conditions and no character is set`, () => {
 		it(`constructs without error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [] };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
+			const choice1 = { beat: { text:'1', nextBeat: 'A', mayPlay: false }, conditions: [] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B', mayPlay: false }, conditions: [] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C', mayPlay: false }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
@@ -37,9 +37,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has a choice with a condition and character is set`, () => {
 		it(`constructs without error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [] };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => true] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [] };
+			const choice1 = { beat: { text:'1', nextBeat: 'A', mayPlay: false }, conditions: [] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B', mayPlay: false }, conditions: [() => true] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C', mayPlay: false }, conditions: [] };
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
@@ -49,9 +49,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has all choices with conditions, and no default is set`, () => {
 		it(`throws invalid error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => false] };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [() => false] };
+			const choice1 = { beat: { text:'1', nextBeat: 'A', mayPlay: false }, conditions: [() => false] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B', mayPlay: false }, conditions: [() => false] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C', mayPlay: false }, conditions: [() => false] };
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
@@ -61,9 +61,9 @@ describe(`ChoiceBeat.construction`, () => {
 	});
 	describe(`beat has all choices with conditions, and default is set`, () => {
 		it(`constructs without error`, () => {
-			const choice1 = { beat: { text:'1', nextBeat: 'A' }, conditions: [() => false] };
-			const choice2 = { beat: { text:'2', nextBeat: 'B' }, conditions: [() => false] };
-			const choice3 = { beat: { text:'3', nextBeat: 'C' }, conditions: [() => false] };
+			const choice1 = { beat: { text:'1', nextBeat: 'A', mayPlay: false }, conditions: [() => false] };
+			const choice2 = { beat: { text:'2', nextBeat: 'B', mayPlay: false }, conditions: [() => false] };
+			const choice3 = { beat: { text:'3', nextBeat: 'C', mayPlay: false }, conditions: [() => false] };
 			const defaultBehavior = { text:'4', nextBeat: 'D' };
 			const choices = [ choice1, choice2, choice3];
 

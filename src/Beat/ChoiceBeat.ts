@@ -7,8 +7,12 @@ interface DefaultBehavior {
 	nextBeat: string;
 }
 
+interface ChoiceBehavior extends DefaultBehavior {
+	mayPlay: boolean;
+}
+
 interface Choice {
-	beat: DefaultBehavior;
+	beat: ChoiceBehavior;
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
@@ -41,23 +45,22 @@ export class ChoiceBeat extends Beat {
 
 	play (params: PlayParams): ChoiceBeatDisplay | StandardBeatDisplay {
 		const { characters } = params;
-		const choices: DefaultBehavior[] = [];
+		let playableChoices = 0;
 		this.#choices.forEach((choice) => {
-			const includeChoice = this.#mayPlay(choice, params);
-			if (includeChoice) {
-				choices.push(choice.beat);
+			choice.beat.mayPlay = this.#mayPlay(choice, params);
+			if (choice.beat.mayPlay) {
+				playableChoices += 1;
 			}
 		});
 
-		if (choices.length > 1) {
-			return { choices, saveData: this.createSaveDataSideEffects() };
+		if (playableChoices > 0) {
+			return {
+				choices: this.#choices.map(x => x.beat),
+				saveData: this.createSaveDataSideEffects(),
+			};
 		}
 
-		const beat = (choices.length === 1)
-			? { ...choices[0], saveData: this.createSaveDataSideEffects() }
-			: this.#defaultBehavior!;
-
-		return this.assembleStandardBeatDisplay({ beat, characters });
+		return this.assembleStandardBeatDisplay({ beat: this.#defaultBehavior!, characters });
 	}
 
 	#mayPlay (choice: Choice, params: PlayParams): boolean {
