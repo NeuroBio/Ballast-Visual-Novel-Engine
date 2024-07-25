@@ -228,7 +228,13 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 ```
 
 ### Choice Beat
-Owns a set of choices.  Can return multiple options, but may not.  Conditional choices must be satisfied to return.  When there are all conditional choices, a default option is required.  If there is only one choice, it returns as a simple text display interface instead of a choice interface.  In short, this is where the user controls the novel side of game play.
+In short, this is where the user controls the novel side of game play.  Owns a set of choices.  Return choices marked as "mayPlay" true or false.  The default behavior also returns when no choices may play.  Conditional choices must be satisfied to return with mayPlay: true (defaulted to true for unconditional choices).  When there are all conditional choices, a default option is required.
+
+The decision was made to always return all choices, so the UI can make decisions about the unplayable choices.  This suits the following use cases:
+- display may includes the choices but grayed out
+- display may signal to user that other choices would have been available without stating what they are
+	- current personal plans: show a lock icon + the number of unplayable choices
+Currently, the reason _why_ a choice may not be played is NOT returned, but this would be a possible future enhancement.
 
 ```typescript
 {

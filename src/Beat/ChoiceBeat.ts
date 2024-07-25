@@ -1,4 +1,4 @@
-import { Beat, ChoiceBeatDisplay, PlayParams, StandardBeatDisplay } from './Beat';
+import { Beat, ChoiceBeatDisplay, PlayParams } from './Beat';
 import { SharedBeatParams } from './BeatFactory';
 
 interface DefaultBehavior {
@@ -43,7 +43,7 @@ export class ChoiceBeat extends Beat {
 		}
 	}
 
-	play (params: PlayParams): ChoiceBeatDisplay | StandardBeatDisplay {
+	play (params: PlayParams): ChoiceBeatDisplay {
 		const { characters } = params;
 		let playableChoices = 0;
 		this.#choices.forEach((choice) => {
@@ -53,14 +53,17 @@ export class ChoiceBeat extends Beat {
 			}
 		});
 
+		const result: ChoiceBeatDisplay = {
+			choices: this.#choices.map(x => x.beat),
+			saveData: this.createSaveDataSideEffects(),
+		};
+
 		if (playableChoices > 0) {
-			return {
-				choices: this.#choices.map(x => x.beat),
-				saveData: this.createSaveDataSideEffects(),
-			};
+			return result;
 		}
 
-		return this.assembleStandardBeatDisplay({ beat: this.#defaultBehavior!, characters });
+		result.default = this.assembleStandardBeatDisplay({ beat: this.#defaultBehavior!, characters });
+		return result;
 	}
 
 	#mayPlay (choice: Choice, params: PlayParams): boolean {

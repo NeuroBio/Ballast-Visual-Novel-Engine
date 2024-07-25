@@ -116,9 +116,13 @@ describe(`ChoiceBeat.play`, () => {
 				inventory: {},
 				scene: { characters: new Set() },
 			})).toEqual({
-				text: defaultBehavior.text,
-				nextBeat: defaultBehavior.nextBeat,
-				speaker: CharacterData[0].name,
+				choices: choices.map(x => x.beat),
+				default: {
+					text: defaultBehavior.text,
+					nextBeat: defaultBehavior.nextBeat,
+					speaker: CharacterData[0].name,
+					saveData: expect.any(Object),
+				},
 				saveData: expect.any(Object),
 			});
 		});
@@ -142,7 +146,7 @@ describe(`ChoiceBeat.play`, () => {
 		});
 	});
 	describe(`beat one choice with two conditions and one conditions is unmet`, () => {
-		it(`returns default behavior as a simple beat display`, () => {
+		it(`returns the first choice as unplayable and the second as playable`, () => {
 			const choice1 = { beat: { text: '1', nextBeat: 'A', mayPlay: false }, conditions: [() => true, () => false] };
 			const choice2 = { beat: { text: '2', nextBeat: 'B', mayPlay: false }, conditions: [] };
 			const choices = [ choice1, choice2];

@@ -3,7 +3,7 @@ import { BestFitBranchBeat } from '../../../../../src/Beat/BestFitBranchBeat';
 
 describe(`BestFitBranchBeat.play`, () => {
 	describe(`
-		three branches are nonconditional
+		three branches are unconditional
 		there are no repeated characters
 		`, () => {
 		it(`returns the beat for the requested character`, () => {
@@ -29,7 +29,7 @@ describe(`BestFitBranchBeat.play`, () => {
 		});
 	});
 	describe(`
-		three branches are nonconditional
+		three branches are unconditional
 		there are repeated characters
 		`, () => {
 		it(`returns the beat for the requested character`, () => {

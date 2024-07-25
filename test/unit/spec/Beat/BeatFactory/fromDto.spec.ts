@@ -124,9 +124,14 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
 			expect(result.play({ characters, inventory })).toEqual({
-				text: defaultText,
-				nextBeat: defaultBeat,
-				speaker: NARRATOR,
+				choices: choices.map(x => ({ text: x.text, nextBeat: x.nextBeat, mayPlay: false })),
+				default: {
+					text: defaultText,
+					nextBeat: defaultBeat,
+					speaker: NARRATOR,
+					// TODO: decide what to do about this... if anything
+					saveData: expect.any(Object),
+				},
 				saveData: expect.any(Object),
 			});
 		});

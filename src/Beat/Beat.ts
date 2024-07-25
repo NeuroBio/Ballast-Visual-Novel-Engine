@@ -18,6 +18,7 @@ interface ChoiceBehavior extends DisplaySideEffects{
 export interface ChoiceBeatDisplay {
 	choices: ChoiceBehavior[];
 	saveData: SaveDataSideEffects;
+	default?: StandardBeatDisplay;
 }
 
 export interface FinalBeatDisplay extends DisplaySideEffects {
