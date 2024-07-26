@@ -611,6 +611,42 @@ describe('BeatFactory.fromDto', () => {
 				});
 			});
 		});
+		describe(`two conditionals pass, and the first character has the trait unset`, () => {
+			it(`returns the character with the greatest specified trait`, () => {
+				const characters = {
+					[1]: { traits: { }, key: '1' },
+					[2]: { traits: { [trait]: 2 }, key: '2' },
+				};
+				const inventory = {
+					[item]: 2,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `text 2`,
+					nextBeat: 'beat 2',
+					speaker: NARRATOR,
+					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
+				});
+			});
+		});
+		describe(`two conditionals pass, and the second character has the trait unset`, () => {
+			it(`returns the character with the greatest specified trait`, () => {
+				const characters = {
+					[1]: { traits: { [trait]: 0 }, key: '1' },
+					[2]: { traits: { }, key: '2' },
+				};
+				const inventory = {
+					[item]: 2,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `text 1`,
+					nextBeat: 'beat 1',
+					speaker: NARRATOR,
+					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
+				});
+			});
+		});
 	});
 	describe(`
 		received dto with conditional branches and default behavior with characters
@@ -805,6 +841,42 @@ describe('BeatFactory.fromDto', () => {
 				};
 				const inventory = {
 					[item]: 3,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `text 1`,
+					nextBeat: 'beat 1',
+					speaker: NARRATOR,
+					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
+				});
+			});
+		});
+		describe(`two conditionals pass, and the first character has the trait unset`, () => {
+			it(`returns the character with the least specified trait`, () => {
+				const characters = {
+					[1]: { traits: { }, key: '1' },
+					[2]: { traits: { [trait]: -0.1 }, key: '2' },
+				};
+				const inventory = {
+					[item]: 2,
+				};
+				expect(result.play({ characters, inventory })).toEqual({
+					text: `text 2`,
+					nextBeat: 'beat 2',
+					speaker: NARRATOR,
+					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
+				});
+			});
+		});
+		describe(`two conditionals pass, and the second character has the trait unset`, () => {
+			it(`returns the character with the least specified trait`, () => {
+				const characters = {
+					[1]: { traits: { [trait]: 0 }, key: '1' },
+					[2]: { traits: { }, key: '2' },
+				};
+				const inventory = {
+					[item]: 2,
 				};
 				expect(result.play({ characters, inventory })).toEqual({
 					text: `text 1`,

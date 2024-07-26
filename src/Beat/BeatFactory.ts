@@ -556,7 +556,9 @@ export class BeatFactory {
 				const { characters } = params;
 				let maxChar = characters[0];
 				characters.forEach((char) => {
-					if (char.traits[condition.trait] > maxChar.traits[condition.trait]) {
+					const current = char.traits[condition.trait] || 0;
+					const prior = maxChar.traits[condition.trait] || 0;
+					if (current > prior) {
 						maxChar = char;
 					}
 				});
@@ -570,7 +572,9 @@ export class BeatFactory {
 				const { characters } = params;
 				let minChar = characters[0];
 				characters.forEach((char) => {
-					if (char.traits[condition.trait] < minChar.traits[condition.trait]) {
+					const current = char.traits[condition.trait] || 0;
+					const prior = minChar.traits[condition.trait] || 0;
+					if (current < prior) {
 						minChar = char;
 					}
 				});

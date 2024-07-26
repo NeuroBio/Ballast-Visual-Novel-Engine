@@ -246,32 +246,91 @@ describe(`playing beats with scene data side effects`, () => {
 			saveData: expect.any(Object),
 		});
 	});
-
-	it('returns display data from satisfied branch 1 on first fit branch beat', () => {
-
+	it('returns display data from satisfied branch 2 on first fit branch beat', () => {
+		const beat = engine.advanceScene({ beatKey: result.get().default.nextBeat });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[2].branches![1].nextBeat,
+			text: beatData[2].branches![1].text,
+			speaker: NARRATOR,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
 	it('returns display data from default behavior on first fit branch beat when no branches are satisfied', () => {
-
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[3].defaultBehavior!.nextBeat,
+			text: beatData[3].defaultBehavior!.text,
+			speaker: NARRATOR,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
-
-	it('returns display data from satisfied branch 1 on best fit branch beat', () => {
-
+	it('returns display data from satisfied branch 2 on best fit branch beat', () => {
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[4].branches![1].nextBeat,
+			text: beatData[4].branches![1].text,
+			speaker: characterData[1].name,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
 	it('returns display data from default behavior on best fit branch beat when no branches are satisfied', () => {
-
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[5].defaultBehavior!.nextBeat,
+			text: beatData[5].defaultBehavior!.text,
+			speaker: NARRATOR,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
-
 	it('returns display data from response 1', () => {
-
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[6].key,
+			text: beatData[6].responses![0].text,
+			speaker: NARRATOR,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
 	it('returns display data from response 2', () => {
-
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[6].defaultBehavior!.nextBeat,
+			text: beatData[6].responses![1].text,
+			speaker: NARRATOR,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
 	it('returns display data from default behavior on best fit branch beat when no responses remain', () => {
-
+		const beat = engine.advanceScene({ beatKey: beatData[6].key });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			nextBeat: beatData[6].defaultBehavior!.nextBeat,
+			text: beatData[6].defaultBehavior!.text,
+			speaker: NARRATOR,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
-
 	it('returns display data from default behavior on final beat', () => {
-
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
+		expect(result.get()).toEqual({
+			text: beatData[7].defaultBehavior!.text,
+			speaker: NARRATOR,
+			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+		});
 	});
 });
