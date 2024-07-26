@@ -29,7 +29,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '1st to play',
 				nextBeat: 'B',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				unlockedChapters: ['chapUnlock'],
 			},
 		},
@@ -39,7 +39,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '2nd to play',
 				nextBeat: 'C',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				unlockedAchievements: ['achieveUnlock'],
 			},
 		},
@@ -49,7 +49,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '3rd to play',
 				nextBeat: 'D',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				queuedScenes: [{ chapterKey: 'leChap', sceneKey: 'leScene2' }],
 			},
 		},
@@ -59,7 +59,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '4th to play',
 				nextBeat: 'E',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				addedItems: [{ item: 'itemAdded', quantity: 2 }],
 			},
 		},
@@ -69,7 +69,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '5th to play',
 				nextBeat: 'F',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				removedItems: [{ item: 'removeItem1', quantity: 1 }],
 			},
 		},
@@ -79,7 +79,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '6th to play',
 				nextBeat: 'G',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				addedMemories: [
 					{ character: characterData[1].key, memory: 'memAdded' },
 					{ character: characterData[1].key, memory: 'memAddedToRemove' },
@@ -92,7 +92,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '7th to play',
 				nextBeat: 'H',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				removedMemories: [{ character: characterData[1].key, memory: 'memAddedToRemove' }],
 			},
 		},
@@ -102,7 +102,7 @@ describe(`playing beats with save data side effects`, () => {
 				text: '8th to play',
 				nextBeat: 'I',
 			},
-			saveDataSideEffects: {
+			saveData: {
 				updatedCharacterTraits: [{ character: characterData[0].key, trait: 'coolness', change: 0.54 }],
 			},
 		},
@@ -167,13 +167,14 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				unlockedChapters: beatData[0].saveDataSideEffects!.unlockedChapters,
+				unlockedChapters: beatData[0].saveData!.unlockedChapters,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data includes the unlocked chapter`, async () => {
 		await engine.save();
-		currentSave.unlockedChapters.push(...beatData[0].saveDataSideEffects!.unlockedChapters!);
+		currentSave.unlockedChapters.push(...beatData[0].saveData!.unlockedChapters!);
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the second beat that unlocks a achievement`, () => {
@@ -185,13 +186,14 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				unlockedAchievements: beatData[1].saveDataSideEffects!.unlockedAchievements,
+				unlockedAchievements: beatData[1].saveData!.unlockedAchievements,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data includes the unlocked achievement`, async () => {
 		await engine.save();
-		currentSave.achievements.push(...beatData[1].saveDataSideEffects!.unlockedAchievements!);
+		currentSave.achievements.push(...beatData[1].saveData!.unlockedAchievements!);
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the third beat that queues a scene`, () => {
@@ -203,13 +205,14 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				queuedScenes: beatData[2].saveDataSideEffects!.queuedScenes,
+				queuedScenes: beatData[2].saveData!.queuedScenes,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data includes the queued scene`, async () => {
 		await engine.save();
-		currentSave.activeChapters = { [chapterData[0].key]: beatData[2].saveDataSideEffects!.queuedScenes![0].sceneKey };
+		currentSave.activeChapters = { [chapterData[0].key]: beatData[2].saveData!.queuedScenes![0].sceneKey };
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the fourth beat that adds an item`, () => {
@@ -221,13 +224,14 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				addedItems: beatData[3].saveDataSideEffects!.addedItems,
+				addedItems: beatData[3].saveData!.addedItems,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data includes added item`, async () => {
 		await engine.save();
-		currentSave.inventory[beatData[3].saveDataSideEffects!.addedItems![0].item] = beatData[3].saveDataSideEffects!.addedItems![0].quantity;
+		currentSave.inventory[beatData[3].saveData!.addedItems![0].item] = beatData[3].saveData!.addedItems![0].quantity;
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the fifth beat that removes an item`, () => {
@@ -239,13 +243,14 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				removedItems: beatData[4].saveDataSideEffects!.removedItems,
+				removedItems: beatData[4].saveData!.removedItems,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data excludes removed item`, async () => {
 		await engine.save();
-		delete currentSave.inventory[beatData[4].saveDataSideEffects!.removedItems![0].item];
+		delete currentSave.inventory[beatData[4].saveData!.removedItems![0].item];
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the sixth beat that adds two memories`, () => {
@@ -257,14 +262,15 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				addedMemories: beatData[5].saveDataSideEffects!.addedMemories,
+				addedMemories: beatData[5].saveData!.addedMemories,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data includes the two memories`, async () => {
 		await engine.save();
-		const character = currentSave.characters.find((x) => x.key === beatData[5].saveDataSideEffects!.addedMemories![0].character);
-		character!.memories.push(...beatData[5].saveDataSideEffects!.addedMemories!.map(x => x.memory));
+		const character = currentSave.characters.find((x) => x.key === beatData[5].saveData!.addedMemories![0].character);
+		character!.memories.push(...beatData[5].saveData!.addedMemories!.map(x => x.memory));
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the seventh beat that removes a memory`, () => {
@@ -276,14 +282,15 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				removedMemories: beatData[6].saveDataSideEffects!.removedMemories,
+				removedMemories: beatData[6].saveData!.removedMemories,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data excludes removed memory`, async () => {
 		await engine.save();
-		const character = currentSave.characters.find((x) => x.key === beatData[6].saveDataSideEffects!.removedMemories![0].character);
-		character!.memories = character!.memories.filter((x => x !== beatData[6].saveDataSideEffects!.removedMemories![0].memory));
+		const character = currentSave.characters.find((x) => x.key === beatData[6].saveData!.removedMemories![0].character);
+		character!.memories = character!.memories.filter((x => x !== beatData[6].saveData!.removedMemories![0].memory));
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the eighth beat that changes a character trait`, () => {
@@ -295,14 +302,15 @@ describe(`playing beats with save data side effects`, () => {
 			speaker: NARRATOR,
 			saveData: {
 				...defaultSaveData,
-				updatedCharacterTraits: beatData[7].saveDataSideEffects!.updatedCharacterTraits,
+				updatedCharacterTraits: beatData[7].saveData!.updatedCharacterTraits,
 			},
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`save data respects character trait changes`, async () => {
 		await engine.save();
-		const character = currentSave.characters.find((x) => x.key === beatData[7].saveDataSideEffects!.updatedCharacterTraits![0].character);
-		character!.traits[beatData[7].saveDataSideEffects!.updatedCharacterTraits![0].trait] = beatData[7].saveDataSideEffects!.updatedCharacterTraits![0].change;
+		const character = currentSave.characters.find((x) => x.key === beatData[7].saveData!.updatedCharacterTraits![0].character);
+		character!.traits[beatData[7].saveData!.updatedCharacterTraits![0].trait] = beatData[7].saveData!.updatedCharacterTraits![0].change;
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 });

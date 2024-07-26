@@ -8,6 +8,16 @@ describe(`Engine.advanceScene`, () => {
 	const Error = Object.freeze({
 		TOO_EARLY: 'You cannot call advance scene prior to starting a chapter.',
 	});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
 	let chapterFinderFake: any, sceneFinderFake: any, scene: Scene, savedData: SavedData,
 		characterTemplateFinderFake: any, savedDataRepoFake: any;
 	async function _createEngine (): Promise<Engine> {
@@ -15,18 +25,8 @@ describe(`Engine.advanceScene`, () => {
 		sceneFinderFake = new Fakes.SceneFinder();
 		savedDataRepoFake = new Fakes.SavedDataRepo();
 		const chapter = new Fakes.Chapter();
-		const saveDataSideEffects = {
-			queuedScenes: [],
-			unlockedChapters: [],
-			unlockedAchievements: [],
-			addedItems: [],
-			removedItems: [],
-			addedMemories: [],
-			removedMemories: [],
-			updatedCharacterTraits: [],
-		};
-		const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
-		const beat = new Fakes.SimpleBeat({ key: 'key' });
+		const playResponse = { text: 'result', nextBeat: 'beater', saveData };
+		const beat = new Fakes.SimpleBeat({ key: 'key', saveData });
 		beat.play.mockReturnValueOnce(playResponse);
 		scene = new Fakes.Scene();
 		scene.start.mockReturnValueOnce(beat);
@@ -72,18 +72,8 @@ describe(`Engine.advanceScene`, () => {
 	});
 	describe(`playing a beat with a next beat and no side effects`, () => {
 		const beatKey = 'beatKey';
-		const newBeat = new Fakes.SimpleBeat({ key: 'key' });
-		const saveDataSideEffects = {
-			queuedScenes: [],
-			unlockedChapters: [],
-			unlockedAchievements: [],
-			addedItems: [],
-			removedItems: [],
-			addedMemories: [],
-			removedMemories: [],
-			updatedCharacterTraits: [],
-		};
-		const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveDataSideEffects };
+		const newBeat = new Fakes.SimpleBeat({ key: 'key', saveData });
+		const playResponse = { text: 'result', nextBeat: 'beater', saveData: saveData };
 		let result: any;
 
 		beforeAll(async () => {
@@ -135,7 +125,7 @@ describe(`Engine.advanceScene`, () => {
 			removedMemories = [{ character: 'char', memory: 'oldMem' }],
 			updatedCharacterTraits = [{ character: 'char', trait: 'feeling', change: 0.002 }] ;
 
-		const saveDataSideEffects = {
+		const saveData = {
 			queuedScenes,
 			unlockedChapters,
 			unlockedAchievements,
@@ -147,9 +137,9 @@ describe(`Engine.advanceScene`, () => {
 		};
 		const newBeat = new Fakes.SimpleBeat({
 			key: 'key',
-			saveDataSideEffects,
+			saveData,
 		});
-		const playResponse = { text: 'result', saveData: saveDataSideEffects };
+		const playResponse = { text: 'result', saveData: saveData };
 		let result: any;
 
 		beforeAll(async () => {

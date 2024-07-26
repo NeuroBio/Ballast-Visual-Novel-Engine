@@ -7,6 +7,23 @@ describe(`ChoiceBeat.play`, () => {
 		keyed[char.key] = new Character({ ...char, memories: [] });
 		return keyed;
 	}, {});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
+	const sceneData = Object.freeze({
+		setBackground: '',
+		updateCharacterSprites: [],
+		moveCharacters: [],
+		removeCharacters: [],
+		addCharacters: [],
+	});
 	describe(`beat has three choices without conditions`, () => {
 		it(`returns all three choice beats ready to play`, () => {
 			const choice1 = { beat: { text: '1', nextBeat: 'A', mayPlay: false }, conditions: [] };
@@ -15,7 +32,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choices = [ choice1, choice2, choice3];
 			const key = 'key';
 
-			const beat = new ChoiceBeat({ key, choices });
+			const beat = new ChoiceBeat({ key, choices, saveData });
 			expect(beat.play({
 				characters: keyedCharacters,
 				inventory: {},
@@ -37,7 +54,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choices = [ choice1, choice2, choice3];
 			const key = 'key';
 
-			const beat = new ChoiceBeat({ key, choices });
+			const beat = new ChoiceBeat({ key, choices, saveData });
 			expect(beat.play({
 				characters: keyedCharacters,
 				inventory: {},
@@ -59,7 +76,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choices = [ choice1, choice2, choice3];
 			const key = 'key';
 
-			const beat = new ChoiceBeat({ key, choices });
+			const beat = new ChoiceBeat({ key, choices, saveData });
 			expect(beat.play({
 				characters: keyedCharacters,
 				inventory: {},
@@ -80,11 +97,11 @@ describe(`ChoiceBeat.play`, () => {
 			const choice1 = { beat: { text: '1', nextBeat: 'A', mayPlay: false }, conditions: [() => false] };
 			const choice2 = { beat: { text: '2', nextBeat: 'B', mayPlay: false }, conditions: [() => false] };
 			const choice3 = { beat: { text: '3', nextBeat: 'C', mayPlay: false }, conditions: [] };
-			const defaultBehavior = { text: '4', nextBeat: 'D' };
+			const defaultBehavior = { text: '4', nextBeat: 'D', sceneData };
 			const choices = [ choice1, choice2, choice3];
 			const key = 'key';
 
-			const beat = new ChoiceBeat({ key, choices, defaultBehavior });
+			const beat = new ChoiceBeat({ key, choices, defaultBehavior, saveData });
 			expect(beat.play({
 				characters: keyedCharacters,
 				inventory: {},
@@ -106,11 +123,11 @@ describe(`ChoiceBeat.play`, () => {
 			const choice2 = { beat: { text: '2', nextBeat: 'B', mayPlay: false }, conditions: [() => false] };
 			const choice3 = { beat: { text: '3', nextBeat: 'C', mayPlay: false }, conditions: [() => false] };
 			const character = CharacterData[0].key;
-			const defaultBehavior = { text: '4', nextBeat: 'D', character };
+			const defaultBehavior = { text: '4', nextBeat: 'D', character, sceneData };
 			const choices = [ choice1, choice2, choice3];
 			const key = 'key';
 
-			const beat = new ChoiceBeat({ key, choices, defaultBehavior });
+			const beat = new ChoiceBeat({ key, choices, defaultBehavior, saveData });
 			expect(beat.play({
 				characters: keyedCharacters,
 				inventory: {},
@@ -122,6 +139,7 @@ describe(`ChoiceBeat.play`, () => {
 					nextBeat: defaultBehavior.nextBeat,
 					speaker: CharacterData[0].name,
 					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
 				},
 				saveData: expect.any(Object),
 			});
@@ -134,7 +152,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choices = [ choice1, choice2];
 			const key = 'key';
 
-			const beat = new ChoiceBeat({ key, choices });
+			const beat = new ChoiceBeat({ key, choices, saveData });
 			expect(beat.play({
 				characters: keyedCharacters,
 				inventory: {},
@@ -152,7 +170,7 @@ describe(`ChoiceBeat.play`, () => {
 			const choices = [ choice1, choice2];
 			const key = 'key';
 
-			const beat = new ChoiceBeat({ key, choices });
+			const beat = new ChoiceBeat({ key, choices, saveData });
 			expect(beat.play({
 				characters: keyedCharacters,
 				inventory: {},

@@ -8,11 +8,29 @@ describe(`FirstFitBranchBeat.play`, () => {
 		keyed[char.key] = new Character({ ...char, memories: [] });
 		return keyed;
 	}, {});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
+	const sceneData = Object.freeze({
+		setBackground: '',
+		updateCharacterSprites: [],
+		moveCharacters: [],
+		removeCharacters: [],
+		addCharacters: [],
+	});
+
 	describe(`all conditions are met`, () => {
 		it(`returns the data from the first branch`, () => {
-			const firstBranch = { text: 'first', nextBeat: '1' };
-			const secondBranch = { text: 'second', nextBeat: '2' };
-			const defaultBehavior = { text: 'default', nextBeat: 'an beat' };
+			const firstBranch = { text: 'first', nextBeat: '1', sceneData };
+			const secondBranch = { text: 'second', nextBeat: '2', sceneData };
+			const defaultBehavior = { text: 'default', nextBeat: 'an beat', sceneData };
 			const beat = new FirstFitBranchBeat({
 				key: 'key',
 				branches: [
@@ -26,6 +44,7 @@ describe(`FirstFitBranchBeat.play`, () => {
 					},
 				],
 				defaultBehavior,
+				saveData,
 			});
 
 			expect(beat.play({
@@ -37,14 +56,15 @@ describe(`FirstFitBranchBeat.play`, () => {
 				nextBeat: firstBranch.nextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
 	describe(`second branch's condition is met`, () => {
 		it(`returns the data from the second branch`, () => {
-			const firstBranch = { text: 'first', nextBeat: '1' };
-			const secondBranch = { text: 'second', nextBeat: '2' };
-			const defaultBehavior = { text: 'default', nextBeat: 'an beat' };
+			const firstBranch = { text: 'first', nextBeat: '1', sceneData };
+			const secondBranch = { text: 'second', nextBeat: '2', sceneData };
+			const defaultBehavior = { text: 'default', nextBeat: 'an beat', sceneData };
 			const beat = new FirstFitBranchBeat({
 				key: 'key',
 				branches: [
@@ -58,6 +78,7 @@ describe(`FirstFitBranchBeat.play`, () => {
 					},
 				],
 				defaultBehavior,
+				saveData,
 			});
 
 			expect(beat.play({
@@ -69,14 +90,15 @@ describe(`FirstFitBranchBeat.play`, () => {
 				nextBeat: secondBranch.nextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
 	describe(`no branch's condition is met`, () => {
 		it(`returns the default behavior`, () => {
-			const firstBranch = { text: 'first', nextBeat: '1' };
-			const secondBranch = { text: 'second', nextBeat: '2' };
-			const defaultBehavior = { text: 'default', nextBeat: 'an beat' };
+			const firstBranch = { text: 'first', nextBeat: '1', sceneData };
+			const secondBranch = { text: 'second', nextBeat: '2', sceneData };
+			const defaultBehavior = { text: 'default', nextBeat: 'an beat', sceneData };
 			const beat = new FirstFitBranchBeat({
 				key: 'key',
 				branches: [
@@ -90,6 +112,7 @@ describe(`FirstFitBranchBeat.play`, () => {
 					},
 				],
 				defaultBehavior,
+				saveData,
 			});
 
 			expect(beat.play({
@@ -101,6 +124,7 @@ describe(`FirstFitBranchBeat.play`, () => {
 				nextBeat: defaultBehavior.nextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});

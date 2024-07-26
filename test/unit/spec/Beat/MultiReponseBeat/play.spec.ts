@@ -8,6 +8,24 @@ describe(`MultiResponseBeat.play`, () => {
 		keyed[char.key] = new Character({ ...char, memories: [] });
 		return keyed;
 	}, {});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
+	const sceneData = Object.freeze({
+		setBackground: '',
+		updateCharacterSprites: [],
+		moveCharacters: [],
+		removeCharacters: [],
+		addCharacters: [],
+	});
+
 	describe(`
 		playing a beat with two non-conditional responses without characters
 		and no set next beats
@@ -17,12 +35,13 @@ describe(`MultiResponseBeat.play`, () => {
 			const parentBeatKey = 'parent';
 			const defaultText = 'default';
 			const defaultNextBeat = 'defaultBeat';
-			const response1 = { beat: { text: 'first' }, conditions: [] };
-			const response2 = { beat: { text: 'second' }, conditions: [] };
+			const response1 = { beat: { text: 'first', sceneData }, conditions: [] };
+			const response2 = { beat: { text: 'second', sceneData }, conditions: [] };
 			const beat = new MultiResponseBeat({
 				key: parentBeatKey,
 				responses: [response1, response2],
-				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
+				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat, sceneData },
+				saveData,
 			});
 
 			expect(beat.play({
@@ -34,6 +53,7 @@ describe(`MultiResponseBeat.play`, () => {
 				nextBeat: parentBeatKey,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -46,12 +66,13 @@ describe(`MultiResponseBeat.play`, () => {
 			const parentBeatKey = 'parent';
 			const defaultText = 'default';
 			const defaultNextBeat = 'defaultBeat';
-			const response1 = { beat: { text: 'first' }, conditions: [] };
-			const response2 = { beat: { text: 'second' }, conditions: [] };
+			const response1 = { beat: { text: 'first', sceneData }, conditions: [] };
+			const response2 = { beat: { text: 'second', sceneData }, conditions: [] };
 			const beat = new MultiResponseBeat({
 				key: parentBeatKey,
 				responses: [response1, response2],
-				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
+				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat, sceneData },
+				saveData,
 			});
 			beat.play({
 				characters: keyedCharacters,
@@ -68,6 +89,7 @@ describe(`MultiResponseBeat.play`, () => {
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -80,12 +102,13 @@ describe(`MultiResponseBeat.play`, () => {
 			const parentBeatKey = 'parent';
 			const defaultText = 'default';
 			const defaultNextBeat = 'defaultBeat';
-			const response1 = { beat: { text: 'first', nextBeat: 'firstNext' }, conditions: [] };
-			const response2 = { beat: { text: 'second', nextBeat: 'nextNext' }, conditions: [] };
+			const response1 = { beat: { text: 'first', nextBeat: 'firstNext', sceneData }, conditions: [] };
+			const response2 = { beat: { text: 'second', nextBeat: 'nextNext', sceneData }, conditions: [] };
 			const beat = new MultiResponseBeat({
 				key: parentBeatKey,
 				responses: [response1, response2],
-				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
+				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat, sceneData },
+				saveData,
 			});
 
 			expect(beat.play({
@@ -97,6 +120,7 @@ describe(`MultiResponseBeat.play`, () => {
 				nextBeat: response1.beat.nextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -109,12 +133,13 @@ describe(`MultiResponseBeat.play`, () => {
 			const parentBeatKey = 'parent';
 			const defaultText = 'default';
 			const defaultNextBeat = 'defaultBeat';
-			const response1 = { beat: { text: 'first', nextBeat: 'firstNext' }, conditions: [] };
-			const response2 = { beat: { text: 'second', nextBeat: 'nextNext' }, conditions: [] };
+			const response1 = { beat: { text: 'first', nextBeat: 'firstNext', sceneData }, conditions: [] };
+			const response2 = { beat: { text: 'second', nextBeat: 'nextNext', sceneData }, conditions: [] };
 			const beat = new MultiResponseBeat({
 				key: parentBeatKey,
 				responses: [response1, response2],
-				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
+				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat, sceneData },
+				saveData,
 			});
 			beat.play({
 				characters: keyedCharacters,
@@ -131,6 +156,7 @@ describe(`MultiResponseBeat.play`, () => {
 				nextBeat: response2.beat.nextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -143,13 +169,14 @@ describe(`MultiResponseBeat.play`, () => {
 			const parentBeatKey = 'parent';
 			const defaultText = 'default';
 			const defaultNextBeat = 'defaultBeat';
-			const response1 = { beat: { text: 'first' }, conditions: [() => false] };
-			const response2 = { beat: { text: 'second' }, conditions: [() => true] };
-			const response3 = { beat: { text: 'second' }, conditions: [() => false] };
+			const response1 = { beat: { text: 'first', sceneData }, conditions: [() => false] };
+			const response2 = { beat: { text: 'second', sceneData }, conditions: [() => true] };
+			const response3 = { beat: { text: 'second', sceneData }, conditions: [() => false] };
 			const beat = new MultiResponseBeat({
 				key: parentBeatKey,
 				responses: [response1, response2, response3],
-				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
+				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat, sceneData },
+				saveData,
 			});
 
 			expect(beat.play({
@@ -161,6 +188,7 @@ describe(`MultiResponseBeat.play`, () => {
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -174,13 +202,14 @@ describe(`MultiResponseBeat.play`, () => {
 			const parentBeatKey = 'parent';
 			const defaultText = 'default';
 			const defaultNextBeat = 'defaultBeat';
-			const response1 = { beat: { text: 'first' }, conditions: [() => false] };
-			const response2 = { beat: { text: 'second' }, conditions: [() => true] };
-			const response3 = { beat: { text: 'second' }, conditions: [() => false] };
+			const response1 = { beat: { text: 'first', sceneData }, conditions: [() => false] };
+			const response2 = { beat: { text: 'second', sceneData }, conditions: [() => true] };
+			const response3 = { beat: { text: 'second', sceneData }, conditions: [() => false] };
 			const beat = new MultiResponseBeat({
 				key: parentBeatKey,
 				responses: [response1, response2, response3],
-				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
+				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat, sceneData },
+				saveData,
 			});
 			beat.play({
 				characters: keyedCharacters,
@@ -197,6 +226,7 @@ describe(`MultiResponseBeat.play`, () => {
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -210,13 +240,14 @@ describe(`MultiResponseBeat.play`, () => {
 			const parentBeatKey = 'parent';
 			const defaultText = 'default';
 			const defaultNextBeat = 'defaultBeat';
-			const response1 = { beat: { text: 'first' }, conditions: [() => false] };
-			const response2 = { beat: { text: 'second' }, conditions: [() => false] };
-			const response3 = { beat: { text: 'second' }, conditions: [() => false] };
+			const response1 = { beat: { text: 'first', sceneData }, conditions: [() => false] };
+			const response2 = { beat: { text: 'second', sceneData }, conditions: [() => false] };
+			const response3 = { beat: { text: 'second', sceneData }, conditions: [() => false] };
 			const beat = new MultiResponseBeat({
 				key: parentBeatKey,
 				responses: [response1, response2, response3],
-				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat },
+				defaultBehavior: { text: defaultText, nextBeat: defaultNextBeat, sceneData },
+				saveData,
 			});
 			beat.play({
 				characters: keyedCharacters,
@@ -233,6 +264,7 @@ describe(`MultiResponseBeat.play`, () => {
 				nextBeat: defaultNextBeat,
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});

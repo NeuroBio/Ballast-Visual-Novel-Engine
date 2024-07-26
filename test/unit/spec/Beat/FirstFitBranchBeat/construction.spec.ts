@@ -6,13 +6,31 @@ describe(`FirstFitBranchBeat.construction`, () => {
 		CANNOT_BRANCH: 'When no branches are conditional, data should be formatted as a Simple Beat, not a Branch Beat.',
 		REQUIRE_CONDITIONS: 'All branches in a First Fit Branch Beat should be conditional.',
 	});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
+	const sceneData = Object.freeze({
+		setBackground: '',
+		updateCharacterSprites: [],
+		moveCharacters: [],
+		removeCharacters: [],
+		addCharacters: [],
+	});
 
 	describe(`constructed with no branches`, () => {
 		it(`throws an error`, () => {
 			expect(() => new FirstFitBranchBeat({
 				key: 'key',
 				branches: [],
-				defaultBehavior: { text: '', nextBeat: '' },
+				defaultBehavior: { text: '', nextBeat: '', sceneData },
+				saveData,
 			})).toThrow(Error.NO_BRANCHING);
 		});
 	});
@@ -22,15 +40,16 @@ describe(`FirstFitBranchBeat.construction`, () => {
 				key: 'key',
 				branches: [
 					{
-						beat: { text: '', nextBeat: '' },
+						beat: { text: '', nextBeat: '', sceneData },
 						conditions: [],
 					},
 					{
-						beat: { text: '', nextBeat: '' },
+						beat: { text: '', nextBeat: '', sceneData },
 						conditions: [],
 					},
 				],
-				defaultBehavior: { text: '', nextBeat: '' },
+				defaultBehavior: { text: '', nextBeat: '', sceneData },
+				saveData,
 			})).toThrow(Error.CANNOT_BRANCH);
 		});
 	});
@@ -40,15 +59,16 @@ describe(`FirstFitBranchBeat.construction`, () => {
 				key: 'key',
 				branches: [
 					{
-						beat: { text: '', nextBeat: '' },
+						beat: { text: '', nextBeat: '', sceneData },
 						conditions: [],
 					},
 					{
-						beat: { text: '', nextBeat: '' },
+						beat: { text: '', nextBeat: '', sceneData },
 						conditions: [() => true],
 					},
 				],
-				defaultBehavior: { text: '', nextBeat: '' },
+				defaultBehavior: { text: '', nextBeat: '', sceneData },
+				saveData,
 			})).toThrow(Error.REQUIRE_CONDITIONS);
 		});
 	});
@@ -61,15 +81,16 @@ describe(`FirstFitBranchBeat.construction`, () => {
 				key: 'key',
 				branches: [
 					{
-						beat: { text: '', nextBeat: '' },
+						beat: { text: '', nextBeat: '', sceneData },
 						conditions: [() => true],
 					},
 					{
-						beat: { text: '', nextBeat: '' },
+						beat: { text: '', nextBeat: '', sceneData },
 						conditions: [() => true],
 					},
 				],
-				defaultBehavior: { text: '', nextBeat: '' },
+				defaultBehavior: { text: '', nextBeat: '', sceneData },
+				saveData,
 			});
 
 			expect(beat instanceof FirstFitBranchBeat).toBe(true);

@@ -6,10 +6,28 @@ describe(`BestFitBranchBeat.construction`, () => {
 		USE_SIMPLE_BEAT: 'Best Fit Branch beats require at least 2 branches.',
 		USE_FIRST_FIT_BEAT: 'Only one unique character found on branches.  Use a First Fit Branch Beat instead.',
 	});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
+	const sceneData = Object.freeze({
+		setBackground: '',
+		updateCharacterSprites: [],
+		moveCharacters: [],
+		removeCharacters: [],
+		addCharacters: [],
+	});
+
 	describe(`constructing without branches`, () => {
 		it(`throws an error`, () => {
 			expect(() => {
-				new BestFitBranchBeat({ key: 'key', branches: [], crossBranchCondition: () => '' });
+				new BestFitBranchBeat({ key: 'key', branches: [], crossBranchCondition: () => '', saveData });
 			}).toThrow(Error.USE_SIMPLE_BEAT);
 		});
 	});
@@ -19,7 +37,8 @@ describe(`BestFitBranchBeat.construction`, () => {
 				new BestFitBranchBeat({
 					key: 'key',
 					crossBranchCondition: () => '',
-					branches: [{ beat: { text: '', character: '', nextBeat: '' }, conditions:[] }],
+					branches: [{ beat: { text: '', character: '', nextBeat: '', sceneData }, conditions:[] }],
+					saveData,
 				});
 			}).toThrow(Error.USE_SIMPLE_BEAT);
 		});
@@ -30,9 +49,10 @@ describe(`BestFitBranchBeat.construction`, () => {
 				key: 'key',
 				crossBranchCondition: () => '',
 				branches: [
-					{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[] },
-					{ beat: { text: '', character: '2', nextBeat: '' }, conditions:[] },
+					{ beat: { text: '', character: '1', nextBeat: '', sceneData }, conditions:[] },
+					{ beat: { text: '', character: '2', nextBeat: '', sceneData }, conditions:[] },
 				],
+				saveData,
 			});
 
 			expect(beat instanceof BestFitBranchBeat).toBe(true);
@@ -45,10 +65,11 @@ describe(`BestFitBranchBeat.construction`, () => {
 					key: 'key',
 					crossBranchCondition: () => '',
 					branches: [
-						{ beat: { text: '', character: '', nextBeat: '' }, conditions:[] },
-						{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[] },
-						{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[] },
+						{ beat: { text: '', character: '', nextBeat: '', sceneData }, conditions:[] },
+						{ beat: { text: '', character: '1', nextBeat: '', sceneData }, conditions:[] },
+						{ beat: { text: '', character: '1', nextBeat: '', sceneData }, conditions:[] },
 					],
+					saveData,
 				});
 			}).toThrow(Error.USE_FIRST_FIT_BEAT);
 		});
@@ -60,9 +81,10 @@ describe(`BestFitBranchBeat.construction`, () => {
 					key: 'key',
 					crossBranchCondition: () => '',
 					branches: [
-						{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[() => true] },
-						{ beat: { text: '', character: '2', nextBeat: '' }, conditions:[() => true] },
+						{ beat: { text: '', character: '1', nextBeat: '', sceneData }, conditions:[() => true] },
+						{ beat: { text: '', character: '2', nextBeat: '', sceneData }, conditions:[() => true] },
 					],
+					saveData,
 				});
 			}).toThrow(Error.DEFAULT_REQUIRED);
 		});
@@ -73,10 +95,11 @@ describe(`BestFitBranchBeat.construction`, () => {
 				key: 'key',
 				crossBranchCondition: () => '',
 				branches: [
-					{ beat: { text: '', character: '1', nextBeat: '' }, conditions:[() => true] },
-					{ beat: { text: '', character: '2', nextBeat: '' }, conditions:[() => true] },
+					{ beat: { text: '', character: '1', nextBeat: '', sceneData }, conditions:[() => true] },
+					{ beat: { text: '', character: '2', nextBeat: '', sceneData }, conditions:[() => true] },
 				],
-				defaultBehavior: { text: '', nextBeat: '' },
+				defaultBehavior: { text: '', nextBeat: '', sceneData },
+				saveData,
 			});
 
 			expect(beat instanceof BestFitBranchBeat).toBe(true);

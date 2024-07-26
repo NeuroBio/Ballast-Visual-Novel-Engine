@@ -53,7 +53,7 @@ fdescribe(`Engine.startChapter`, () => {
 	describe(`loading valid chapter for the first time`, () => {
 		const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
 			scene = new Fakes.Scene(), beat = new Fakes.SimpleBeat({ key: 'key' });
-		const saveDataSideEffects = {
+		const saveData = {
 			queuedScenes: [],
 			unlockedChapters: [],
 			unlockedAchievements: [],
@@ -63,7 +63,7 @@ fdescribe(`Engine.startChapter`, () => {
 			removedMemories: [],
 			updatedCharacterTraits: [],
 		};
-		const startResponse = { result: 'result', saveData: saveDataSideEffects };
+		const startResponse = { result: 'result', saveData: saveData };
 		let result: any;
 		beforeAll(async () => {
 			const engine = await _createEngine();

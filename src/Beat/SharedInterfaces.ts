@@ -1,22 +1,31 @@
 import { Character } from '../Character/Character';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
 
+interface UpdateCharacterSpriteParams {
+	character: string,
+	sprite: string,
+}
+
+interface MoveCharacterParams {
+	character: string,
+	newPosition: number
+}
+
+interface RemoveCharacterParams {
+	character: string
+}
+
+interface AddCharacterParams {
+	character: string,
+	position: number,
+	sprite: string
+}
 export interface DisplaySideEffects {
 	setBackground: string;
-	updateCharacterSprites: [{
-		character: string,
-		sprite: string,
-	}];
-	moveCharacters: [{
-		character: string,
-		newPosition: number
-	}];
-	removeCharacters: [{ character: string }];
-	addCharacters: [{
-		character: string,
-		position: number,
-		sprite: string
-	}];
+	updateCharacterSprites: UpdateCharacterSpriteParams[];
+	moveCharacters: MoveCharacterParams[];
+	removeCharacters: RemoveCharacterParams[];
+	addCharacters: AddCharacterParams[];
 }
 
 export interface SaveDataSideEffects {

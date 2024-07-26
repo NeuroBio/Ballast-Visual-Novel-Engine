@@ -5,11 +5,28 @@ describe(`ChoiceBeat.construction`, () => {
 		DEFAULT_REQUIRED: 'When all choices are conditional, a Default Behavior is required.',
 		USE_SIMPLE_BEAT: 'Choice beats require at least 2 choices.',
 	});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
+	const sceneData = Object.freeze({
+		setBackground: '',
+		updateCharacterSprites: [],
+		moveCharacters: [],
+		removeCharacters: [],
+		addCharacters: [],
+	});
 
 	describe(`beat has no choices`, () => {
 		it(`throws invalid error`, () => {
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices: [] });
+				new ChoiceBeat({ key: 'key', choices: [], saveData });
 			}).toThrow(Error.USE_SIMPLE_BEAT);
 		});
 	});
@@ -19,7 +36,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const choices = [ choice1];
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices });
+				new ChoiceBeat({ key: 'key', choices, saveData });
 			}).toThrow(Error.USE_SIMPLE_BEAT);
 		});
 	});
@@ -31,7 +48,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices });
+				new ChoiceBeat({ key: 'key', choices, saveData });
 			}).not.toThrow();
 		});
 	});
@@ -43,7 +60,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices });
+				new ChoiceBeat({ key: 'key', choices, saveData });
 			}).not.toThrow();
 		});
 	});
@@ -55,7 +72,7 @@ describe(`ChoiceBeat.construction`, () => {
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices });
+				new ChoiceBeat({ key: 'key', choices, saveData });
 			}).toThrow(Error.DEFAULT_REQUIRED);
 		});
 	});
@@ -64,11 +81,11 @@ describe(`ChoiceBeat.construction`, () => {
 			const choice1 = { beat: { text:'1', nextBeat: 'A', mayPlay: false }, conditions: [() => false] };
 			const choice2 = { beat: { text:'2', nextBeat: 'B', mayPlay: false }, conditions: [() => false] };
 			const choice3 = { beat: { text:'3', nextBeat: 'C', mayPlay: false }, conditions: [() => false] };
-			const defaultBehavior = { text:'4', nextBeat: 'D' };
+			const defaultBehavior = { text:'4', nextBeat: 'D', sceneData };
 			const choices = [ choice1, choice2, choice3];
 
 			expect(() => {
-				new ChoiceBeat({ key: 'key', choices, defaultBehavior });
+				new ChoiceBeat({ key: 'key', choices, defaultBehavior, saveData });
 			}).not.toThrow();
 		});
 	});

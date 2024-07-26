@@ -2,6 +2,23 @@ import { NARRATOR } from '../../../../../src/Beat/Beat';
 import { BestFitBranchBeat } from '../../../../../src/Beat/BestFitBranchBeat';
 
 describe(`BestFitBranchBeat.play`, () => {
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
+	const sceneData = Object.freeze({
+		setBackground: '',
+		updateCharacterSprites: [],
+		moveCharacters: [],
+		removeCharacters: [],
+		addCharacters: [],
+	});
 	describe(`
 		three branches are unconditional
 		there are no repeated characters
@@ -11,10 +28,11 @@ describe(`BestFitBranchBeat.play`, () => {
 				key: '',
 				crossBranchCondition: () => 'char2',
 				branches: [
-					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1' }, conditions: [] },
-					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2' }, conditions: [] },
-					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3' }, conditions: [] },
+					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1', sceneData }, conditions: [] },
+					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2', sceneData }, conditions: [] },
+					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3', sceneData }, conditions: [] },
 				],
+				saveData,
 			});
 			expect(beat.play({
 				characters: {},
@@ -25,6 +43,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				nextBeat: 'beat2',
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -37,10 +56,11 @@ describe(`BestFitBranchBeat.play`, () => {
 				key: '',
 				crossBranchCondition: () => 'char1',
 				branches: [
-					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1' }, conditions: [] },
-					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2' }, conditions: [] },
-					{ beat: { nextBeat: 'beat3', character: 'char1', text: 'text3' }, conditions: [] },
+					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1', sceneData }, conditions: [] },
+					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2', sceneData }, conditions: [] },
+					{ beat: { nextBeat: 'beat3', character: 'char1', text: 'text3', sceneData }, conditions: [] },
 				],
+				saveData,
 			});
 			expect(beat.play({
 				characters: {},
@@ -51,6 +71,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				nextBeat: 'beat1',
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -64,11 +85,12 @@ describe(`BestFitBranchBeat.play`, () => {
 				key: '',
 				crossBranchCondition: () => 'char2',
 				branches: [
-					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1' }, conditions: [() => true] },
-					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2' }, conditions: [() => true] },
-					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3' }, conditions: [() => true] },
+					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1', sceneData }, conditions: [() => true] },
+					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2', sceneData }, conditions: [() => true] },
+					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3', sceneData }, conditions: [() => true] },
 				],
-				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
+				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default', sceneData },
+				saveData,
 			});
 			expect(beat.play({
 				characters: {},
@@ -79,6 +101,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				nextBeat: 'beat2',
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -92,11 +115,12 @@ describe(`BestFitBranchBeat.play`, () => {
 				key: '',
 				crossBranchCondition: () => 'char1',
 				branches: [
-					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1' }, conditions: [() => true] },
-					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2' }, conditions: [() => true] },
-					{ beat: { nextBeat: 'beat3', character: 'char1', text: 'text3' }, conditions: [() => true] },
+					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1', sceneData }, conditions: [() => true] },
+					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2', sceneData }, conditions: [() => true] },
+					{ beat: { nextBeat: 'beat3', character: 'char1', text: 'text3', sceneData }, conditions: [() => true] },
 				],
-				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
+				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default', sceneData },
+				saveData,
 			});
 			expect(beat.play({
 				characters: {},
@@ -107,6 +131,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				nextBeat: 'beat1',
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -120,11 +145,12 @@ describe(`BestFitBranchBeat.play`, () => {
 				key: '',
 				crossBranchCondition: () => 'char1',
 				branches: [
-					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1' }, conditions: [() => false] },
-					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2' }, conditions: [() => false] },
-					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3' }, conditions: [() => true] },
+					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1', sceneData }, conditions: [() => false] },
+					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2', sceneData }, conditions: [() => false] },
+					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3', sceneData }, conditions: [() => true] },
 				],
-				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
+				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default', sceneData },
+				saveData,
 			});
 			expect(beat.play({
 				characters: {},
@@ -135,6 +161,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				nextBeat: 'beat3',
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});
@@ -148,11 +175,12 @@ describe(`BestFitBranchBeat.play`, () => {
 				key: '',
 				crossBranchCondition: () => 'char1',
 				branches: [
-					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1' }, conditions: [() => false] },
-					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2' }, conditions: [() => false] },
-					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3' }, conditions: [() => false] },
+					{ beat: { nextBeat: 'beat1', character: 'char1', text: 'text1', sceneData }, conditions: [() => false] },
+					{ beat: { nextBeat: 'beat2', character: 'char2', text: 'text2', sceneData }, conditions: [() => false] },
+					{ beat: { nextBeat: 'beat3', character: 'char3', text: 'text3', sceneData }, conditions: [() => false] },
 				],
-				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default' },
+				defaultBehavior: { nextBeat: 'defaultBeat', text: 'default', sceneData },
+				saveData,
 			});
 			expect(beat.play({
 				characters: {},
@@ -163,6 +191,7 @@ describe(`BestFitBranchBeat.play`, () => {
 				nextBeat: 'defaultBeat',
 				speaker: NARRATOR,
 				saveData: expect.any(Object),
+				sceneData: expect.any(Object),
 			});
 		});
 	});

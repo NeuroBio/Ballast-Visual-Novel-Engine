@@ -116,7 +116,7 @@ interface SaveDataSideEffectsDto {
 	updatedCharacterTraits?: TraitParams[];
 }
 
-interface BeatDto {
+export interface BeatDto {
 	key: string;
 	choices?: ChoiceDto[];
 	responses?: ResponseDto[];

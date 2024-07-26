@@ -35,7 +35,7 @@ export const BeatData: BeatDto[] = [
 			text: 'This is the second beat.',
 			nextBeat: 'choiceBeat',
 		},
-		saveDataSideEffects: {
+		saveData: {
 			unlockedAchievements: ['start'],
 		},
 	},
