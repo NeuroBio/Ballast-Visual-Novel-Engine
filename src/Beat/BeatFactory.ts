@@ -1,13 +1,14 @@
-import { Beat, PlayParams } from './Beat';
-import { FinalBeat } from './FinalBeat';
-import { ChoiceBeat } from './ChoiceBeat';
-import { SimpleBeat } from './SimpleBeat';
+import { Beat, PlayParams, SharedBeatParams } from './Beat';
+import { FinalBeat, FinalBeatParams } from './FinalBeat';
+import { ChoiceBeat, ChoiceBeatParams } from './ChoiceBeat';
+import { SimpleBeat, SimpleBeatParams } from './SimpleBeat';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
-import { FirstFitBranchBeat } from './FirstFitBranchBeat';
-import { MultiResponseBeat } from './MultiResponseBeat';
-import { BestFitBranchBeat } from './BestFitBranchBeat';
-import { Character } from '../Character/Character';
+import { FirstFitBranchBeat, FirstFitBranchBeatParams } from './FirstFitBranchBeat';
+import { MultiResponseBeat, MultiResponseBeatParams } from './MultiResponseBeat';
+import { BestFitBranchBeat, BestFitBranchBeatParams } from './BestFitBranchBeat';
+import { CrossConditionParams, DisplaySideEffects } from './SharedInterfaces';
 
+// conditionals
 export enum SingleConditionType {
 	AT_LEAST_ITEM = 'itemEqual+',
 	AT_MOST_ITEM = 'itemEqual-',
@@ -45,52 +46,13 @@ interface TraitMaxMinCondition {
 	trait: string;
 }
 
-type CrossCondition = TraitMaxMinCondition;
+type CrossConditionDto = TraitMaxMinCondition;
 
-type SingleCriterion = ItemCondition | MemoryCondition | TraitLimitCondition;
+type SingleCriterionDto = ItemCondition | MemoryCondition | TraitLimitCondition;
 
-export interface CrossConditionParams {
-	characters: Character[];
-}
 
-export interface Choice {
-	text: string;
-	nextBeat: string;
-	conditions?: SingleCriterion[];
-}
-
-interface Branch {
-	text: string;
-	character?: string,
-	nextBeat: string;
-	conditions?: SingleCriterion[];
-	displaySideEffects?: DisplaySideEffects;
-}
-
-interface BestFitBranch {
-	text: string;
-	character: string,
-	nextBeat: string;
-	conditions?: SingleCriterion[];
-	displaySideEffects?: DisplaySideEffects;
-}
-
-interface Response {
-	text: string,
-	character?: string,
-	nextBeat?: string;
-	conditions?: SingleCriterion[];
-	displaySideEffects?: DisplaySideEffects;
-}
-
-export interface DefaultBehavior {
-	text: string;
-	character?: string;
-	nextBeat?: string;
-	displaySideEffects?: DisplaySideEffects;
-}
-
-export interface DisplaySideEffects {
+// Storage
+interface DisplaySideEffectsDto {
 	setBackground?: string;
 	updateCharacterSprites?: [{
 		character: string,
@@ -107,8 +69,43 @@ export interface DisplaySideEffects {
 		sprite: string
 	}];
 }
+interface DefaultBehaviorDto {
+	text: string;
+	character?: string;
+	nextBeat?: string;
+	sceneData?: DisplaySideEffectsDto;
+}
+export interface ChoiceDto {
+	text: string;
+	nextBeat: string;
+	conditions?: SingleCriterionDto[];
+}
 
-export interface SaveDataSideEffectsDto {
+interface FirstFitBranchDto {
+	text: string;
+	character?: string,
+	nextBeat: string;
+	conditions?: SingleCriterionDto[];
+	sceneData?: DisplaySideEffectsDto;
+}
+
+interface BestFitBranchDto {
+	text: string;
+	character: string,
+	nextBeat: string;
+	conditions?: SingleCriterionDto[];
+	sceneData?: DisplaySideEffectsDto;
+}
+
+interface ResponseDto {
+	text: string,
+	character?: string,
+	nextBeat?: string;
+	conditions?: SingleCriterionDto[];
+	sceneData?: DisplaySideEffectsDto;
+}
+
+interface SaveDataSideEffectsDto {
 	queuedScenes?: SceneParams[];
 	unlockedChapters?: string[];
 	unlockedAchievements?: string[];
@@ -118,56 +115,86 @@ export interface SaveDataSideEffectsDto {
 	removedMemories?: MemoryParams[];
 	updatedCharacterTraits?: TraitParams[];
 }
-export interface SharedBeatParams {
+
+interface BeatDto {
 	key: string;
-	saveDataSideEffects?: SaveDataSideEffectsDto;
+	choices?: ChoiceDto[];
+	responses?: ResponseDto[];
+	branches?: FirstFitBranchDto[] | BestFitBranchDto[];
+	crossBranchCondition?: CrossConditionDto;
+	defaultBehavior?: DefaultBehaviorDto;
+	saveData?: SaveDataSideEffectsDto;
 }
 
-export interface BeatDto extends SharedBeatParams {
-	defaultBehavior?: DefaultBehavior;
-	choices?: Choice[];
-	branches?: Branch[],
-	crossBranchCondition?: TraitMaxMinCondition;
-	responses?: Response[]
+// construction
+interface SimpleBeatDto {
+	key: string;
+	defaultBehavior: {
+		text: string;
+		character?: string;
+		nextBeat: string;
+		sceneData?: DisplaySideEffectsDto;
+	};
+	saveData?: SaveDataSideEffectsDto;
 }
 
-interface DefaultBehaviorStandard extends DisplaySideEffects{
-	text: string;
-	character?: string;
-	nextBeat: string;
+interface ChoiceBeatDto {
+	key: string;
+	choices: ChoiceDto[];
+	defaultBehavior?: {
+		text: string;
+		character?: string;
+		nextBeat: string;
+		sceneData?: DisplaySideEffectsDto;
+	};
+	saveData?: SaveDataSideEffectsDto;
 }
 
-interface DefaultBehaviorFinal extends DisplaySideEffects{
-	text: string;
-	character?: string;
-}
-interface SimpleBeatParams extends SharedBeatParams {
-	defaultBehavior: DefaultBehaviorStandard;
-}
-
-interface FinalBeatParams extends SharedBeatParams {
-	defaultBehavior: DefaultBehaviorFinal;
-}
-
-interface ChoiceBeatParams extends SharedBeatParams {
-	choices: Choice[];
-	defaultBehavior?: DefaultBehaviorStandard;
+interface FirstFitBranchBeatDto {
+	key: string;
+	branches: FirstFitBranchDto[],
+	defaultBehavior?: {
+		text: string;
+		character?: string;
+		nextBeat: string;
+		sceneData?: DisplaySideEffectsDto;
+	};
+	saveData?: SaveDataSideEffectsDto;
 }
 
-interface FirstFitBranchBeatParams extends SharedBeatParams {
-	branches: BestFitBranch[];
-	defaultBehavior: DefaultBehaviorStandard;
+interface BestFitBranchBeatDto {
+	key: string;
+	branches: BestFitBranchDto[];
+	crossBranchCondition: CrossConditionDto;
+	defaultBehavior?: {
+		text: string;
+		character: string;
+		nextBeat: string;
+		sceneData?: DisplaySideEffectsDto;
+	};
+	saveData?: SaveDataSideEffectsDto;
 }
 
-interface BestFitBranchBeatParams extends SharedBeatParams {
-	branches: BestFitBranch[];
-	crossBranchCondition: TraitMaxMinCondition;
-	defaultBehavior?: DefaultBehaviorStandard;
+interface MultiResponseBeatDto {
+	key: string;
+	responses: ResponseDto[];
+	saveData?: SaveDataSideEffectsDto;
+	defaultBehavior: {
+		text: string;
+		character?: string;
+		nextBeat: string;
+		sceneData?: DisplaySideEffectsDto;
+	};
 }
 
-interface MultiResponseBeatParams extends SharedBeatParams {
-	responses: Response[];
-	defaultBehavior: DefaultBehaviorStandard;
+interface FinalBeatDto {
+	key: string;
+	defaultBehavior: {
+		text: string;
+		character?: string;
+		sceneData?: DisplaySideEffectsDto;
+	};
+	saveData?: SaveDataSideEffectsDto;
 }
 
 export class BeatFactory {
@@ -199,167 +226,126 @@ export class BeatFactory {
 		throw new Error(`Received malformed beat data for ${dto.key}.  See the documentation for expected shapes for different beat types.`);
 	}
 
-	#createSimpleBeat (dto: SimpleBeatParams): SimpleBeat {
-		const params = {
-			defaultBehavior: dto.defaultBehavior,
+	#createSimpleBeat (dto: SimpleBeatDto): SimpleBeat {
+		const params: SimpleBeatParams = {
+			defaultBehavior: {
+				character: dto.defaultBehavior.character,
+				text: dto.defaultBehavior.text,
+				nextBeat: dto.defaultBehavior.nextBeat,
+				sceneData: this.#setSceneData(dto.defaultBehavior),
+			},
 			...this.#setSharedParams(dto),
 		};
 		return new SimpleBeat(params);
 	}
 
-	#createFinalBeat (dto: FinalBeatParams): FinalBeat {
-		const params = {
-			character: dto.defaultBehavior.character,
-			text: dto.defaultBehavior.text,
-			...this.#setSharedParams(dto),
-		};
-		return new FinalBeat(params);
-	}
-
-	#createChoiceBeat (dto: ChoiceBeatParams): ChoiceBeat {
-		const params = {
+	#createChoiceBeat (dto: ChoiceBeatDto): ChoiceBeat {
+		const defaultBehavior = dto.defaultBehavior
+			? {
+				character: dto.defaultBehavior.character,
+				text: dto.defaultBehavior.text,
+				nextBeat: dto.defaultBehavior.nextBeat,
+				sceneData: this.#setSceneData(dto.defaultBehavior),
+			}
+			: undefined;
+		const params: ChoiceBeatParams = {
 			choices: dto.choices.map((choice) => ({
 				beat: { text: choice.text, nextBeat: choice.nextBeat, mayPlay: false },
 				conditions: this.#createSingleCondition(choice.conditions || []) || [],
 			})),
-			defaultBehavior: dto.defaultBehavior,
+			defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
 		return new ChoiceBeat(params);
 	}
 
-	#createFirstFitBranchBeat (dto: FirstFitBranchBeatParams): FirstFitBranchBeat {
-		const params = {
+	#createFirstFitBranchBeat (dto: FirstFitBranchBeatDto): FirstFitBranchBeat {
+		const defaultBehavior = dto.defaultBehavior
+			? {
+				character: dto.defaultBehavior.character,
+				text: dto.defaultBehavior.text,
+				nextBeat: dto.defaultBehavior.nextBeat,
+				sceneData: this.#setSceneData(dto.defaultBehavior),
+			}
+			: undefined;
+		const params: FirstFitBranchBeatParams = {
 			branches: dto.branches.map((branch) => ({
-				beat: { text: branch.text, nextBeat: branch.nextBeat, character: branch.character },
+				beat: {
+					text: branch.text,
+					nextBeat: branch.nextBeat,
+					character: branch.character,
+					sceneData: this.#setSceneData(dto.defaultBehavior),
+				},
 				conditions: this.#createSingleCondition(branch.conditions || []) || [],
 			})),
-			defaultBehavior: dto.defaultBehavior,
+			defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
 		return new FirstFitBranchBeat(params);
 	}
 
-	#createMultiResponseBeat (dto: MultiResponseBeatParams): MultiResponseBeat {
-		const params = {
-			responses: dto.responses.map((response) => ({
-				beat: { text: response.text, nextBeat: response.nextBeat, character: response.character },
-				conditions: this.#createSingleCondition(response.conditions || []) || [],
-			})),
-			defaultBehavior: dto.defaultBehavior,
-			...this.#setSharedParams(dto),
-		};
-		return new MultiResponseBeat(params);
-	}
-
-	#createBestFitBranchBeat (dto: BestFitBranchBeatParams): BestFitBranchBeat {
-		const params = {
+	#createBestFitBranchBeat (dto: BestFitBranchBeatDto): BestFitBranchBeat {
+		const defaultBehavior = dto.defaultBehavior
+			? {
+				character: dto.defaultBehavior.character,
+				text: dto.defaultBehavior.text,
+				nextBeat: dto.defaultBehavior.nextBeat,
+				sceneData: this.#setSceneData(dto.defaultBehavior),
+			}
+			: undefined;
+		const params: BestFitBranchBeatParams = {
 			branches: dto.branches.map((branch) => ({
-				beat: { text: branch.text, nextBeat: branch.nextBeat, character: branch.character },
+				beat: {
+					text: branch.text,
+					nextBeat: branch.nextBeat,
+					character: branch.character,
+					sceneData: this.#setSceneData(dto.defaultBehavior),
+				},
 				conditions: this.#createSingleCondition(branch.conditions || []) || [],
 			})),
 			crossBranchCondition: this.#createCrossCondition(dto.crossBranchCondition),
-			defaultBehavior: dto.defaultBehavior,
+			defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
 		return new BestFitBranchBeat(params);
 	}
 
-	#createSingleCondition (conditions: SingleCriterion[]) {
-		return conditions.map((condition) => {
-			switch (condition.type) {
-			case SingleConditionType.AT_LEAST_ITEM: {
-				const { item, quantity } = condition;
-				return (params: PlayParams) =>
-					(params.inventory[item] || 0) >= quantity;
-			}
-
-			case SingleConditionType.AT_MOST_ITEM: {
-				const { item, quantity } = condition;
-				return (params: PlayParams) =>
-					(params.inventory[item] || 0) <= quantity;
-			}
-
-			case SingleConditionType.CHARACTER_AWARE: {
-				const { character, memory } = condition;
-				return (params: PlayParams) =>
-					params.characters[character]?.hasMemory(memory) || false;
-			}
-
-			case SingleConditionType.CHARACTER_UNAWARE: {
-				const { character, memory } = condition;
-				return (params: PlayParams) =>
-					!params.characters[character]?.hasMemory(memory) || false;
-			}
-
-			case SingleConditionType.AT_LEAST_CHAR_TRAIT: {
-				const { character, trait, value } = condition;
-				return (params: PlayParams) =>
-					params.characters[character]?.traits[trait] >= value || false;
-			}
-
-			case SingleConditionType.AT_MOST_CHAR_TRAIT: {
-				const { character, trait, value } = condition;
-				return (params: PlayParams) =>
-					params.characters[character]?.traits[trait] <= value || false;
-			}
-
-			default: throw new Error('Not a real condition'); // not tested
-			}
-		});
-	}
-
-	#createCrossCondition (condition: CrossCondition) {
-		switch (condition.type) {
-		case CrossConditionType.GREATEST_SENTIMENT: {
-			return (params: CrossConditionParams): string => {
-				const { characters } = params;
-				let maxChar = characters[0];
-				characters.forEach((char) => {
-					if (char.traits[condition.trait] > maxChar.traits[condition.trait]) {
-						maxChar = char;
-					}
-				});
-
-				return maxChar.key;
-			};
-		}
-
-		case CrossConditionType.LEAST_SENTIMENT: {
-			return (params: CrossConditionParams): string => {
-				const { characters } = params;
-				let minChar = characters[0];
-				characters.forEach((char) => {
-					if (char.traits[condition.trait] < minChar.traits[condition.trait]) {
-						minChar = char;
-					}
-				});
-
-				return minChar.key;
-			};
-		}
-
-		default: throw new Error('Not a real condition'); // not tested
-		}
-	}
-
-	#setSharedParams (dto: BeatDto): SharedBeatParams {
-		return {
-			key: dto.key,
-			saveDataSideEffects: {
-				queuedScenes: dto.saveDataSideEffects?.queuedScenes,
-				unlockedChapters: dto.saveDataSideEffects?.unlockedChapters,
-				unlockedAchievements: dto.saveDataSideEffects?.unlockedAchievements,
-				addedItems: dto.saveDataSideEffects?.addedItems,
-				removedItems: dto.saveDataSideEffects?.removedItems,
-				addedMemories: dto.saveDataSideEffects?.addedMemories,
-				removedMemories: dto.saveDataSideEffects?.removedMemories,
-				updatedCharacterTraits: dto.saveDataSideEffects?.updatedCharacterTraits,
+	#createMultiResponseBeat (dto: MultiResponseBeatDto): MultiResponseBeat {
+		const params: MultiResponseBeatParams = {
+			responses: dto.responses.map((response) => ({
+				beat: {
+					text: response.text,
+					nextBeat: response.nextBeat,
+					character: response.character,
+					sceneData: this.#setSceneData(dto.defaultBehavior),
+				},
+				conditions: this.#createSingleCondition(response.conditions || []) || [],
+			})),
+			defaultBehavior: {
+				character: dto.defaultBehavior.character,
+				text: dto.defaultBehavior.text,
+				nextBeat: dto.defaultBehavior.nextBeat,
+				sceneData: this.#setSceneData(dto.defaultBehavior),
 			},
+			...this.#setSharedParams(dto),
 		};
+		return new MultiResponseBeat(params);
 	}
 
-	#isSimpleBeat (dto: BeatDto): dto is SimpleBeatParams {
+	#createFinalBeat (dto: FinalBeatDto): FinalBeat {
+		const params: FinalBeatParams = {
+			defaultBehavior: {
+				character: dto.defaultBehavior.character,
+				text: dto.defaultBehavior.text,
+				sceneData: this.#setSceneData(dto.defaultBehavior),
+			},
+			...this.#setSharedParams(dto),
+		};
+		return new FinalBeat(params);
+	}
+
+	// Type Checkers
+	#isSimpleBeat (dto: BeatDto): dto is SimpleBeatDto {
 		if (dto.choices || dto.responses || dto.branches || dto.crossBranchCondition) {
 			return false;
 		}
@@ -368,26 +354,12 @@ export class BeatFactory {
 			return false;
 		}
 
-		this.#validateSideEffects(dto.key, dto.defaultBehavior);
+		this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
 
 		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 	}
 
-	#isFinalBeat (dto: BeatDto): dto is FinalBeatParams {
-		if (dto.choices || dto.responses || dto.branches || dto.crossBranchCondition) {
-			return false;
-		}
-
-		if (!dto.defaultBehavior) {
-			return false;
-		}
-
-		this.#validateSideEffects(dto.key, dto.defaultBehavior);
-
-		return !!(dto.defaultBehavior.text && !dto.defaultBehavior.nextBeat);
-	}
-
-	#isChoiceBeat (dto: BeatDto): dto is ChoiceBeatParams {
+	#isChoiceBeat (dto: BeatDto): dto is ChoiceBeatDto {
 		if (dto.responses || dto.branches || !dto.choices || dto.crossBranchCondition) {
 			return false;
 		}
@@ -405,7 +377,7 @@ export class BeatFactory {
 		return true;
 	}
 
-	#isFirstFitBranchBeat (dto: BeatDto): dto is FirstFitBranchBeatParams {
+	#isFirstFitBranchBeat (dto: BeatDto): dto is FirstFitBranchBeatDto {
 		if (dto.responses || !dto.branches || dto.choices || !dto.defaultBehavior || dto.crossBranchCondition) {
 			return false;
 		}
@@ -414,34 +386,18 @@ export class BeatFactory {
 			if (!branch.text || !branch.nextBeat || !branch.conditions) {
 				return false;
 			}
-			this.#validateSideEffects(dto.key, dto.defaultBehavior);
+			this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
 		}
 
 		if (dto.defaultBehavior) {
-			this.#validateSideEffects(dto.key, dto.defaultBehavior);
+			this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
 			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 		}
 
 		return true;
 	}
 
-	#isMultiResponseBeat (dto: BeatDto): dto is MultiResponseBeatParams {
-		if (!dto.responses || dto.branches || dto.choices || !dto.defaultBehavior || dto.crossBranchCondition) {
-			return false;
-		}
-
-		for (const response of dto.responses) {
-			if (!response.text) {
-				return false;
-			}
-			this.#validateSideEffects(dto.key, dto.defaultBehavior);
-		}
-
-		this.#validateSideEffects(dto.key, dto.defaultBehavior);
-		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
-	}
-
-	#isBestFitBranchBeat (dto: BeatDto): dto is BestFitBranchBeatParams {
+	#isBestFitBranchBeat (dto: BeatDto): dto is BestFitBranchBeatDto {
 		if (dto.responses || !dto.branches || dto.choices || !dto.crossBranchCondition) {
 			return false;
 		}
@@ -459,9 +415,39 @@ export class BeatFactory {
 		return true;
 	}
 
+	#isMultiResponseBeat (dto: BeatDto): dto is MultiResponseBeatDto {
+		if (!dto.responses || dto.branches || dto.choices || !dto.defaultBehavior || dto.crossBranchCondition) {
+			return false;
+		}
+
+		for (const response of dto.responses) {
+			if (!response.text) {
+				return false;
+			}
+			this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
+		}
+
+		this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
+		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
+	}
+
+	#isFinalBeat (dto: BeatDto): dto is FinalBeatDto {
+		if (dto.choices || dto.responses || dto.branches || dto.crossBranchCondition) {
+			return false;
+		}
+
+		if (!dto.defaultBehavior) {
+			return false;
+		}
+
+		this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
+
+		return !!(dto.defaultBehavior.text && !dto.defaultBehavior.nextBeat);
+	}
+
 	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-	#validateSideEffects (key: string, data: any): boolean {
-		const check: DisplaySideEffects = data.displaySideEffects;
+	#validateDisplaySideEffects (key: string, data: any): boolean {
+		const check: DisplaySideEffectsDto = data.sceneData;
 		if (!check) {
 			return true;
 		}
@@ -515,5 +501,112 @@ export class BeatFactory {
 
 			return data % 1 === 0;
 		}
+	}
+
+
+	// Create Shared Data
+	#createSingleCondition (conditions: SingleCriterionDto[]) {
+		return conditions.map((condition) => {
+			switch (condition.type) {
+			case SingleConditionType.AT_LEAST_ITEM: {
+				const { item, quantity } = condition;
+				return (params: PlayParams) =>
+					(params.inventory[item] || 0) >= quantity;
+			}
+
+			case SingleConditionType.AT_MOST_ITEM: {
+				const { item, quantity } = condition;
+				return (params: PlayParams) =>
+					(params.inventory[item] || 0) <= quantity;
+			}
+
+			case SingleConditionType.CHARACTER_AWARE: {
+				const { character, memory } = condition;
+				return (params: PlayParams) =>
+					params.characters[character]?.hasMemory(memory) || false;
+			}
+
+			case SingleConditionType.CHARACTER_UNAWARE: {
+				const { character, memory } = condition;
+				return (params: PlayParams) =>
+					!params.characters[character]?.hasMemory(memory) || false;
+			}
+
+			case SingleConditionType.AT_LEAST_CHAR_TRAIT: {
+				const { character, trait, value } = condition;
+				return (params: PlayParams) =>
+					params.characters[character]?.traits[trait] >= value || false;
+			}
+
+			case SingleConditionType.AT_MOST_CHAR_TRAIT: {
+				const { character, trait, value } = condition;
+				return (params: PlayParams) =>
+					params.characters[character]?.traits[trait] <= value || false;
+			}
+
+			default: throw new Error('Not a real condition'); // not tested
+			}
+		});
+	}
+
+	#createCrossCondition (condition: CrossConditionDto) {
+		switch (condition.type) {
+		case CrossConditionType.GREATEST_SENTIMENT: {
+			return (params: CrossConditionParams): string => {
+				const { characters } = params;
+				let maxChar = characters[0];
+				characters.forEach((char) => {
+					if (char.traits[condition.trait] > maxChar.traits[condition.trait]) {
+						maxChar = char;
+					}
+				});
+
+				return maxChar.key;
+			};
+		}
+
+		case CrossConditionType.LEAST_SENTIMENT: {
+			return (params: CrossConditionParams): string => {
+				const { characters } = params;
+				let minChar = characters[0];
+				characters.forEach((char) => {
+					if (char.traits[condition.trait] < minChar.traits[condition.trait]) {
+						minChar = char;
+					}
+				});
+
+				return minChar.key;
+			};
+		}
+
+		default: throw new Error('Not a real condition'); // not tested
+		}
+	}
+
+	#setSharedParams (dto: BeatDto): SharedBeatParams {
+		return {
+			key: dto.key,
+			saveData: {
+				queuedScenes: dto.saveData?.queuedScenes || [],
+				unlockedChapters: dto.saveData?.unlockedChapters || [],
+				unlockedAchievements: dto.saveData?.unlockedAchievements || [],
+				addedItems: dto.saveData?.addedItems || [],
+				removedItems: dto.saveData?.removedItems || [],
+				addedMemories: dto.saveData?.addedMemories || [],
+				removedMemories: dto.saveData?.removedMemories || [],
+				updatedCharacterTraits: dto.saveData?.updatedCharacterTraits || [],
+			},
+		};
+	}
+
+	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+	#setSceneData (data: any): DisplaySideEffects {
+		return {
+			setBackground: data.sceneData?.setBackground || '',
+			updateCharacterSprites: data.sceneData?.updateCharacterSprites || [],
+			moveCharacters: data.sceneData?.moveCharacters || [],
+			removeCharacters: data.sceneData?.removeCharacters || [],
+			addCharacters: data.sceneData?.addCharacters || [],
+		};
 	}
 }

@@ -1,33 +1,29 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
-import { CrossConditionParams, SharedBeatParams } from './BeatFactory';
+import { CrossConditionParams, DefaultBehaviorStandard, DisplaySideEffects, SaveDataSideEffects } from './SharedInterfaces';
 
-interface BranchBeat {
-	text: string;
-	character: string;
-	nextBeat: string;
-}
 
-interface DefaultBehavior {
-	text: string;
-	character?: string;
-	nextBeat: string;
-}
-
-interface Branch {
-	beat: BranchBeat;
+interface BestFitBranch {
+	beat: {
+		text: string;
+		character: string,
+		nextBeat: string;
+		sceneData: DisplaySideEffects;
+	}
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
-interface BestFitBranchBeatParams extends SharedBeatParams {
-	branches: Branch[];
+export interface BestFitBranchBeatParams {
+	key: string;
+	branches: BestFitBranch[];
 	crossBranchCondition: (params: CrossConditionParams) => string;
-	defaultBehavior?: DefaultBehavior;
+	defaultBehavior?: DefaultBehaviorStandard;
+	saveData: SaveDataSideEffects;
 }
 
 export class BestFitBranchBeat extends Beat {
-	#branches: Branch[];
+	#branches: BestFitBranch[];
 	#crossBranchCondition: (params: CrossConditionParams) => string;
-	#defaultBehavior?: DefaultBehavior;
+	#defaultBehavior?: DefaultBehaviorStandard;
 
 	constructor (params: BestFitBranchBeatParams) {
 		const { branches, crossBranchCondition, defaultBehavior } = params;
@@ -61,7 +57,7 @@ export class BestFitBranchBeat extends Beat {
 
 	play (params: PlayParams): StandardBeatDisplay {
 		const { characters } = params;
-		const validBranches: Branch[] = [];
+		const validBranches: BestFitBranch[] = [];
 
 		this.#branches.forEach((branch) => {
 			const includeBranch = this.#mayPlay(branch, params);
@@ -88,7 +84,7 @@ export class BestFitBranchBeat extends Beat {
 		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
 
-	#mayPlay (branch: Branch, params: PlayParams): boolean {
+	#mayPlay (branch: BestFitBranch, params: PlayParams): boolean {
 		if (branch.conditions.length === 0) {
 			return true;
 		}

@@ -1,33 +1,43 @@
 import { Beat, FinalBeatDisplay, PlayParams } from './Beat';
-import { SharedBeatParams } from './BeatFactory';
+import { DisplaySideEffects, SaveDataSideEffects } from './SharedInterfaces';
 
-interface FinalBeatParams extends SharedBeatParams {
-	character?: string;
+interface DefaultBehavior {
 	text: string;
+	character?: string;
+	sceneData: DisplaySideEffects;
+}
+
+export interface FinalBeatParams {
+	key: string;
+	defaultBehavior: {
+		text: string;
+		character?: string;
+		sceneData: DisplaySideEffects;
+	};
+	saveData: SaveDataSideEffects;
 }
 
 export class FinalBeat extends Beat {
-	#text: string;
-	#character: string |undefined;
+	#defaultBehavior: DefaultBehavior;
 
 	constructor (params: FinalBeatParams) {
-		const { text, character } = params;
+		const { defaultBehavior } = params;
 		super(params);
 
-		this.#text = text;
-		this.#character = character;
+		this.#defaultBehavior = defaultBehavior;
 	}
 
 	play (params: PlayParams): FinalBeatDisplay {
 		const { characters } = params;
 		const character = this.getCharacter({
-			character: this.#character,
+			character: this.#defaultBehavior.character,
 			characters,
 		});
 		return {
-			text: this.#text,
+			text: this.#defaultBehavior.text,
 			speaker: character,
 			saveData: this.createSaveDataSideEffects(),
+			sceneData: this.#defaultBehavior.sceneData,
 		};
 	}
 }

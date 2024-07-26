@@ -1,29 +1,25 @@
 import { Beat, ChoiceBeatDisplay, PlayParams } from './Beat';
-import { SharedBeatParams } from './BeatFactory';
-
-interface DefaultBehavior {
-	text: string;
-	character?: string;
-	nextBeat: string;
-}
-
-interface ChoiceBehavior extends DefaultBehavior {
-	mayPlay: boolean;
-}
+import { DefaultBehaviorStandard, SaveDataSideEffects } from './SharedInterfaces';
 
 interface Choice {
-	beat: ChoiceBehavior;
+	beat: {
+		text: string;
+		nextBeat: string;
+		mayPlay: boolean;
+	};
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
-interface ChoiceBeatParams extends SharedBeatParams {
+export interface ChoiceBeatParams {
+	key: string;
 	choices: Choice[];
-	defaultBehavior?: DefaultBehavior;
+	defaultBehavior?: DefaultBehaviorStandard;
+	saveData: SaveDataSideEffects;
 }
 
 export class ChoiceBeat extends Beat {
 	#choices: Choice[];
-	#defaultBehavior?: DefaultBehavior;
+	#defaultBehavior?: DefaultBehaviorStandard;
 
 	constructor (params: ChoiceBeatParams) {
 		const { choices, defaultBehavior } = params;

@@ -1,17 +1,18 @@
 import { Character } from '../Character/Character';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
-import { DisplaySideEffects, SharedBeatParams } from './BeatFactory';
+import { DisplaySideEffects } from './SharedInterfaces';
 
 export const NARRATOR = 'Narrator';
 
-export interface StandardBeatDisplay extends DisplaySideEffects {
+export interface StandardBeatDisplay {
 	speaker?: string;
 	text: string;
 	nextBeat: string;
 	saveData: SaveDataSideEffects;
+	sceneData: DisplaySideEffects;
 }
 
-interface ChoiceBehavior extends DisplaySideEffects{
+interface ChoiceBehavior {
 	mayPlay: boolean;
 }
 
@@ -21,10 +22,11 @@ export interface ChoiceBeatDisplay {
 	default?: StandardBeatDisplay;
 }
 
-export interface FinalBeatDisplay extends DisplaySideEffects {
+export interface FinalBeatDisplay {
 	speaker: string;
 	text: string;
 	saveData: SaveDataSideEffects;
+	sceneData: DisplaySideEffects;
 }
 
 export interface SaveDataSideEffects {
@@ -44,6 +46,11 @@ export interface PlayParams {
 	scene: { characters: Set<string> };
 }
 
+export interface SharedBeatParams {
+	key: string;
+	saveData: SaveDataSideEffects;
+}
+
 interface GetCharacterParams {
 	characters: { [characterKey: string]: Character },
 	character: string | undefined;
@@ -53,9 +60,10 @@ interface DisplayParams {
 	text: string;
 	character?: string;
 	nextBeat: string;
+	sceneData: DisplaySideEffects;
 }
 
-interface AssembleStandardBeatDisplayParams extends DisplaySideEffects {
+interface AssembleStandardBeatDisplayParams {
 	characters: { [characterKey: string]: Character };
 	beat: DisplayParams;
 }
@@ -73,21 +81,17 @@ export abstract class Beat {
 	#updatedCharacterTraits: TraitParams[];
 
 	constructor (params: SharedBeatParams) {
-		const { key, saveDataSideEffects } = params;
+		const { key, saveData } = params;
 
 		this.key = key;
-		this.#queuedScenes = saveDataSideEffects?.queuedScenes || [];
-		this.#unlockedChapters = saveDataSideEffects?.unlockedChapters || [];
-		this.#unlockedAchievements = saveDataSideEffects?.unlockedAchievements || [];
-		this.#addedItems = saveDataSideEffects?.addedItems || [];
-		this.#removedItems = saveDataSideEffects?.removedItems || [];
-		this.#addedMemories = saveDataSideEffects?.addedMemories || [];
-		this.#removedMemories = saveDataSideEffects?.removedMemories || [];
-		this.#updatedCharacterTraits = saveDataSideEffects?.updatedCharacterTraits || [];
-	}
-
-	get saveDataSideEffects (): SaveDataSideEffects {
-		return this.createSaveDataSideEffects();
+		this.#queuedScenes = saveData?.queuedScenes || [];
+		this.#unlockedChapters = saveData?.unlockedChapters || [];
+		this.#unlockedAchievements = saveData?.unlockedAchievements || [];
+		this.#addedItems = saveData?.addedItems || [];
+		this.#removedItems = saveData?.removedItems || [];
+		this.#addedMemories = saveData?.addedMemories || [];
+		this.#removedMemories = saveData?.removedMemories || [];
+		this.#updatedCharacterTraits = saveData?.updatedCharacterTraits || [];
 	}
 
 	protected createSaveDataSideEffects (): SaveDataSideEffects {
@@ -103,7 +107,6 @@ export abstract class Beat {
 		};
 	}
 
-
 	abstract play (params: PlayParams): StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
 
 	protected getCharacter (params: GetCharacterParams): string {
@@ -115,7 +118,7 @@ export abstract class Beat {
 	}
 
 	protected assembleStandardBeatDisplay (params: AssembleStandardBeatDisplayParams) {
-		const { characters, beat: { text, character, nextBeat } } = params;
+		const { characters, beat: { text, character, nextBeat, sceneData } } = params;
 		const characterName = this.getCharacter({
 			character,
 			characters,
@@ -126,6 +129,7 @@ export abstract class Beat {
 			text,
 			nextBeat,
 			saveData,
+			sceneData,
 		};
 		// apply display
 		// update all beats to pass display

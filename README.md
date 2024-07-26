@@ -94,9 +94,9 @@ Owns one set of text.  Returns that and the next beat.  There is no real logic h
 		character?: string,
 		text: string,
 		nextBeat: string,
-		saveDataSideEffects: {}, // see below
+		sceneData: {}, // see below
 	},
-	saveDataSideEffects?: {}, // see below
+	saveData?: {}, // see below
 }
 ```
 
@@ -112,16 +112,16 @@ Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given mult
 			text: string,
 			nextBeat: string,
 			conditions: SingleOptionCondition[], // min 1
-			saveDataSideEffects: {}, // see below
+			sceneData: {}, // see below
 		}
 	],
 	defaultBehavior: {
 		character?: string,
 		text: string,
 		nextBeat: string,
-		saveDataSideEffects: {}, // see below
+		sceneData: {}, // see below
 	},
-	saveDataSideEffects?: {}, // see below
+	saveData?: {}, // see below
 }
 ```
 
@@ -165,17 +165,17 @@ Friend and Friend2 both satisfy greatest friendship cross condition.  However, F
 			text: string,
 			nextBeat: string,
 			conditions: SingleOptionCondition[],
-			saveDataSideEffects: {}, // see below
+			sceneData: {}, // see below
 		}
 	],
 	defaultBehavior?: { // required when all choices are conditional
 		character?: string,
 		text: string,
 		nextBeat: string,
-		saveDataSideEffects: {}, // see below
+		sceneData: {}, // see below
 	},
 	crossBranchCondition: CrossOptionCondition,
-	saveDataSideEffects?: {}, // see below
+	saveData?: {}, // see below
 }
 
 ```
@@ -214,16 +214,16 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 			nextBeat?: string,
 			character?: string,
 			conditions?: SingleOptionCondition[],
-			saveDataSideEffects: {}, // see below
+			sceneData: {}, // see below
 		}
 	],
 	defaultBehavior: {
 		character?: string,
 		text: string,
 		nextBeat: string,
-		saveDataSideEffects: {}, // see below
+		sceneData: {}, // see below
 	},
-	saveDataSideEffects?: {}, // see below
+	saveData?: {}, // see below
 }
 ```
 
@@ -250,9 +250,9 @@ Currently, the reason _why_ a choice may not be played is NOT returned, but this
 		character?: string,
 		text: string,
 		nextBeat: string,
-		saveDataSideEffects: {}, // see below
+		sceneData: {}, // see below
 	},
-	saveDataSideEffects?: {}, // see below
+	saveData?: {}, // see below
 }
 ```
 
@@ -265,9 +265,9 @@ Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  T
 	defaultBehavior: {
 		character?: string,
 		text: string,
-		saveDataSideEffects: {}, // see below
+		sceneData: {}, // see below
 	},
-	saveDataSideEffects?: {}, // see below
+	saveData?: {}, // see below
 }
 ```
 

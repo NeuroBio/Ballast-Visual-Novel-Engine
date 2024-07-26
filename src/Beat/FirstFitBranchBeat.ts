@@ -1,25 +1,26 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
-import { SharedBeatParams } from './BeatFactory';
+import { DefaultBehaviorStandard, DisplaySideEffects, SaveDataSideEffects } from './SharedInterfaces';
 
-interface DefaultBehavior {
-	text: string;
-	character?: string;
-	nextBeat: string;
-}
-
-interface Branch {
-	beat: DefaultBehavior;
+interface FirstFitBranch {
+	beat: {
+		text: string;
+		character?: string,
+		nextBeat: string;
+		sceneData: DisplaySideEffects;
+	}
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
-interface FirstFitBranchBeatParams extends SharedBeatParams {
-	branches: Branch[];
-	defaultBehavior: DefaultBehavior;
+export interface FirstFitBranchBeatParams {
+	key: string;
+	branches: FirstFitBranch[];
+	defaultBehavior?: DefaultBehaviorStandard;
+	saveData: SaveDataSideEffects;
 }
 
 export class FirstFitBranchBeat extends Beat {
-	#branches: Branch[];
-	#defaultBehavior: DefaultBehavior;
+	#branches: FirstFitBranch[];
+	#defaultBehavior?: DefaultBehaviorStandard;
 
 	constructor (params: FirstFitBranchBeatParams) {
 		const { defaultBehavior, branches } = params;

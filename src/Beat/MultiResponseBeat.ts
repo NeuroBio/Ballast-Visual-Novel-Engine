@@ -1,32 +1,26 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
-import { SharedBeatParams } from './BeatFactory';
-
-
-interface DefaultBehavior {
-	text: string;
-	character?: string;
-	nextBeat: string;
-}
-
-interface ResponseBehavior {
-	text: string;
-	character?: string;
-	nextBeat?: string;
-}
+import { DefaultBehaviorStandard, DisplaySideEffects, SaveDataSideEffects } from './SharedInterfaces';
 
 interface Response {
-	beat: ResponseBehavior;
+	beat: {
+		text: string,
+		character?: string,
+		nextBeat?: string;
+		sceneData: DisplaySideEffects;
+	}
 	conditions: Array<(params: PlayParams) => boolean>;
 }
 
-interface MultiResponseBeatParams extends SharedBeatParams {
+export interface MultiResponseBeatParams {
+	key: string;
 	responses: Response[];
-	defaultBehavior: DefaultBehavior;
+	defaultBehavior: DefaultBehaviorStandard;
+	saveData: SaveDataSideEffects;
 }
 
 export class MultiResponseBeat extends Beat {
 	#responses: Response[];
-	#defaultBehavior: DefaultBehavior;
+	#defaultBehavior: DefaultBehaviorStandard;
 	#playableOptions: Response[];
 	#lastPlayed: number;
 
@@ -63,6 +57,7 @@ export class MultiResponseBeat extends Beat {
 				text: nextResponse.beat.text,
 				character: nextResponse.beat.character,
 				nextBeat: nextResponse.beat.nextBeat || this.#getFallback(),
+				sceneData: nextResponse.beat.sceneData,
 			};
 		}
 

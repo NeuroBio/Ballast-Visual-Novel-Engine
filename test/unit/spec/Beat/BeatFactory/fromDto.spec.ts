@@ -1,5 +1,5 @@
 import { NARRATOR } from '../../../../../src/Beat/Beat';
-import { BeatFactory, SingleConditionType, CrossConditionType, Choice } from '../../../../../src/Beat/BeatFactory';
+import { BeatFactory, SingleConditionType, CrossConditionType, ChoiceDto } from '../../../../../src/Beat/BeatFactory';
 import { BestFitBranchBeat } from '../../../../../src/Beat/BestFitBranchBeat';
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { FinalBeat } from '../../../../../src/Beat/FinalBeat';
@@ -41,7 +41,7 @@ describe('BeatFactory.fromDto', () => {
 	describe(`received dto with all classes of conditional choices an a default behavior`, () => {
 		const itemKey = 'itemKey', trait = 'a feels', character = 'char', memory1 = 'mem1', memory2 = 'mem2',
 			defaultText = 'default text', defaultBeat = 'default nextBeat';
-		const choices: Choice[] = [
+		const choices: ChoiceDto[] = [
 			{
 				text: 'text 1',
 				nextBeat: 'beat 1',
@@ -918,7 +918,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -951,7 +951,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 						setBackground: '',
 					},
 				},
@@ -969,7 +969,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 					// @ts-expect-error intentionally passing bad data
 						updateCharacterSprites: [{}],
 					},
@@ -988,7 +988,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 						// @ts-expect-error intentionally passing bad data
 						moveCharacters: [{}],
 					},
@@ -1007,7 +1007,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 					// @ts-expect-error intentionally passing bad data
 						removeCharacters: [{}],
 					},
@@ -1026,7 +1026,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 					// @ts-expect-error intentionally passing bad data
 						addCharacters: [{}],
 					},
@@ -1044,7 +1044,7 @@ describe('BeatFactory.fromDto', () => {
 				key: 'beatKey',
 				defaultBehavior: {
 					text: 'test text',
-					displaySideEffects: {
+					sceneData: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -1087,7 +1087,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -1123,7 +1123,7 @@ describe('BeatFactory.fromDto', () => {
 					},
 					{
 						text: 'text 2',
-						displaySideEffects: {
+						sceneData: {
 							setBackground: 'background',
 							updateCharacterSprites: [{
 								character: 'char',
@@ -1145,7 +1145,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -1189,7 +1189,7 @@ describe('BeatFactory.fromDto', () => {
 						text: 'text 2',
 						nextBeat: 'beat 2',
 						character: '2',
-						displaySideEffects: {
+						sceneData: {
 							setBackground: 'background',
 							updateCharacterSprites: [{
 								character: 'char',
@@ -1211,7 +1211,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',
@@ -1261,7 +1261,7 @@ describe('BeatFactory.fromDto', () => {
 							memory: 'mem',
 						}],
 						character: '2',
-						displaySideEffects: {
+						sceneData: {
 							setBackground: 'background',
 							updateCharacterSprites: [{
 								character: 'char',
@@ -1283,7 +1283,7 @@ describe('BeatFactory.fromDto', () => {
 				defaultBehavior: {
 					text: 'test text',
 					nextBeat: 'beat key',
-					displaySideEffects: {
+					sceneData: {
 						setBackground: 'background',
 						updateCharacterSprites: [{
 							character: 'char',

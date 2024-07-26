@@ -1,17 +1,14 @@
 import { Beat, PlayParams, StandardBeatDisplay } from './Beat';
-import { SharedBeatParams } from './BeatFactory';
+import { DefaultBehaviorStandard, SaveDataSideEffects } from './SharedInterfaces';
 
-interface DefaultBehavior {
-	text: string,
-	character?: string,
-	nextBeat: string,
-}
-interface SimpleBeatParams extends SharedBeatParams {
-	defaultBehavior: DefaultBehavior;
+export interface SimpleBeatParams {
+	key: string;
+	defaultBehavior: DefaultBehaviorStandard;
+	saveData: SaveDataSideEffects;
 }
 
 export class SimpleBeat extends Beat {
-	#defaultBehavior: DefaultBehavior;
+	#defaultBehavior: DefaultBehaviorStandard;
 
 	constructor (params: SimpleBeatParams) {
 		const { defaultBehavior } = params;

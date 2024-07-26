@@ -1,4 +1,5 @@
 import { Beat, ChoiceBeatDisplay, FinalBeatDisplay, SaveDataSideEffects, StandardBeatDisplay } from '../Beat/Beat';
+import { DisplaySideEffects } from '../Beat/SharedInterfaces';
 import { Chapter } from '../Chapter/Chapter';
 import { ChapterDto, ChapterFinder } from '../Chapter/ChapterFinder';
 import { CharacterTemplate, CharacterTemplateFinder } from '../Character/CharacterTemplateFinder';
@@ -198,19 +199,22 @@ export class Engine {
 			scene: this.#sceneState,
 		});
 		this.#applySaveDataSideEffects(result.saveData);
-		this.#updateSceneState(result);
+		// choice has it on default.  instead return if it exists and handle it from there.
+		if (_hasSceneData(result)) {
+			this.#updateSceneState(result.sceneData);
+		}
 		return result;
+
+		function _hasSceneData (result: DisplayData): result is StandardBeatDisplay | FinalBeatDisplay {
+			return Object.hasOwn(result, 'sceneData');
+		}
 	}
 
 	#clearSceneState (): void {
 		this.#sceneState = { characters: new Set() };
 	}
 
-	#updateSceneState (display: DisplayData): void {
-		if (!_canAffectDisplayData(display)) {
-			return;
-		}
-
+	#updateSceneState (display: DisplaySideEffects): void {
 		if (display.addCharacters) {
 			display.addCharacters.forEach((x) =>
 				this.#sceneState.characters.add(x.character));
@@ -218,10 +222,6 @@ export class Engine {
 		if (display.removeCharacters) {
 			display.removeCharacters.forEach((x) =>
 				this.#sceneState.characters.delete(x.character));
-		}
-
-		function _canAffectDisplayData (display: DisplayData): display is StandardBeatDisplay | FinalBeatDisplay {
-			return (!!display && (Object.hasOwn(display, 'addCharacters') || Object.hasOwn(display, 'removeCharacters')));
 		}
 	}
 
