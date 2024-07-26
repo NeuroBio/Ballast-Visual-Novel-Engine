@@ -7,6 +7,16 @@ fdescribe(`Engine.startChapter`, () => {
 		CHAP_NOT_FOUND: 'Requested chapter was not found.',
 		SCENE_NOT_FOUND: 'Requested scene was not found.',
 	});
+	const saveData = Object.freeze({
+		queuedScenes: [],
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		addedItems: [],
+		removedItems: [],
+		addedMemories: [],
+		removedMemories: [],
+		updatedCharacterTraits: [],
+	});
 
 	let chapterFinderFake: any, sceneFinderFake: any, savedDataRepoFake: any,
 		characterTemplateFinderFake: any;
@@ -52,17 +62,7 @@ fdescribe(`Engine.startChapter`, () => {
 	});
 	describe(`loading valid chapter for the first time`, () => {
 		const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
-			scene = new Fakes.Scene(), beat = new Fakes.SimpleBeat({ key: 'key' });
-		const saveData = {
-			queuedScenes: [],
-			unlockedChapters: [],
-			unlockedAchievements: [],
-			addedItems: [],
-			removedItems: [],
-			addedMemories: [],
-			removedMemories: [],
-			updatedCharacterTraits: [],
-		};
+			scene = new Fakes.Scene(), beat = new Fakes.SimpleBeat({ key: 'key', saveData });
 		const startResponse = { result: 'result', saveData: saveData };
 		let result: any;
 		beforeAll(async () => {

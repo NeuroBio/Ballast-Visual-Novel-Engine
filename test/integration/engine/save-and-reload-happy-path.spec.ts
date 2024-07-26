@@ -35,6 +35,7 @@ describe(`
 			text: BeatData[0].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the second beat`, () => {
@@ -44,6 +45,7 @@ describe(`
 			text: BeatData[1].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`saves save data`, async () => {
@@ -65,6 +67,7 @@ describe(`
 			text: BeatData[0].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`saves restarted save data`, async () => {

@@ -34,6 +34,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[0].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 });

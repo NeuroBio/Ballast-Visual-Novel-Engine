@@ -31,6 +31,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[0].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the second beat`, () => {
@@ -40,6 +41,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[1].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the third beat`, () => {
@@ -56,6 +58,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[4].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the first fit branch 2 beat`, () => {
@@ -65,6 +68,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[6].branches![1].text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the best fit branch 2 beat`, () => {
@@ -74,6 +78,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[7].branches![1].text,
 			speaker: CharacterData[1].name,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the first response in the multi response beat`, () => {
@@ -83,6 +88,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[8].responses![0].text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the second response in the multi response beat`, () => {
@@ -92,6 +98,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[8].responses![1].text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the third response in the multi response beat`, () => {
@@ -101,6 +108,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[8].responses![2].text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`accidentally returns to the multi response beat`, () => {
@@ -110,6 +118,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[8].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`plays the final beat`, () => {
@@ -118,6 +127,7 @@ describe(`playing through the test data without save data`, () => {
 			text: BeatData[9].defaultBehavior!.text,
 			speaker: NARRATOR,
 			saveData: expect.any(Object),
+			sceneData: expect.any(Object),
 		});
 	});
 	it(`completes scene and chapter`, () => {

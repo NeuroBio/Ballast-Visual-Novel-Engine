@@ -131,6 +131,7 @@ describe('BeatFactory.fromDto', () => {
 					speaker: NARRATOR,
 					// TODO: decide what to do about this... if anything
 					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
 				},
 				saveData: expect.any(Object),
 			});
@@ -588,6 +589,7 @@ describe('BeatFactory.fromDto', () => {
 					nextBeat: 'beat 2',
 					speaker: NARRATOR,
 					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
 				});
 			});
 		});
@@ -605,6 +607,7 @@ describe('BeatFactory.fromDto', () => {
 					nextBeat: 'beat 1',
 					speaker: NARRATOR,
 					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
 				});
 			});
 		});
@@ -790,6 +793,7 @@ describe('BeatFactory.fromDto', () => {
 					nextBeat: 'beat 2',
 					speaker: NARRATOR,
 					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
 				});
 			});
 		});
@@ -807,6 +811,7 @@ describe('BeatFactory.fromDto', () => {
 					nextBeat: 'beat 1',
 					speaker: NARRATOR,
 					saveData: expect.any(Object),
+					sceneData: expect.any(Object),
 				});
 			});
 		});

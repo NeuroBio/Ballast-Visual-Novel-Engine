@@ -602,11 +602,11 @@ export class BeatFactory {
 	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
 	#setSceneData (data: any): DisplaySideEffects {
 		return {
-			setBackground: data.sceneData?.setBackground || '',
-			updateCharacterSprites: data.sceneData?.updateCharacterSprites || [],
-			moveCharacters: data.sceneData?.moveCharacters || [],
-			removeCharacters: data.sceneData?.removeCharacters || [],
-			addCharacters: data.sceneData?.addCharacters || [],
+			setBackground: data?.sceneData?.setBackground || '',
+			updateCharacterSprites: data?.sceneData?.updateCharacterSprites || [],
+			moveCharacters: data?.sceneData?.moveCharacters || [],
+			removeCharacters: data?.sceneData?.removeCharacters || [],
+			addCharacters: data?.sceneData?.addCharacters || [],
 		};
 	}
 }
