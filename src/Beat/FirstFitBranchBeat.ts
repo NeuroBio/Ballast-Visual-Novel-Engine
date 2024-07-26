@@ -33,6 +33,7 @@ export class FirstFitBranchBeat extends Beat {
 			throw new Error('Branch Beats require at least 1 branch.');
 		}
 
+		// change this since conditions are required here
 		const branchesWithRequirements = branches.filter(x => x.conditions.length > 0);
 		if (branchesWithRequirements.length === 0) {
 			throw new Error('When no branches are conditional, data should be formatted as a Simple Beat, not a Branch Beat.');

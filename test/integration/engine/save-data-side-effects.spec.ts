@@ -159,8 +159,8 @@ describe(`playing beats with save data side effects`, () => {
 		},
 	};
 	it(`plays the first beat that unlocks a chapter`, async () => {
-		const start = await engine.startChapter({ chapterKey: chapterData[0].key });
-		result.set(start);
+		const beat = await engine.startChapter({ chapterKey: chapterData[0].key });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[0].defaultBehavior!.nextBeat,
 			text: beatData[0].defaultBehavior!.text,
@@ -178,8 +178,8 @@ describe(`playing beats with save data side effects`, () => {
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the second beat that unlocks a achievement`, () => {
-		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
-		result.set(start);
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[1].defaultBehavior!.nextBeat,
 			text: beatData[1].defaultBehavior!.text,
@@ -197,8 +197,8 @@ describe(`playing beats with save data side effects`, () => {
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the third beat that queues a scene`, () => {
-		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
-		result.set(start);
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[2].defaultBehavior!.nextBeat,
 			text: beatData[2].defaultBehavior!.text,
@@ -216,8 +216,8 @@ describe(`playing beats with save data side effects`, () => {
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the fourth beat that adds an item`, () => {
-		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
-		result.set(start);
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[3].defaultBehavior!.nextBeat,
 			text: beatData[3].defaultBehavior!.text,
@@ -235,8 +235,8 @@ describe(`playing beats with save data side effects`, () => {
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the fifth beat that removes an item`, () => {
-		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
-		result.set(start);
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[4].defaultBehavior!.nextBeat,
 			text: beatData[4].defaultBehavior!.text,
@@ -254,8 +254,8 @@ describe(`playing beats with save data side effects`, () => {
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the sixth beat that adds two memories`, () => {
-		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
-		result.set(start);
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[5].defaultBehavior!.nextBeat,
 			text: beatData[5].defaultBehavior!.text,
@@ -274,8 +274,8 @@ describe(`playing beats with save data side effects`, () => {
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the seventh beat that removes a memory`, () => {
-		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
-		result.set(start);
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[6].defaultBehavior!.nextBeat,
 			text: beatData[6].defaultBehavior!.text,
@@ -294,8 +294,8 @@ describe(`playing beats with save data side effects`, () => {
 		expect(saveSavedData).toHaveBeenCalledWith(currentSave);
 	});
 	it(`plays the eighth beat that changes a character trait`, () => {
-		const start = engine.advanceScene({ beatKey: result.get().nextBeat });
-		result.set(start);
+		const beat = engine.advanceScene({ beatKey: result.get().nextBeat });
+		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[7].defaultBehavior!.nextBeat,
 			text: beatData[7].defaultBehavior!.text,
