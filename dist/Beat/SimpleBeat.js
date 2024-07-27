@@ -1,4 +1,4 @@
-import { Beat } from './Beat';
+import { Beat } from './Beat.js';
 export class SimpleBeat extends Beat {
 	#defaultBehavior;
 	constructor (params) {
