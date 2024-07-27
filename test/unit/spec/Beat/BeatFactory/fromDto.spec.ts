@@ -9,8 +9,10 @@ import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
 
 describe('BeatFactory.fromDto', () => {
 	const Error = Object.freeze({
-		NON_BEAT: 'Received malformed beat data for beatKey.  See the documentation for expected shapes for different beat types.',
-		SIDE_EFFECTS_BAD: 'Received malformed display side effect data for beatKey.  See the documentation for expected shapes for side effects.',
+		NON_BEAT: 'Received malformed beat data for beat beatKey.  See the documentation for expected shapes for different beat types.',
+		SIDE_EFFECTS_BAD: 'Received malformed display side effect data for beat beatKey.  See the documentation for expected shapes for side effects.',
+		BAD_SINGLE_CONDITION: 'Received an unexpected type for single condition on beat beatKey',
+		BAD_CROSS_CONDITION: 'Received an unexpected type for cross condition on beat beatKey',
 	});
 	describe(`received invalid dto`, () => {
 		it(`throws error`, () => {
@@ -312,6 +314,29 @@ describe('BeatFactory.fromDto', () => {
 				}),
 				saveData: expect.any(Object),
 			});
+		});
+	});
+	describe(`received dto with unexpected single condition type`, () => {
+		it(`throws and error`, () => {
+			const character = 'char1', defaultText = 'default text', defaultBeat = 'default nextBeat';
+			const choices: ChoiceDto[] = [{
+				text: 'no',
+				nextBeat: 'no',
+				conditions: [{
+					// @ts-expect-error testing bad data
+					type: 'nah man',
+				}],
+			}];
+			const beatFactory = new BeatFactory();
+			expect(() => beatFactory.fromDto({
+				key: 'beatKey',
+				choices,
+				defaultBehavior: {
+					text: defaultText,
+					nextBeat: defaultBeat,
+					character,
+				},
+			})).toThrow(Error.BAD_SINGLE_CONDITION);
 		});
 	});
 	describe(`received dto without choices without a character`, () => {
@@ -709,6 +734,25 @@ describe('BeatFactory.fromDto', () => {
 					sceneData: expect.any(Object),
 				});
 			});
+		});
+	});
+	describe(`received dto with unknown cross conditional behavior`, () => {
+		it(`throws an error`, () => {
+			const trait = 'something';
+			const beatFactory = new BeatFactory();
+			expect (() => beatFactory.fromDto({
+				key: 'beatKey',
+				crossBranchCondition: {
+					// @ts-expect-error testing bad data
+					type: 'nah man',
+					trait,
+				},
+				branches: [{
+					text: 'text 3',
+					nextBeat: 'beat 3',
+					character: '2',
+				}],
+			})).toThrow(Error.BAD_CROSS_CONDITION);
 		});
 	});
 	describe(`

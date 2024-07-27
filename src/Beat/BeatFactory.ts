@@ -220,7 +220,7 @@ export class BeatFactory {
 			return this.#createFinalBeat(dto);
 		}
 
-		throw new Error(`Received malformed beat data for ${dto.key}.  See the documentation for expected shapes for different beat types.`);
+		throw new Error(`Received malformed beat data for beat ${dto.key}.  See the documentation for expected shapes for different beat types.`);
 	}
 
 	#createSimpleBeat (dto: SimpleBeatDto): SimpleBeat {
@@ -248,7 +248,7 @@ export class BeatFactory {
 		const params: ChoiceBeatParams = {
 			choices: dto.choices.map((choice) => ({
 				beat: { text: choice.text, nextBeat: choice.nextBeat, mayPlay: false },
-				conditions: this.#createSingleCondition(choice.conditions || []) || [],
+				conditions: this.#createSingleCondition(choice.conditions || [], dto.key) || [],
 			})),
 			defaultBehavior,
 			...this.#setSharedParams(dto),
@@ -273,7 +273,7 @@ export class BeatFactory {
 					character: branch.character,
 					sceneData: this.#setSceneData(branch),
 				},
-				conditions: this.#createSingleCondition(branch.conditions || []) || [],
+				conditions: this.#createSingleCondition(branch.conditions || [], dto.key) || [],
 			})),
 			defaultBehavior,
 			...this.#setSharedParams(dto),
@@ -298,9 +298,9 @@ export class BeatFactory {
 					character: branch.character,
 					sceneData: this.#setSceneData(branch),
 				},
-				conditions: this.#createSingleCondition(branch.conditions || []) || [],
+				conditions: this.#createSingleCondition(branch.conditions || [], dto.key) || [],
 			})),
-			crossBranchCondition: this.#createCrossCondition(dto.crossBranchCondition),
+			crossBranchCondition: this.#createCrossCondition(dto.crossBranchCondition, dto.key),
 			defaultBehavior,
 			...this.#setSharedParams(dto),
 		};
@@ -316,7 +316,7 @@ export class BeatFactory {
 					character: response.character,
 					sceneData: this.#setSceneData(dto.defaultBehavior),
 				},
-				conditions: this.#createSingleCondition(response.conditions || []) || [],
+				conditions: this.#createSingleCondition(response.conditions || [], dto.key) || [],
 			})),
 			defaultBehavior: {
 				character: dto.defaultBehavior.character,
@@ -450,7 +450,7 @@ export class BeatFactory {
 		}
 
 
-		const errorMessage = `Received malformed display side effect data for ${key}.  See the documentation for expected shapes for side effects.`;
+		const errorMessage = `Received malformed display side effect data for beat ${key}.  See the documentation for expected shapes for side effects.`;
 
 		if (Object.hasOwn(check, 'setBackground')) {
 			if (!check.setBackground) {
@@ -502,7 +502,7 @@ export class BeatFactory {
 
 
 	// Create Shared Data
-	#createSingleCondition (conditions: SingleCriterionDto[]) {
+	#createSingleCondition (conditions: SingleCriterionDto[], key: string) {
 		return conditions.map((condition) => {
 			switch (condition.type) {
 			case SingleConditionType.AT_LEAST_ITEM: {
@@ -553,12 +553,12 @@ export class BeatFactory {
 					!params.scene.characters.has(character);
 			}
 
-			default: throw new Error('Not a real condition'); // not tested
+			default: throw new Error(`Received an unexpected type for single condition on beat ${key}`);
 			}
 		});
 	}
 
-	#createCrossCondition (condition: CrossConditionDto) {
+	#createCrossCondition (condition: CrossConditionDto, key: string) {
 		switch (condition.type) {
 		case CrossConditionType.GREATEST_SENTIMENT: {
 			const { trait } = condition;
@@ -594,7 +594,7 @@ export class BeatFactory {
 			};
 		}
 
-		default: throw new Error('Not a real condition'); // not tested
+		default: throw new Error(`Received an unexpected type for cross condition on beat ${key}`);
 		}
 	}
 
