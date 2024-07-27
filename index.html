@@ -6,6 +6,8 @@
 	<meta name="author" content="Cristina Robinson" />
 	<meta name="description" content="A minimal demo for the Ballast Visual Novel Engine.  Plays canned data on button click, outputting the data a UI would typically display nicely as a JSON string." />
 	<title>Ballast VN-Engine Demo</title>
+
+	<link href="./demo/styles.css" rel="stylesheet" />
 </head>
 <body>
 	<header>
@@ -17,21 +19,33 @@
 
 
 	<section id="engine-controls">
-		<button type="button">Start Chapter</button>
-		<button type="button">Advance Scene</button>
-		<button type="button">Complete Scene</button>
-		<button type="button">Restart Scene</button>
-		<button type="button">Save</button>
+		<button type="button" onClick="startChapter()">Start Chapter</button>
+		<button type="button" onClick="advanceScene()">Advance Scene</button>
+		<button type="button" onClick="completeScene()">Complete Scene</button>
+		<button type="button" onClick="restartScene()">Restart Scene</button>
+		<button type="button" onClick="save()">Save</button>
 	</section>
 
-	<section id="current-beat-data">
-		<p></p>
+	<section id="current-beat" class="output">
+		<h2>Current Beat</h2>
+		<p id="beat">...</p>
 	</section>
 
-	<section id="secret-actions">
-		<p></p>
+	<section id="scene-state" class="output">
+		<h2>Scene</h2>
+		<p id="scene">...</p>
 	</section>
 
-	<script type="module" src="./demo/loadEngine.js"></script>
+	<section id="secret-actions" class="output">
+		<h2>Engine Actions</h2>
+		<p id="engine-actions">...</p>
+	</section>
+
+	<section id="error-message" class="output">
+		<h2>Error</h2>
+		<p id="error">...</p>
+	</section>
+
+	<script type="module" src="./demo/Demo.js"></script>
 </body>
 </html>
