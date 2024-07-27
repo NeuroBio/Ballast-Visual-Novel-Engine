@@ -65,7 +65,7 @@ window.advanceScene = () => {
 	resetDisplayData();
 
 	try {
-		beat = engine.advanceScene({ beatKey: beat.nextBeat });
+		beat = engine.advanceScene({ beatKey: beat?.nextBeat || '' });
 		applySceneData(beat);
 	} catch (error) {
 		console.error(error.message);
@@ -136,7 +136,7 @@ function applySceneData (beat) {
 		background: '',
 		characters: {},
 	};
-	sceneData = beat.sceneData || beat.default?.sceneData;
+	const sceneData = beat.sceneData || beat.default?.sceneData;
 	if (!sceneData) {
 		return;
 	}

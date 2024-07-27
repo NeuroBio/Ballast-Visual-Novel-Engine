@@ -9,8 +9,10 @@ const CharacterTemplates = [
 const Beats = [
 	{
 		key: 'A',
-		text: `The first beat is a simple beat.  It has nothing extra on it.`,
-		nextBeat: 'B',
+		defaultBehavior: {
+			text: `The first beat is a simple beat.  It has nothing extra on it.`,
+			nextBeat: 'B',
+		},
 	},
 ];
 
