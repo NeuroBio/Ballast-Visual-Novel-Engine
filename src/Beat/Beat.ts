@@ -131,7 +131,5 @@ export abstract class Beat {
 			saveData,
 			sceneData,
 		};
-		// apply display
-		// update all beats to pass display
 	}
 }
