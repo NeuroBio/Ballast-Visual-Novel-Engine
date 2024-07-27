@@ -20,6 +20,7 @@ export interface AddCharacterParams {
 	position: number,
 	sprite: string
 }
+
 export interface DisplaySideEffects {
 	setBackground: string;
 	updateCharacterSprites: UpdateCharacterSpriteParams[];

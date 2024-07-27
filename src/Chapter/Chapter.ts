@@ -27,10 +27,6 @@ export class Chapter {
 		return this.#locked;
 	}
 
-	restart (): string {
-		return this.#firstSceneKey;
-	}
-
 	start (): string {
 		return this.#currentSceneKey;
 	}

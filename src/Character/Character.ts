@@ -80,7 +80,7 @@ export class Character {
 	}
 
 	#warnIfTooPrecise (change: number) {
-		const numberOfDecimals = +`${change}`.split('.')[1];
+		const numberOfDecimals = `${change}`.split('.')[1].length;
 		if (numberOfDecimals > 3) {
 			console.warn(`Math precision is only guaranteed to 3 decimal places.  Doing math on a number with ${numberOfDecimals} places`);
 		}

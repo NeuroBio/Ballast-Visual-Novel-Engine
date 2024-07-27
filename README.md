@@ -403,7 +403,7 @@ Listed in order of how the sister ui package (Ballast-VN-UI) will apply changes.
 
 # Intended Use-Cases that are not Typical of VNs
 - Allow non-linear, randomized story structure
-- building relationships with characters is NOT based on choosing the right branch from a small number of choice branches (doing so would interfere with the non-linear storyline needs).  "Traits" are built incrementally on almost every choice made (expected change range 0.001-0.005).  There are very few make-or-break decisions, and they are very obvious (e.g. killing a character).
+- building relationships with characters is NOT based on choosing the right branch from a small number of choice branches (doing so would interfere with the non-linear storyline needs).  "Traits" are built incrementally on almost every choice made.  Expected change range 0.001-0.005.  You can use numbers with more decimal places, but they will be rounded to 3 places.  A warning about potential inaccuracy logs to the console if you do this.  There are very few make-or-break decisions, and they are very obvious (e.g. killing a character).
 -  sprite sets shift depending on traits.  The UI will have to be built to support this, but the trait structure is built to support this concept:
 	- the base sprite set is "neutral"
 	- one off sprites for special scenes are "special"
