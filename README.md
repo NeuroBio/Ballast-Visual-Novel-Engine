@@ -208,6 +208,8 @@ Where `...` can lead directly back to the multi-response beat (intended default 
 
 To deal with the uncertainty of whether conditional responses play, if they lack a next beat, the last allowed beat to play inherits its next beat from the default behavior.  All beats earlier in the chain will return the parent multi response beat as their next beat.  Default behavior is always required for this beat type, since it will fail to play if all responses have already been played and there is no default to fallback on.
 
+Currently, conditions are only checks the FIRST time a multi-response beat is called.  So if a condition becomes untrue by the next call the response will still show.  Changing behavior to recheck conditionals each call is a possible future enhancement.
+
 ```typescript
 {
 	key: string,

@@ -223,7 +223,7 @@ describe(`playing beats with scene data side effects`, () => {
 		},
 	};
 
-	it('returns display data from default behavior on simple beat', async () => {
+	it('starts scene and returns display data from default behavior on simple beat', async () => {
 		const beat = await engine.startChapter({ chapterKey: chapterData[0].key });
 		result.set(beat);
 		expect(result.get()).toEqual({
