@@ -16,6 +16,10 @@ i.e. the things the engine does by default; the implementation is not customizab
 	- unlocking Achievements
 	- unlocking chapters
 	- returns data for UI to display (UI concerns NOT covered in this repo)
+		- text + char name for dialog
+		- characters to add, move, remove, or change sprite
+		- save data actions like unlock chapter, unlock achievement. ect
+			- the engine handles saving, but this allows for e.g. displaying an achievement unlocked banner
 - completing a scene
 	- blocks completion if current beat is not of type final beat
 	- completes a chapter if there is no queued scene OR queued scene or current chapter
@@ -54,8 +58,9 @@ i.e. things the engine provides an interface for, but requires an implementation
 		- e.g: you helped a character, so they can bring that up later (or act differently if you if not help)
 	- traits: dict of "traits" and their numeric values (e.g. `like: .324`)
 		- referenced across chapters to affect general responses, display sprite sets, or relationship-driven branches
+		- has no max or min value
 	- Characters are always checked against the game data.
-		- If a character in the game data is missing from the dave data, it is added to the save data.
+		- If a character in the game data is missing from the save data, it is added to the save data.
 		- Once a character is in the save data, the game data cannot overwrite it
 - Inventory
 	- Items are mostly for use in PnC parts of a game, but this allows items to be gained/lost in conversation
@@ -78,9 +83,7 @@ i.e. things the engine provides an interface for, but requires an implementation
 
 
 ## Beats
-"Beats" are VN story units.  Chapters are composed of one or more scenes.  Scenes are composed of beats, where each beat provides the UI with display text or a user decision.  Events that affect save data, like unlocking chapters or changing character traits, are assigned/occur at the beat level.  All beats inherit the same event capabilities.  However, when "played," they handle their UI display components differently and decide what to return to the UI based on unique logic.
-
-
+"Beats" are VN story units.  Chapters are composed of one or more scenes.  Scenes are composed of beats, where each beat or it's child options (i.e. choice, branch, or response) provides the UI with display text or a user decision.  Events that affect save data, like unlocking chapters or changing character traits, are assigned/occur at the beat level.  All beats inherit the same event capabilities.  However, when "played", they handle their UI display components differently and decide what to return to the UI based on unique logic.
 
 Note: "conditional" choices reference save data (characters and/or inventory) for conditions.  See the interfaces for single options conditions and cross option conditions below.
 
@@ -101,7 +104,7 @@ Owns one set of text.  Returns that and the next beat.  There is no real logic h
 ```
 
 ### First Fit Branch Beat
-Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given multiple conditional choices, it returns the first choice whose condition is satisfied.  Requires a default option with no condition.  These beats are for story choices that hinge of the user's past decisions.  Typically, these beats hinge on conditions satisfied in prior scenes and chapters, though there could be within scene uses.
+Owns a set of branches, but *ONLY ONE* will be returned to the user.  All branches have conditional choices, and teh beat returns the first branch whose condition is satisfied.  Requires a default option with no conditions.  These beats are for redirecting the story based on the user decisions that did not occur in the prior beat (i.e. the beat decides what path to take).  Typically, these beats hinge on conditions satisfied in prior scenes and chapters, though there could be within scene uses.
 
 ```typescript
 {
@@ -126,7 +129,7 @@ Owns a set of branches, but *ONLY ONE* will be returned to the user.  Given mult
 ```
 
 ### Best Fit Branch Beat
-Owns a set branches, but *ONLY ONE* will be returned to the user.  Choses the branch whose character has the greatest or least value for the beat's cross option condition. All branches must have a character.  Branches are permitted to have single option conditions.  If the same character is present on multiple branches or multiple character satisfy the cross condition, the first valid branch is used.  In other words: this Beat type uses First Fit to resolve ties.
+Owns a set branches, but *ONLY ONE* will be returned to the user.  Choses the branch whose character has the greatest or least value for the beat's cross option condition. All branches must have a character.  Branches are permitted to also have single option conditions.  If the same character is present on multiple branches or multiple character satisfy the cross condition, the first valid branch is used.  In other words: this Beat type uses First Fit to resolve ties.
 
 Example setup:
 ```
@@ -181,7 +184,7 @@ Friend and Friend2 both satisfy greatest friendship cross condition.  However, F
 ```
 
 ### Multi Response Beat
-Owns a set of responses and iterates through them when possible.  The beat type is very fluid compared to the others.  Its primary use case is to allow for one story beat to lead to many beats that are conditional and expected to be in a set order  (e.g. play 1, optionally 2, and then 3).  Although this pattern can be achieved with branch beats, it's hard to keep track of and requires many beats, as shown in the following example.
+Owns a set of responses and iterates through them when possible.  The beat type is very fluid compared to the others.  Its primary use case is to allow for one story beat to lead to many beats that are conditional but expected to be in a set order  (e.g. play 1, optionally 2, and then 3).  Although this pattern can be achieved with branch beats, it is hard to keep track of that way and requires many beats, as shown in the following example.
 
 ```
 choice => branch 1
@@ -228,10 +231,10 @@ To deal with the uncertainty of whether conditional responses play, if they lack
 ```
 
 ### Choice Beat
-In short, this is where the user controls the novel side of game play.  Owns a set of choices.  Return choices marked as "mayPlay" true or false.  The default behavior also returns when no choices may play.  Conditional choices must be satisfied to return with mayPlay: true (defaulted to true for unconditional choices).  When there are all conditional choices, a default option is required.
+In short, this is where the user controls game play.  Owns a set of choices.  Returns choices marked as "mayPlay" true or false.  The default behavior also returns when no choices may be played.  Conditional choices must be satisfied to return with mayPlay: true (defaulted to true for unconditional choices).  When all choices are conditional, a default option is required.
 
-The decision was made to always return all choices, so the UI can make decisions about the unplayable choices.  This suits the following use cases:
-- display may includes the choices but grayed out
+The decision was made to always return all choices so the UI can make decisions about the unplayable choices.  This suits the following use cases:
+- display include the unplayable choices grayed out and un-selectable
 - display may signal to user that other choices would have been available without stating what they are
 	- current personal plans: show a lock icon + the number of unplayable choices
 Currently, the reason _why_ a choice may not be played is NOT returned, but this would be a possible future enhancement.
@@ -258,7 +261,7 @@ Currently, the reason _why_ a choice may not be played is NOT returned, but this
 
 
 ### Final Beat
-Owns one set of test.  Returns *ONLY* that.  A next beat will not be defined.  This exists on the assumption that the story never needs to end on a choice or branch beat.  That should be easy enough to achieve, but if a story should require ending on a choice or branch beat, a final beat is allowed to return an empty string, and the UI could respond appropriately to that.
+Owns one set of text.  A next beat will not be defined.  All scenes MUST end on a final beat.  This limitation exists on the assumption that the story never needs to end on a choice or branch beat.  That should be easy enough to achieve, but if a story should require ending on a choice or branch beat, a final beat is allowed to return an empty string.  A UI could respond to empty strings by automatically calling `advancedScene` again.
 
 ```typescript
 {
@@ -280,7 +283,7 @@ choice 3: X AND Y
 ```
 Assume choices 1-3 lead to the same result.  The AND NOT sections are to ensure that the same choice does not return 3 times when X and Y are true.  In a first response branch beat, just `branch 1: X` and `branch 2: Y` would be sufficient, as only the first true branch is returned.
 
-AND/OR logic is NOT supported for the Best Fit Branch's cross option conditions.  However, you CAN apply single option conditions on branches for Best Fit Branches.  E.g. Say you wanted to have the character in a scene with the highest romance that does not have a breakup memory to say something.  You can combine `GREATEST_SENTIMENT` on the beat with `CHARACTER_UNAWARE` set on each branch.
+AND/OR logic is NOT supported for the Best Fit Branch's cross option conditions (only one may exist on a Best Fit Branch Beat).  However, you CAN apply single option conditions on branches for Best Fit Branches.  E.g. Say you wanted to have the character in a scene with the highest romance that does not have a breakup memory to say something.  You can combine `GREATEST_SENTIMENT` on the beat with `CHARACTER_UNAWARE` set on each branch.
 
 #### Single Option Conditions
 
@@ -334,7 +337,7 @@ GREATEST_SENTIMENT/LEAST_SENTIMENT
 ```
 
 ## Side Effects
-Side effects are any save data changes or display changes a beat results in.  All of them are optional.  You can apply side effects on all beat types.  Display changes are stored on the option level for responses and branches.  Choices do not allow for display side effects, but the default behavior on a choice beat DOES.  Save data side effects are stored on the beat level.  In other words, you cannot tie save data side effects to a specific branch, choice, or response.  In scenarios where you want option-specific save data side effects, it is best to wait until the next beat plays to apply side effects.
+"Side effects" means any save data changes or display scene changes a beat results in.  All of them are optional.  You can apply side effects on all beat types.  Scene changes are stored on the option level for responses and branches and the top level for other beat types.  Choices do not allow for display side effects, but the default behavior on a choice beat DOES.  Save data side effects are stored on the beat level.  In other words, you cannot tie save data side effects to a specific branch, choice, or response.  In scenarios where you want option-specific save data side effects, wait until the next beat plays to apply the save side effects.
 
 ### Save Data Side Effects
 ```typescript
@@ -369,7 +372,7 @@ Side effects are any save data changes or display changes a beat results in.  Al
 }
 ```
 
-### Display Side Effects
+### Scene Side Effects
 ```typescript
 setBackground: string;
 
@@ -391,7 +394,7 @@ addCharacters: [{
 	sprite: string
 }];
 ```
-Listed in order of how the sister UI package will apply changes.  The engine also keeps track of added and removed characters for conditions but nothing else.  Edge cases like "What if I want to display the same character multiple times?" are a UI problem.  The Beats are more than happy to hold duplicate or even conflicting data however.
+Listed in order of how the sister ui package (Ballast-VN-UI) will apply changes.  The engine also keeps track of added and removed characters for conditions.  It keeps track of no other scene data.  Edge cases like "What if I want to display the same character multiple times?" are a UI problem.  The engine considers add/remove operations as all-or-nothing.  A character is either added or removed.  If you add a character twice and remove them once, the engine will believe the character is not present.  TBeats are more than happy to hold duplicate or even conflicting data however.
 
 # Intended Use-Cases that are not Typical of VNs
 - Allow non-linear, randomized story structure
