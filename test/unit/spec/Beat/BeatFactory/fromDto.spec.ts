@@ -39,8 +39,8 @@ describe('BeatFactory.fromDto', () => {
 		});
 	});
 	describe(`received dto with all classes of conditional choices an a default behavior`, () => {
-		const itemKey = 'itemKey', trait = 'a feels', character = 'char', memory1 = 'mem1', memory2 = 'mem2',
-			defaultText = 'default text', defaultBeat = 'default nextBeat';
+		const itemKey = 'itemKey', trait = 'a feels', character = 'char1', character2 = 'char2',
+			memory1 = 'mem1', memory2 = 'mem2', defaultText = 'default text', defaultBeat = 'default nextBeat';
 		const choices: ChoiceDto[] = [
 			{
 				text: 'text 1',
@@ -98,6 +98,22 @@ describe('BeatFactory.fromDto', () => {
 					memory: memory2,
 				}],
 			},
+			{
+				text: 'text 7',
+				nextBeat: 'beat 7',
+				conditions: [{
+					type: SingleConditionType.CHARACTER_PRESENT,
+					character,
+				}],
+			},
+			{
+				text: 'text 8',
+				nextBeat: 'beat 8',
+				conditions: [{
+					type: SingleConditionType.CHARACTER_ABSENT,
+					character: character2,
+				}],
+			},
 		];
 		let result: any;
 		beforeAll(() => {
@@ -123,7 +139,8 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
-			expect(result.play({ characters, inventory })).toEqual({
+			const scene = { characters: new Set([ character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
 				choices: choices.map(x => ({ text: x.text, nextBeat: x.nextBeat, mayPlay: false })),
 				default: {
 					text: defaultText,
@@ -144,7 +161,8 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 4 };
-			expect(result.play({ characters, inventory })).toEqual({
+			const scene = { characters: new Set([ character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
 				choices: choices.map(x => {
 					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
 					if (beat.text === 'text 1') {
@@ -163,7 +181,8 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 1 };
-			expect(result.play({ characters, inventory })).toEqual({
+			const scene = { characters: new Set([ character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
 				choices: choices.map(x => {
 					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
 					if (beat.text === 'text 2') {
@@ -182,7 +201,8 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
-			expect(result.play({ characters, inventory })).toEqual({
+			const scene = { characters: new Set([ character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
 				choices: choices.map(x => {
 					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
 					if (beat.text === 'text 3') {
@@ -201,7 +221,8 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
-			expect(result.play({ characters, inventory })).toEqual({
+			const scene = { characters: new Set([ character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
 				choices: choices.map(x => {
 					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
 					if (beat.text === 'text 4') {
@@ -220,7 +241,8 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			characters[character].hasMemory.mockReturnValueOnce(true);
 			const inventory = { [itemKey]: 2 };
-			expect(result.play({ characters, inventory })).toEqual({
+			const scene = { characters: new Set([ character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
 				choices: choices.map(x => {
 					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
 					if (beat.text === 'text 5') {
@@ -239,10 +261,51 @@ describe('BeatFactory.fromDto', () => {
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			characters[character].hasMemory.mockReturnValueOnce(false);
 			const inventory = { [itemKey]: 2 };
-			expect(result.play({ characters, inventory })).toEqual({
+			const scene = { characters: new Set([ character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
 				choices: choices.map(x => {
 					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
 					if (beat.text === 'text 6') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
+				saveData: expect.any(Object),
+			});
+		});
+		it(`character present can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: {},
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 2 };
+			const scene = { characters: new Set([ character, character2 ]) };
+			expect(result.play({ characters, inventory, scene })).toEqual({
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 7') {
+						beat.mayPlay = true;
+					}
+					return beat;
+				}),
+				saveData: expect.any(Object),
+			});
+		});
+		it(`character absent can pass`, () => {
+			const characters = { [character]: {
+				hasMemory: jest.fn(),
+				traits: {},
+			} };
+			characters[character].hasMemory.mockReturnValueOnce(false);
+			characters[character].hasMemory.mockReturnValueOnce(true);
+			const inventory = { [itemKey]: 2 };
+			const scene = { characters: new Set() };
+			expect(result.play({ characters, inventory, scene })).toEqual({
+				choices: choices.map(x => {
+					const beat = { text: x.text, nextBeat: x.nextBeat, mayPlay: false };
+					if (beat.text === 'text 8') {
 						beat.mayPlay = true;
 					}
 					return beat;

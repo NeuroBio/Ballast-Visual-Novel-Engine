@@ -8,7 +8,7 @@ import { MultiResponseBeat, MultiResponseBeatParams } from './MultiResponseBeat'
 import { BestFitBranchBeat, BestFitBranchBeatParams } from './BestFitBranchBeat';
 import { AddCharacterParams, CrossConditionParams, DisplaySideEffects, MoveCharacterParams, RemoveCharacterParams, UpdateCharacterSpriteParams } from './SharedInterfaces';
 
-// conditionals
+// Conditionals
 export enum SingleConditionType {
 	AT_LEAST_ITEM = 'itemEqual+',
 	AT_MOST_ITEM = 'itemEqual-',
@@ -16,6 +16,8 @@ export enum SingleConditionType {
 	CHARACTER_UNAWARE = 'lacksMemory',
 	AT_LEAST_CHAR_TRAIT = 'charTraitEqual+',
 	AT_MOST_CHAR_TRAIT = 'charTraitEqual-',
+	CHARACTER_PRESENT = 'charPresent',
+	CHARACTER_ABSENT = 'charAbsent',
 }
 
 export enum CrossConditionType {
@@ -34,6 +36,11 @@ interface MemoryCondition {
 	memory: string;
 }
 
+interface PresenceCondition {
+	type: SingleConditionType.CHARACTER_PRESENT | SingleConditionType.CHARACTER_ABSENT;
+	character: string;
+}
+
 interface TraitLimitCondition {
 	type: SingleConditionType.AT_LEAST_CHAR_TRAIT | SingleConditionType.AT_MOST_CHAR_TRAIT;
 	character: string;
@@ -48,7 +55,7 @@ interface TraitMaxMinCondition {
 
 type CrossConditionDto = TraitMaxMinCondition;
 
-type SingleCriterionDto = ItemCondition | MemoryCondition | TraitLimitCondition;
+type SingleCriterionDto = ItemCondition | MemoryCondition | TraitLimitCondition | PresenceCondition;
 
 
 // Storage
@@ -116,7 +123,7 @@ export interface BeatDto {
 	saveData?: SaveDataSideEffectsDto;
 }
 
-// construction
+// Construction
 interface SimpleBeatDto {
 	key: string;
 	defaultBehavior: {
@@ -534,6 +541,18 @@ export class BeatFactory {
 					params.characters[character]?.traits[trait] <= value || false;
 			}
 
+			case SingleConditionType.CHARACTER_PRESENT: {
+				const { character } = condition;
+				return (params: PlayParams) =>
+					params.scene.characters.has(character);
+			}
+
+			case SingleConditionType.CHARACTER_ABSENT: {
+				const { character } = condition;
+				return (params: PlayParams) =>
+					!params.scene.characters.has(character);
+			}
+
 			default: throw new Error('Not a real condition'); // not tested
 			}
 		});
@@ -542,12 +561,13 @@ export class BeatFactory {
 	#createCrossCondition (condition: CrossConditionDto) {
 		switch (condition.type) {
 		case CrossConditionType.GREATEST_SENTIMENT: {
+			const { trait } = condition;
 			return (params: CrossConditionParams): string => {
 				const { characters } = params;
 				let maxChar = characters[0];
 				characters.forEach((char) => {
-					const current = char.traits[condition.trait] || 0;
-					const prior = maxChar.traits[condition.trait] || 0;
+					const current = char.traits[trait] || 0;
+					const prior = maxChar.traits[trait] || 0;
 					if (current > prior) {
 						maxChar = char;
 					}
@@ -558,12 +578,13 @@ export class BeatFactory {
 		}
 
 		case CrossConditionType.LEAST_SENTIMENT: {
+			const { trait } = condition;
 			return (params: CrossConditionParams): string => {
 				const { characters } = params;
 				let minChar = characters[0];
 				characters.forEach((char) => {
-					const current = char.traits[condition.trait] || 0;
-					const prior = minChar.traits[condition.trait] || 0;
+					const current = char.traits[trait] || 0;
+					const prior = minChar.traits[trait] || 0;
 					if (current < prior) {
 						minChar = char;
 					}

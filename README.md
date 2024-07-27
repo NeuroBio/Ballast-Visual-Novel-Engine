@@ -295,6 +295,9 @@ enum Types {
 	CHARACTER_UNAWARE = 'lacksMemory',
 	AT_LEAST_CHAR_TRAIT = 'charTraitEqual+',
 	AT_MOST_CHAR_TRAIT = 'charTraitEqual-',
+	CHARACTER_PRESENT = 'charPresent',
+	CHARACTER_ABSENT = 'charAbsent',
+
 }
 
 AT_LEAST_ITEM/AT_MOST_ITEM

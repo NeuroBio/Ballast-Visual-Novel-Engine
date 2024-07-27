@@ -169,7 +169,7 @@ export class Engine {
 			sceneKey: this.#currentScene.key,
 		});
 
-		const beat = this.#currentScene.start();
+		const beat = this.#currentScene.start(); // implement restart for clarity, multi response beats MUST be recreated!!!!
 		return this.#playBeat(beat);
 	}
 
