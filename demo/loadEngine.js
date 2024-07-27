@@ -1,6 +1,6 @@
 console.log('loading...');
 
-import { Engine } from '../dist/Engine/Engine.js';
+import { Engine } from './CompiledEngine/Engine/Engine.js';
 
 const engine = new Engine({
 	findChapterData: () => Promise.resolve([]),
