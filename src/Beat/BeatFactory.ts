@@ -341,6 +341,7 @@ export class BeatFactory {
 		return new FinalBeat(params);
 	}
 
+
 	// Type Checkers
 	#isSimpleBeat (dto: BeatDto): dto is SimpleBeatDto {
 		if (dto.choices || dto.responses || dto.branches || dto.crossBranchCondition) {
@@ -442,13 +443,11 @@ export class BeatFactory {
 		return !!(dto.defaultBehavior.text && !dto.defaultBehavior.nextBeat);
 	}
 
-	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-	#validateDisplaySideEffects (key: string, data: any): boolean {
-		const check: DisplaySideEffectsDto = data.sceneData;
+	#validateDisplaySideEffects (key: string, data: { sceneData?: DisplaySideEffectsDto }): boolean {
+		const check = data.sceneData;
 		if (!check) {
 			return true;
 		}
-
 
 		const errorMessage = `Received malformed display side effect data for beat ${key}.  See the documentation for expected shapes for side effects.`;
 
@@ -614,8 +613,7 @@ export class BeatFactory {
 		};
 	}
 
-	/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
-	#setSceneData (data: any): DisplaySideEffects {
+	#setSceneData (data: { sceneData?: DisplaySideEffectsDto }): DisplaySideEffects {
 		return {
 			setBackground: data?.sceneData?.setBackground || '',
 			updateCharacterSprites: data?.sceneData?.updateCharacterSprites || [],
