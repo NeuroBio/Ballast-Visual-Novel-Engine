@@ -155,19 +155,22 @@ function applySceneData (beat) {
 	}
 
 	if (updateCharacterSprites) {
-		scene.characters;
+		updateCharacterSprites.forEach(x =>
+			scene.characters[x.character].position = x.sprite);
 	}
 
 	if (moveCharacters) {
-		scene.characters;
+		moveCharacters.forEach(x =>
+			scene.characters[x.character].position = x.position);
 	}
 
 	if (removeCharacters) {
-		scene.characters;
+		removeCharacters.forEach(x => delete scene.characters[x.character]);
 	}
 
 	if (addCharacters) {
-		scene.characters;
+		addCharacters.forEach(x =>
+			scene.characters[x.character] = { position: x.position, sprite: x.sprite });
 	}
 }
 

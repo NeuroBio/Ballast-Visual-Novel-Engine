@@ -16,7 +16,8 @@
 	  "plugin:@typescript-eslint/recommended"
 	],
 	"globals": {
-		"jest": true,
+		"window": true,
+		"d3": true
 	},
 	"rules": {
 		"arrow-spacing": ["warn", { "before": true, "after": true }],
