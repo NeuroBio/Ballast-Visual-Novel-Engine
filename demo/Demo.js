@@ -5,23 +5,23 @@ import { DemoData } from './DemoData.js';
 
 const engine = new Engine({
 	findChapterData: async () => {
-		actions.push('Find Chapter');
+		actions.push('• Find Chapter');
 		return DemoData.Chapters;
 	},
 	findSceneData: async () => {
-		actions.push('Find Scene');
+		actions.push('• Find Scene');
 		return DemoData.Scenes;
 	},
 	findCharacterData: async () => {
-		actions.push('Find Character Template Data');
+		actions.push('• Find Character Template Data');
 		return DemoData.CharacterTemplates;
 	},
-	findSavedData: () => async () => {
-		actions.push('Find Save Data');
+	findSavedData: async () => {
+		actions.push('• Find Save Data');
 		return;
 	},
-	createSavedData: () => async () => {
-		actions.push('Create Save Data');
+	createSavedData: async () => {
+		actions.push('• Create Save Data');
 		return {
 			activeChapters: {},
 			unlockedChapters: [],
@@ -31,74 +31,144 @@ const engine = new Engine({
 			characters: [],
 		};
 	},
-	saveSavedData: () => async () => {
-		actions.push('Manually Save Data');
+	saveSavedData: async () => {
+		actions.push('• Manually Save Data');
 	},
-	autosaveSaveData: () => async () => {
-		actions.push('Auto-Save Save Data');
+	autosaveSaveData: async () => {
+		actions.push('• Auto-Save Save Data');
 	},
 });
 
-let beat = '...';
-const scene = '...';
-const actions = [];
-let errorMessage = '';
+let beat;
+let scene;
+let actions = [];
+let errorMessage;
 
 
 window.startChapter = async () => {
 	console.log('starting');
+	resetDisplayData();
+
 	try {
-		beat = await engine.startChapter({ chapterKey: 'demo' });
+		beat = await engine.startChapter({ chapterKey: DemoData.Chapters[0].key });
+		applySceneData(beat);
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
 	}
+
+	updateDisplay();
 };
 
 window.advanceScene = () => {
 	console.log('advancing');
-	errorMessage = '';
+	resetDisplayData();
+
 	try {
-		engine.advanceScene({ beatKey: beat.nextBeat });
+		beat = engine.advanceScene({ beatKey: beat.nextBeat });
+		applySceneData(beat);
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
 	}
+
+	updateDisplay();
 };
 
 window.completeScene = async () => {
 	console.log('completing');
-	errorMessage = '';
+	resetDisplayData();
+
 	try {
 		await engine.completeScene();
+		scene = undefined;
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
 	}
+
+	updateDisplay();
 };
 
 window.restartScene = async () => {
 	console.log('restarting');
-	errorMessage = '';
+	resetDisplayData();
+
 	try {
 		await engine.restartScene();
+		applySceneData(beat);
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
 	}
+
+	updateDisplay();
 };
 
-window.save = () => {
+window.save = async () => {
 	console.log('saving');
-	errorMessage = '';
+	resetDisplayData();
+
 	try {
-		engine.save();
+		await engine.save();
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
 	}
+
+	updateDisplay();
 };
+
+function resetDisplayData () {
+	errorMessage = '';
+	actions = [];
+}
 
 function updateDisplay () {
-
+	d3.select('#error').text(errorMessage || '...');
+	d3.select('#actions').html(actions.join('<br>') || '...');
+	d3.select('#beat').text(JSON.stringify(beat, null, 2) || '...');
+	d3.select('#scene').text(JSON.stringify(scene, null, 2) || '...');
 }
+
+function applySceneData (beat) {
+	scene ??= {
+		background: '',
+		characters: {},
+	};
+	sceneData = beat.sceneData || beat.default?.sceneData;
+	if (!sceneData) {
+		return;
+	}
+
+
+	const {
+		setBackground,
+		updateCharacterSprites,
+		moveCharacters,
+		removeCharacters,
+		addCharacters,
+	} = sceneData;
+
+	if (setBackground) {
+		scene.background = setBackground;
+	}
+
+	if (updateCharacterSprites) {
+		scene.characters;
+	}
+
+	if (moveCharacters) {
+		scene.characters;
+	}
+
+	if (removeCharacters) {
+		scene.characters;
+	}
+
+	if (addCharacters) {
+		scene.characters;
+	}
+}
+
+updateDisplay();

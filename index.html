@@ -10,6 +10,9 @@
 	<link href="./demo/styles.css" rel="stylesheet" />
 </head>
 <body>
+	<script src="https://d3js.org/d3.v5.min.js"></script>
+	<script type="module" src="./demo/Demo.js"></script>
+
 	<header>
 		<h1>Ballast Visual Novel Engine Demo</h1>
 		<p>
@@ -28,24 +31,23 @@
 
 	<section id="current-beat" class="output">
 		<h2>Current Beat</h2>
-		<p id="beat">...</p>
+		<p id="beat"></p>
 	</section>
 
 	<section id="scene-state" class="output">
-		<h2>Scene</h2>
-		<p id="scene">...</p>
+		<h2>Scene State</h2>
+		<p id="scene"></p>
 	</section>
 
-	<section id="secret-actions" class="output">
+	<section id="engine-actions" class="output">
 		<h2>Engine Actions</h2>
-		<p id="engine-actions">...</p>
+		<p id="actions"></p>
 	</section>
 
 	<section id="error-message" class="output">
 		<h2>Error</h2>
-		<p id="error">...</p>
+		<p id="error"></p>
 	</section>
 
-	<script type="module" src="./demo/Demo.js"></script>
 </body>
 </html>
