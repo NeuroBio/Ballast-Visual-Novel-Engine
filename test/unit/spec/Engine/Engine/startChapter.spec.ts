@@ -6,6 +6,8 @@ fdescribe(`Engine.startChapter`, () => {
 	const Error = Object.freeze({
 		CHAP_NOT_FOUND: 'Requested chapter was not found.',
 		SCENE_NOT_FOUND: 'Requested scene was not found.',
+		UNDEFINED_BEAT: `Requested Beat is missing from the Scene data.`,
+		NONSENSE_BEAT: `Requested Beat isn't a real beat.`,
 	});
 	const saveData = Object.freeze({
 		queuedScenes: [],
@@ -87,6 +89,34 @@ fdescribe(`Engine.startChapter`, () => {
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(startResponse);
+		});
+	});
+	describe(`next best doesn't exist and isn't referenced by scene`, () => {
+		it(`throws an error`, async () => {
+			const chapterKey = 'chapterKey', sceneKey = 'sceneKey', scene = new Fakes.Scene();
+			const engine = await _createEngine();
+			const chapter = new Fakes.Chapter();
+			chapter.start.mockReturnValueOnce(sceneKey);
+			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
+			sceneFinderFake.byKey.mockReturnValueOnce(scene);
+			scene.hasBeatReference.mockReturnValueOnce(false);
+
+			await expect(async () => await engine.startChapter({ chapterKey }))
+				.rejects.toThrow(Error.NONSENSE_BEAT);
+		});
+	});
+	describe(`next best doesn't exist and is referenced by scene`, () => {
+		it(`throws an error`, async () => {
+			const chapterKey = 'chapterKey', sceneKey = 'sceneKey', scene = new Fakes.Scene();
+			const engine = await _createEngine();
+			const chapter = new Fakes.Chapter();
+			chapter.start.mockReturnValueOnce(sceneKey);
+			chapterFinderFake.byKey.mockReturnValueOnce(chapter);
+			sceneFinderFake.byKey.mockReturnValueOnce(scene);
+			scene.hasBeatReference.mockReturnValueOnce(true);
+
+			await expect(async () => await engine.startChapter({ chapterKey }))
+				.rejects.toThrow(Error.UNDEFINED_BEAT);
 		});
 	});
 });

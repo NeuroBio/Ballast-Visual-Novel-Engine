@@ -3,7 +3,6 @@ import { ChapterDto } from './ChapterFinder';
 
 export class Chapter {
 	#key: string;
-	#name: string;
 	#sceneKeys: Set<string>;
 	#locked: boolean;
 	#firstSceneKey: string;
@@ -11,9 +10,8 @@ export class Chapter {
 	#allowReplay: boolean;
 
 	constructor (params: ChapterDto) {
-		const { key, name, sceneKeys, locked, firstSceneKey, allowReplay } = params;
+		const { key, sceneKeys, locked, firstSceneKey, allowReplay } = params;
 		this.#key = key;
-		this.#name = name;
 		this.#sceneKeys = new Set(sceneKeys);
 		this.#locked = locked ?? true;
 		this.#firstSceneKey = firstSceneKey;

@@ -5,8 +5,11 @@ import { SavedData } from '../../../fakes/SavedData';
 import { Scene } from '../../../fakes/Scene';
 
 describe(`Engine.advanceScene`, () => {
+	const beatKey = 'beatKey';
 	const Error = Object.freeze({
 		TOO_EARLY: 'You cannot call advance scene prior to starting a chapter.',
+		UNDEFINED_BEAT: `Requested Beat is missing from the Scene data.`,
+		NONSENSE_BEAT: `Requested Beat isn't a real beat.`,
 	});
 	const saveData = Object.freeze({
 		queuedScenes: [],
@@ -64,7 +67,6 @@ describe(`Engine.advanceScene`, () => {
 				sceneFinder: sceneFinderFake,
 				savedDataRepo: savedDataRepoFake,
 			});
-			const beatKey = 'beatKey';
 			expect(() => {
 				engine.advanceScene({ beatKey });
 			}).toThrow(Error.TOO_EARLY);
@@ -178,6 +180,22 @@ describe(`Engine.advanceScene`, () => {
 		});
 		it(`returns the beat data for display`, () => {
 			expect(result).toEqual(playResponse);
+		});
+	});
+	describe(`next best doesn't exist and isn't referenced by scene`, () => {
+		it(`throws an error`, async () => {
+			const beatKey = 'beatKey';
+			const engine = await _createEngine();
+			scene.hasBeatReference.mockReturnValueOnce(false);
+			expect(() => engine.advanceScene({ beatKey })).toThrow(Error.NONSENSE_BEAT);
+		});
+	});
+	describe(`next best doesn't exist and is referenced by scene`, () => {
+		it(`throws an error`, async () => {
+			const beatKey = 'beatKey';
+			const engine = await _createEngine();
+			scene.hasBeatReference.mockReturnValueOnce(true);
+			expect(() => engine.advanceScene({ beatKey })).toThrow(Error.UNDEFINED_BEAT);
 		});
 	});
 });

@@ -40,4 +40,8 @@ export class FinalBeat extends Beat {
 			sceneData: this.#defaultBehavior.sceneData,
 		};
 	}
+
+	nextBeats (): string[] {
+		return [];
+	}
 }

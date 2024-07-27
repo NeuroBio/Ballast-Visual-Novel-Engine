@@ -13,13 +13,11 @@ export class Scene {
 	#firstBeatKey: string;
 	#currentBeatKey: string;
 	#currentBeat: Beat;
-	#name: string;
 	#key: string;
 	constructor (params: SceneParams) {
-		const { beats, firstBeatKey, name, key } = params;
+		const { beats, firstBeatKey, key } = params;
 
 		this.#key = key;
-		this.#name = name;
 		this.#beats = beats;
 		this.#firstBeatKey = firstBeatKey;
 		this.#currentBeatKey = firstBeatKey;
@@ -33,6 +31,7 @@ export class Scene {
 		return this.#currentBeat instanceof FinalBeat;
 	}
 
+
 	start (): Beat {
 		this.#currentBeatKey = this.#firstBeatKey;
 		return this.#getCurrentBeatToPlay();
@@ -43,8 +42,24 @@ export class Scene {
 		return this.#getCurrentBeatToPlay();
 	}
 
+	hasBeatReference (): boolean {
+		if (this.#currentBeat) {
+			return true;
+		}
+
+		return this.#isReferenced();
+	}
+
 	#getCurrentBeatToPlay () {
 		this.#currentBeat = this.#beats[this.#currentBeatKey];
 		return this.#currentBeat;
+	}
+
+	#isReferenced (): boolean {
+		const knownBeats = new Set();
+		Object.values(this.#beats).forEach(beat =>
+			beat.nextBeats().forEach((b) => knownBeats.add(b)));
+
+		return knownBeats.has((this.#currentBeatKey));
 	}
 }

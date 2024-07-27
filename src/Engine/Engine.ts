@@ -115,8 +115,7 @@ export class Engine {
 		});
 		this.#clearSceneState();
 
-		const beat = this.#currentScene.start();
-		return this.#playBeat(beat);
+		return this.#playBeatOrThrow(this.#currentScene.start());
 	}
 
 	async #findChapterElseThrow (chapterKey: string): Promise<Chapter> {
@@ -146,8 +145,7 @@ export class Engine {
 		}
 
 		const { beatKey } = params;
-		const beat = this.#currentScene.next(beatKey);
-		return this.#playBeat(beat);
+		return this.#playBeatOrThrow(this.#currentScene.next(beatKey));
 	}
 
 	#applySaveDataSideEffects (effects: SaveDataSideEffects): void {
@@ -170,8 +168,7 @@ export class Engine {
 		});
 
 		this.#currentScene = await this.#findSceneElseThrow(this.#currentChapter.start());
-		const beat = this.#currentScene.start();
-		return this.#playBeat(beat);
+		return this.#playBeatOrThrow(this.#currentScene.start());
 	}
 
 	async completeScene (): Promise<void> {
@@ -193,7 +190,13 @@ export class Engine {
 		this.#clearSceneState();
 	}
 
-	#playBeat (beat: Beat): DisplayData {
+	#playBeatOrThrow (beat: Beat): DisplayData {
+		if (!beat) {
+			throw this.#currentScene.hasBeatReference()
+				? new Error ('Requested Beat is missing from the Scene data.')
+				: new Error (`Requested Beat isn't a real beat.`);
+		}
+
 		const result = beat.play({
 			characters: this.#currentSave.characters,
 			inventory: this.#currentSave.inventory,

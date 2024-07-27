@@ -66,6 +66,20 @@ export class MultiResponseBeat extends Beat {
 		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
 
+	nextBeats (): string[] {
+		const nextBeat: string[] = [];
+		if (this.#defaultBehavior) {
+			nextBeat.push(this.#defaultBehavior.nextBeat);
+		}
+		this.#responses.forEach((r) => {
+			const next = r.beat.nextBeat;
+			if (next) {
+				nextBeat.push(next);
+			}
+		});
+		return nextBeat;
+	}
+
 	#getFallback (): string {
 		if (this.#lastPlayed === this.#playableOptions.length) {
 			return this.#defaultBehavior.nextBeat;

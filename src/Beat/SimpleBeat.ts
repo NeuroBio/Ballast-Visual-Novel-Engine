@@ -24,4 +24,8 @@ export class SimpleBeat extends Beat {
 			characters,
 		});
 	}
+
+	nextBeats (): string[] {
+		return [this.#defaultBehavior.nextBeat];
+	}
 }

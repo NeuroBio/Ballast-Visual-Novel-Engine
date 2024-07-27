@@ -54,4 +54,13 @@ export class FirstFitBranchBeat extends Beat {
 
 		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
+
+	nextBeats (): string[] {
+		const nextBeat: string[] = [];
+		if (this.#defaultBehavior) {
+			nextBeat.push(this.#defaultBehavior.nextBeat);
+		}
+		nextBeat.push(...this.#branches.map((b) => b.beat.nextBeat));
+		return nextBeat;
+	}
 }

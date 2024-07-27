@@ -62,6 +62,15 @@ export class ChoiceBeat extends Beat {
 		return result;
 	}
 
+	nextBeats (): string[] {
+		const nextBeat: string[] = [];
+		if (this.#defaultBehavior) {
+			nextBeat.push(this.#defaultBehavior.nextBeat);
+		}
+		nextBeat.push(...this.#choices.map((c) => c.beat.nextBeat));
+		return nextBeat;
+	}
+
 	#mayPlay (choice: Choice, params: PlayParams): boolean {
 		if (choice.conditions.length === 0) {
 			return true;

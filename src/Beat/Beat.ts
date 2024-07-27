@@ -109,6 +109,8 @@ export abstract class Beat {
 
 	abstract play (params: PlayParams): StandardBeatDisplay | ChoiceBeatDisplay | FinalBeatDisplay;
 
+	abstract nextBeats (): string[];
+
 	protected getCharacter (params: GetCharacterParams): string {
 		const { character, characters } = params;
 		if (!character) {

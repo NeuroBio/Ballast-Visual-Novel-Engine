@@ -84,6 +84,15 @@ export class BestFitBranchBeat extends Beat {
 		return this.assembleStandardBeatDisplay({ beat, characters });
 	}
 
+	nextBeats (): string[] {
+		const nextBeat: string[] = [];
+		if (this.#defaultBehavior) {
+			nextBeat.push(this.#defaultBehavior.nextBeat);
+		}
+		nextBeat.push(...this.#branches.map((b) => b.beat.nextBeat));
+		return nextBeat;
+	}
+
 	#mayPlay (branch: BestFitBranch, params: PlayParams): boolean {
 		if (branch.conditions.length === 0) {
 			return true;
