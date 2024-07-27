@@ -59,8 +59,8 @@ describe(`
 			unlockedChapters: [],
 		});
 	});
-	it(`plays the first beat again on restart`, () => {
-		const restart = engine.restartScene();
+	it(`plays the first beat again on restart`, async () => {
+		const restart = await engine.restartScene();
 		result.set(restart);
 		expect(result.get()).toEqual({
 			nextBeat: BeatData[0].defaultBehavior!.nextBeat,

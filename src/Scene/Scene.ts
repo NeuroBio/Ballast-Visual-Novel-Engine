@@ -34,15 +34,17 @@ export class Scene {
 	}
 
 	start (): Beat {
-		this.#currentBeat = this.#beats[this.#firstBeatKey];
-		return this.#currentBeat;
+		this.#currentBeatKey = this.#firstBeatKey;
+		return this.#getCurrentBeatToPlay();
 	}
 
 	next (beatKey: string): Beat {
 		this.#currentBeatKey = beatKey;
+		return this.#getCurrentBeatToPlay();
+	}
+
+	#getCurrentBeatToPlay () {
 		this.#currentBeat = this.#beats[this.#currentBeatKey];
 		return this.#currentBeat;
 	}
-
-	// restart() {}
 }

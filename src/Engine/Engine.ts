@@ -161,7 +161,7 @@ export class Engine {
 		effects.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
 	}
 
-	restartScene (): DisplayData {
+	async restartScene (): Promise<DisplayData> {
 		this.#clearSceneState();
 		this.#currentSave = this.#originalSave.clone();
 		this.#currentSave.startNewChapter({
@@ -169,7 +169,8 @@ export class Engine {
 			sceneKey: this.#currentScene.key,
 		});
 
-		const beat = this.#currentScene.start(); // implement restart for clarity, multi response beats MUST be recreated!!!!
+		this.#currentScene = await this.#findSceneElseThrow(this.#currentChapter.start());
+		const beat = this.#currentScene.start();
 		return this.#playBeat(beat);
 	}
 

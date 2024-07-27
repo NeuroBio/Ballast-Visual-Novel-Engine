@@ -219,8 +219,8 @@ describe(`playing scene with scene and beat data that must be reset`, () => {
 			sceneData: expect.any(Object),
 		});
 	});
-	it(`restarts the scene and it replays the first beat`, () => {
-		const beat = engine.restartScene();
+	it(`restarts the scene and it replays the first beat`, async () => {
+		const beat = await engine.restartScene();
 		result.set(beat);
 		expect(result.get()).toEqual({
 			nextBeat: beatData[0].defaultBehavior!.nextBeat,
