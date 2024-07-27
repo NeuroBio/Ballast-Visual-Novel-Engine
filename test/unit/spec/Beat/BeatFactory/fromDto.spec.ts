@@ -148,7 +148,6 @@ describe('BeatFactory.fromDto', () => {
 					text: defaultText,
 					nextBeat: defaultBeat,
 					speaker: NARRATOR,
-					// TODO: decide what to do about this... if anything
 					saveData: expect.any(Object),
 					sceneData: expect.any(Object),
 				},

@@ -20,7 +20,6 @@ describe(`SaveData.toDto`, () => {
 
 		const dto = savedData.toDto();
 		expect(dto).toEqual(savedDataParams);
-		// not by reference
 		expect(dto.activeChapters).not.toBe(activeChapters);
 		expect(dto.completedChapters).not.toBe(completedChapters);
 		expect(dto.unlockedChapters).not.toBe(unlockedChapters);
