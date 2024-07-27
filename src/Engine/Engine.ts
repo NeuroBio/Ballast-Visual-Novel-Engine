@@ -160,6 +160,7 @@ export class Engine {
 	}
 
 	async restartScene (): Promise<DisplayData> {
+		// you have a bug here; don't call when there is no current scene
 		this.#clearSceneState();
 		this.#currentSave = this.#originalSave.clone();
 		this.#currentSave.startNewChapter({

@@ -96,6 +96,9 @@ export class Engine {
 		effects.updatedCharacterTraits.forEach(x => this.#currentSave.updateCharacterTrait(x));
 	}
 	async restartScene () {
+		if (!this.#currentScene) {
+			throw new Error('You cannot call restart scene prior to starting a chapter.');
+		}
 		this.#clearSceneState();
 		this.#currentSave = this.#originalSave.clone();
 		this.#currentSave.startNewChapter({
