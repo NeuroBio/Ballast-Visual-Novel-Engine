@@ -14,13 +14,13 @@ interface FirstFitBranch {
 export interface FirstFitBranchBeatParams {
 	key: string;
 	branches: FirstFitBranch[];
-	defaultBehavior?: DefaultBehaviorStandard;
+	defaultBehavior: DefaultBehaviorStandard;
 	saveData: SaveDataSideEffects;
 }
 
 export class FirstFitBranchBeat extends Beat {
 	#branches: FirstFitBranch[];
-	#defaultBehavior?: DefaultBehaviorStandard;
+	#defaultBehavior: DefaultBehaviorStandard;
 
 	constructor (params: FirstFitBranchBeatParams) {
 		const { defaultBehavior, branches } = params;
@@ -50,7 +50,7 @@ export class FirstFitBranchBeat extends Beat {
 			}
 		}
 
-		beat ??= this.#defaultBehavior!;
+		beat ??= this.#defaultBehavior;
 
 		return this.assembleStandardBeatDisplay({ beat, characters });
 	}

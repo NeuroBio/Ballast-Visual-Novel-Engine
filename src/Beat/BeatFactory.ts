@@ -150,7 +150,7 @@ interface ChoiceBeatDto {
 interface FirstFitBranchBeatDto {
 	key: string;
 	branches: FirstFitBranchDto[],
-	defaultBehavior?: {
+	defaultBehavior: {
 		text: string;
 		character?: string;
 		nextBeat: string;
@@ -257,14 +257,6 @@ export class BeatFactory {
 	}
 
 	#createFirstFitBranchBeat (dto: FirstFitBranchBeatDto): FirstFitBranchBeat {
-		const defaultBehavior = dto.defaultBehavior
-			? {
-				character: dto.defaultBehavior.character,
-				text: dto.defaultBehavior.text,
-				nextBeat: dto.defaultBehavior.nextBeat,
-				sceneData: this.#setSceneData(dto.defaultBehavior),
-			}
-			: undefined;
 		const params: FirstFitBranchBeatParams = {
 			branches: dto.branches.map((branch) => ({
 				beat: {
@@ -275,7 +267,12 @@ export class BeatFactory {
 				},
 				conditions: this.#createSingleCondition(branch.conditions || [], dto.key) || [],
 			})),
-			defaultBehavior,
+			defaultBehavior: {
+				character: dto.defaultBehavior.character,
+				text: dto.defaultBehavior.text,
+				nextBeat: dto.defaultBehavior.nextBeat,
+				sceneData: this.#setSceneData(dto.defaultBehavior),
+			},
 			...this.#setSharedParams(dto),
 		};
 		return new FirstFitBranchBeat(params);
@@ -387,12 +384,8 @@ export class BeatFactory {
 			this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
 		}
 
-		if (dto.defaultBehavior) {
-			this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
-			return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
-		}
-
-		return true;
+		this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
+		return !!(dto.defaultBehavior.text && dto.defaultBehavior.nextBeat);
 	}
 
 	#isBestFitBranchBeat (dto: BeatDto): dto is BestFitBranchBeatDto {
