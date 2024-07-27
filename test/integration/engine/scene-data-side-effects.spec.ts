@@ -33,13 +33,20 @@ describe(`playing beats with scene data side effects`, () => {
 			},
 		},
 	];
+	const displayData = Object.freeze({
+		setBackground: 'background',
+		updateCharacterSprites: [{ character: 'char', sprite: 'sigh' }],
+		moveCharacters: [{ character: 'char-char', newPosition: 0 }],
+		removeCharacters: [{ character: 'chi-cha' }],
+		addCharacters: [{ character: 'c-c-c', position: 1, sprite: 'soup' }],
+	});
 	const beatData: BeatDto[] = [
 		{
 			key: 'A',
 			defaultBehavior: {
 				text: '1st to play',
 				nextBeat: 'B',
-				sceneData: {},
+				sceneData: displayData,
 			},
 		},
 		{
@@ -59,7 +66,7 @@ describe(`playing beats with scene data side effects`, () => {
 			defaultBehavior: {
 				text: '2nd to play',
 				nextBeat: 'C',
-				sceneData: {},
+				sceneData: displayData,
 			},
 		},
 		{
@@ -74,7 +81,7 @@ describe(`playing beats with scene data side effects`, () => {
 					text: '3rd to play',
 					nextBeat: 'D',
 					conditions: [PassConditional],
-					sceneData: {},
+					sceneData: displayData,
 				},
 			],
 			defaultBehavior: {
@@ -99,7 +106,7 @@ describe(`playing beats with scene data side effects`, () => {
 			defaultBehavior: {
 				text: '4th to play',
 				nextBeat: 'E',
-				sceneData: {},
+				sceneData: displayData,
 			},
 		},
 		{
@@ -114,7 +121,7 @@ describe(`playing beats with scene data side effects`, () => {
 					text: '5th to play',
 					character: '2',
 					nextBeat: 'F',
-					sceneData: {},
+					sceneData: displayData,
 				},
 			],
 			crossBranchCondition: {
@@ -149,7 +156,7 @@ describe(`playing beats with scene data side effects`, () => {
 			defaultBehavior: {
 				text: '6th to play',
 				nextBeat: 'G',
-				sceneData: {},
+				sceneData: displayData,
 			},
 		},
 		{
@@ -157,24 +164,24 @@ describe(`playing beats with scene data side effects`, () => {
 			responses: [
 				{
 					text: '7th to play',
-					sceneData: {},
+					sceneData: displayData,
 				},
 				{
 					text: '8th to play',
-					sceneData: {},
+					sceneData: displayData,
 				},
 			],
 			defaultBehavior: {
 				text: '9th to play',
 				nextBeat: 'H',
-				sceneData: {},
+				sceneData: displayData,
 			},
 		},
 		{
 			key: 'H',
 			defaultBehavior: {
 				text: '10th to play',
-				sceneData: {},
+				sceneData: displayData,
 			},
 		},
 	];
@@ -223,8 +230,8 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[0].defaultBehavior!.nextBeat,
 			text: beatData[0].defaultBehavior!.text,
 			speaker: NARRATOR,
-			saveData:expect.any(Object),
-			sceneData: expect.any(Object),
+			saveData: expect.any(Object),
+			sceneData: displayData,
 		});
 	});
 	it('returns display data from default behavior on choice beat when no choices may play', () => {
@@ -240,7 +247,7 @@ describe(`playing beats with scene data side effects`, () => {
 				nextBeat: beatData[1].defaultBehavior!.nextBeat,
 				text: beatData[1].defaultBehavior!.text,
 				speaker: NARRATOR,
-				sceneData: expect.any(Object),
+				sceneData: displayData,
 				saveData: expect.any(Object),
 			},
 			saveData: expect.any(Object),
@@ -253,7 +260,7 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[2].branches![1].nextBeat,
 			text: beatData[2].branches![1].text,
 			speaker: NARRATOR,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});
@@ -264,7 +271,7 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[3].defaultBehavior!.nextBeat,
 			text: beatData[3].defaultBehavior!.text,
 			speaker: NARRATOR,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});
@@ -275,7 +282,7 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[4].branches![1].nextBeat,
 			text: beatData[4].branches![1].text,
 			speaker: characterData[1].name,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});
@@ -286,7 +293,7 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[5].defaultBehavior!.nextBeat,
 			text: beatData[5].defaultBehavior!.text,
 			speaker: NARRATOR,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});
@@ -297,7 +304,7 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[6].key,
 			text: beatData[6].responses![0].text,
 			speaker: NARRATOR,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});
@@ -308,7 +315,7 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[6].defaultBehavior!.nextBeat,
 			text: beatData[6].responses![1].text,
 			speaker: NARRATOR,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});
@@ -319,7 +326,7 @@ describe(`playing beats with scene data side effects`, () => {
 			nextBeat: beatData[6].defaultBehavior!.nextBeat,
 			text: beatData[6].defaultBehavior!.text,
 			speaker: NARRATOR,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});
@@ -329,7 +336,7 @@ describe(`playing beats with scene data side effects`, () => {
 		expect(result.get()).toEqual({
 			text: beatData[7].defaultBehavior!.text,
 			speaker: NARRATOR,
-			sceneData: expect.any(Object),
+			sceneData: displayData,
 			saveData: expect.any(Object),
 		});
 	});

@@ -6,7 +6,7 @@ import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedD
 import { FirstFitBranchBeat, FirstFitBranchBeatParams } from './FirstFitBranchBeat';
 import { MultiResponseBeat, MultiResponseBeatParams } from './MultiResponseBeat';
 import { BestFitBranchBeat, BestFitBranchBeatParams } from './BestFitBranchBeat';
-import { CrossConditionParams, DisplaySideEffects } from './SharedInterfaces';
+import { AddCharacterParams, CrossConditionParams, DisplaySideEffects, MoveCharacterParams, RemoveCharacterParams, UpdateCharacterSpriteParams } from './SharedInterfaces';
 
 // conditionals
 export enum SingleConditionType {
@@ -54,20 +54,10 @@ type SingleCriterionDto = ItemCondition | MemoryCondition | TraitLimitCondition;
 // Storage
 interface DisplaySideEffectsDto {
 	setBackground?: string;
-	updateCharacterSprites?: [{
-		character: string,
-		sprite: string,
-	}];
-	moveCharacters?: [{
-		character: string,
-		newPosition: number
-	}];
-	removeCharacters?: [{ character: string }];
-	addCharacters?: [{
-		character: string,
-		position: number,
-		sprite: string
-	}];
+	updateCharacterSprites?: UpdateCharacterSpriteParams[];
+	moveCharacters?: MoveCharacterParams[];
+	removeCharacters?: RemoveCharacterParams[];
+	addCharacters?: AddCharacterParams[];
 }
 interface DefaultBehaviorDto {
 	text: string;
@@ -274,7 +264,7 @@ export class BeatFactory {
 					text: branch.text,
 					nextBeat: branch.nextBeat,
 					character: branch.character,
-					sceneData: this.#setSceneData(dto.defaultBehavior),
+					sceneData: this.#setSceneData(branch),
 				},
 				conditions: this.#createSingleCondition(branch.conditions || []) || [],
 			})),
@@ -299,7 +289,7 @@ export class BeatFactory {
 					text: branch.text,
 					nextBeat: branch.nextBeat,
 					character: branch.character,
-					sceneData: this.#setSceneData(dto.defaultBehavior),
+					sceneData: this.#setSceneData(branch),
 				},
 				conditions: this.#createSingleCondition(branch.conditions || []) || [],
 			})),

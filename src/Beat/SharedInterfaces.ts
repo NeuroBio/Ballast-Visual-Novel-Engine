@@ -1,21 +1,21 @@
 import { Character } from '../Character/Character';
 import { InventoryItem, MemoryParams, SceneParams, TraitParams } from '../SavedData/SavedData';
 
-interface UpdateCharacterSpriteParams {
+export interface UpdateCharacterSpriteParams {
 	character: string,
 	sprite: string,
 }
 
-interface MoveCharacterParams {
+export interface MoveCharacterParams {
 	character: string,
 	newPosition: number
 }
 
-interface RemoveCharacterParams {
+export interface RemoveCharacterParams {
 	character: string
 }
 
-interface AddCharacterParams {
+export interface AddCharacterParams {
 	character: string,
 	position: number,
 	sprite: string
