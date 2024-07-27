@@ -202,11 +202,15 @@ export class Engine {
 			inventory: this.#currentSave.inventory,
 			scene: this.#sceneState,
 		});
+
 		this.#applySaveDataSideEffects(result.saveData);
-		// choice has it on default.  instead return if it exists and handle it from there.
+
 		if (_hasSceneData(result)) {
 			this.#updateSceneState(result.sceneData);
+		} else if (result.default?.sceneData) {
+			this.#updateSceneState(result.default.sceneData);
 		}
+
 		return result;
 
 		function _hasSceneData (result: DisplayData): result is StandardBeatDisplay | FinalBeatDisplay {
