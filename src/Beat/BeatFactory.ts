@@ -75,7 +75,7 @@ interface FirstFitBranchDto {
 	text: string;
 	character?: string,
 	nextBeat: string;
-	conditions?: SingleCriterionDto[];
+	conditions: SingleCriterionDto[];
 	sceneData?: DisplaySideEffectsDto;
 }
 
@@ -373,7 +373,7 @@ export class BeatFactory {
 		}
 
 		for (const branch of dto.branches) {
-			if (!branch.text || !branch.nextBeat || !branch.conditions) {
+			if (!branch.text || !branch.nextBeat || !branch.conditions || branch.conditions.length < 1) {
 				return false;
 			}
 			this.#validateDisplaySideEffects(dto.key, dto.defaultBehavior);
