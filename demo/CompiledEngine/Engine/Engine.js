@@ -51,6 +51,9 @@ export class Engine {
 	}
 	async startChapter (params) {
 		const { chapterKey } = params;
+		if (this.#currentScene) {
+			throw new Error('Cannot start a new chapter while a scene is in progress.  Did you mean to call "restartScene?"');
+		}
 		if (!this.#currentSave) {
 			await this.loadSavedData();
 		}

@@ -102,6 +102,10 @@ export class Engine {
 	async startChapter (params: LoadChapterParams): Promise<DisplayData> {
 		const { chapterKey } = params;
 
+		if (this.#currentScene) {
+			throw new Error('Cannot start a new chapter while a scene is in progress.  Did you mean to call "restartScene?"');
+		}
+
 		if (!this.#currentSave) {
 			await this.loadSavedData();
 		}
@@ -160,7 +164,9 @@ export class Engine {
 	}
 
 	async restartScene (): Promise<DisplayData> {
-		// you have a bug here; don't call when there is no current scene
+		if (!this.#currentScene) {
+			throw new Error('You cannot call restart scene prior to starting a chapter.');
+		}
 		this.#clearSceneState();
 		this.#currentSave = this.#originalSave.clone();
 		this.#currentSave.startNewChapter({

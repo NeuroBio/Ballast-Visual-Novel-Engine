@@ -241,7 +241,7 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 
 	if (typeof value === 'boolean') {
 		const code = element.append('code')
-			.text(`${tab}${keyPrefix}"${value}",\n`);
+			.text(`${tab}${keyPrefix}${value},\n`);
 		highlightChanges (value, oldValue, code);
 		return;
 	}

@@ -8,6 +8,7 @@ fdescribe(`Engine.startChapter`, () => {
 		SCENE_NOT_FOUND: 'Requested scene was not found.',
 		UNDEFINED_BEAT: `Requested Beat is missing from the Scene data.`,
 		NONSENSE_BEAT: `Requested Beat isn't a real beat.`,
+		NO_RESTART: `Cannot start a new chapter while a scene is in progress.  Did you mean to call "restartScene?"`,
 	});
 	const saveData = Object.freeze({
 		queuedScenes: [],
@@ -117,6 +118,25 @@ fdescribe(`Engine.startChapter`, () => {
 
 			await expect(async () => await engine.startChapter({ chapterKey }))
 				.rejects.toThrow(Error.UNDEFINED_BEAT);
+		});
+	});
+	describe(`trying to start a chapter while a chapter is already in progress`, () => {
+		it(`throws an error`, async () => {
+			const chapterKey = 'chapterKey', sceneKey = 'sceneKey',
+				scene = new Fakes.Scene(), beat = new Fakes.SimpleBeat({ key: 'key', saveData });
+			const startResponse = { result: 'result', saveData: saveData };
+			const engine = await _createEngine();
+			const chapter = new Fakes.Chapter();
+			chapter.start.mockReturnValue(sceneKey);
+			scene.start.mockReturnValue(beat);
+			beat.play.mockReturnValueOnce(startResponse);
+			chapterFinderFake.byKey.mockReturnValue(chapter);
+			sceneFinderFake.byKey.mockReturnValue(scene);
+			await engine.startChapter({ chapterKey });
+
+			await expect(async () => {
+				await engine.startChapter({ chapterKey });
+			}).rejects.toThrow(Error.NO_RESTART);
 		});
 	});
 });

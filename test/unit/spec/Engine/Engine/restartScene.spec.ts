@@ -4,6 +4,9 @@ import { Engine } from '../../../../../src/Engine/Engine';
 import { CharacterData, SavedDataData } from '../../../FakeData/TestData';
 
 describe(`Engine.restart`, () => {
+	const Error = Object.freeze({
+		TOO_EARLY: 'You cannot call restart scene prior to starting a chapter.',
+	});
 	const firstBeatKey = 'firstBeat';
 	const firstBeatDto = {
 		key: firstBeatKey,
@@ -44,35 +47,46 @@ describe(`Engine.restart`, () => {
 		});
 		return engine;
 	}
-	it(`recreates the scene with fresh beat data to reset multi-response beats`, async () => {
-		const engine = await _createEngine();
 
-		const firstResponse = await engine.startChapter({ chapterKey: chapterDto.key });
-		expect(firstResponse).toEqual({
-			text: firstBeatDto.responses[0].text,
-			nextBeat: firstBeatKey,
-			speaker: NARRATOR,
-			sceneData: expect.any(Object),
-			saveData: expect.any(Object),
+	describe(`current scene is set`, () => {
+		it(`recreates the scene with fresh beat data to reset multi-response beats`, async () => {
+			const engine = await _createEngine();
+
+			const firstResponse = await engine.startChapter({ chapterKey: chapterDto.key });
+			expect(firstResponse).toEqual({
+				text: firstBeatDto.responses[0].text,
+				nextBeat: firstBeatKey,
+				speaker: NARRATOR,
+				sceneData: expect.any(Object),
+				saveData: expect.any(Object),
+			});
+
+			const secondResponse = engine.advanceScene({ beatKey: firstBeatKey });
+			expect(secondResponse).toEqual({
+				text: firstBeatDto.responses[1].text,
+				nextBeat: firstBeatDto.defaultBehavior.nextBeat,
+				speaker: NARRATOR,
+				sceneData: expect.any(Object),
+				saveData: expect.any(Object),
+			});
+
+
+			const replayResponse = await engine.restartScene();
+			expect(replayResponse).toEqual({
+				text: firstBeatDto.responses[0].text,
+				nextBeat: firstBeatKey,
+				speaker: NARRATOR,
+				sceneData: expect.any(Object),
+				saveData: expect.any(Object),
+			});
 		});
-
-		const secondResponse = engine.advanceScene({ beatKey: firstBeatKey });
-		expect(secondResponse).toEqual({
-			text: firstBeatDto.responses[1].text,
-			nextBeat: firstBeatDto.defaultBehavior.nextBeat,
-			speaker: NARRATOR,
-			sceneData: expect.any(Object),
-			saveData: expect.any(Object),
-		});
-
-
-		const replayResponse = await engine.restartScene();
-		expect(replayResponse).toEqual({
-			text: firstBeatDto.responses[0].text,
-			nextBeat: firstBeatKey,
-			speaker: NARRATOR,
-			sceneData: expect.any(Object),
-			saveData: expect.any(Object),
+	});
+	describe(`current scene is not set`, () => {
+		it(`throws an error`, async () => {
+			const engine = await _createEngine();
+			await expect(
+				async () => await engine.restartScene(),
+			).rejects.toThrow(Error.TOO_EARLY);
 		});
 	});
 });
