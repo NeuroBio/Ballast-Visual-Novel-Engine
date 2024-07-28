@@ -287,7 +287,7 @@ const Beats = [
 	{
 		key: 'Q',
 		defaultBehavior: {
-			text: 'All pathways align here again.  However, the next beat is a first branch beat.  The engine will play the first branch that has its conditions satisfied.'
+			text: 'All pathways align here again.  However, the next beat is a first fit branch beat.  The engine will play the first branch that has its conditions satisfied.'
 			+ '  In this case, it looks at which cats are present and whether the lizard has the cat repellant.',
 			nextBeat: 'R',
 		},
