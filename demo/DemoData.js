@@ -44,10 +44,22 @@ const Beats = [
 	{
 		key: 'C',
 		defaultBehavior: {
-			text: `And one last simple beat.  This is spoken by a character though.`,
+			text: `Let's get into some logic.  The next beat is a Choice beat, which drives immediate user-decision story branching.`,
 			nextBeat: 'D',
-			character: CharacterTemplates[0].key,
 		},
+	},
+	{
+		key: 'D',
+		choices: [
+			{
+				text: 'Steal an item from cat',
+				nextBeat: 'E',
+			},
+			{
+				text: 'Stick lizard tongue out at cat',
+				nextBeat: 'F',
+			},
+		],
 	},
 ];
 

@@ -273,9 +273,11 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 
 
 	if (isArray) {
-		element.append('code').text(`${tab}${keyPrefix}[\n`);
+		const codeEntry = element.append('code').text(`${tab}${keyPrefix}[\n`);
 		Object.entries(value).forEach(([nextKey, nextValue]) => {
-			const nextOldValue = oldValue ? oldValue?.[nextKey] ?? [] : undefined;
+			const nextIsArray = Array.isArray(nextValue);
+			const defaultOldValue = nextIsArray ? [] : {};
+			const nextOldValue = oldValue ? oldValue?.[nextKey] ?? defaultOldValue : undefined;
 			writeChangeJson({
 				value: nextValue,
 				key: nextKey,
@@ -286,11 +288,18 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 				element,
 			});
 		});
-		element.append('code').text(`${tab}],\n`);
+		const codeExit = element.append('code').text(`${tab}],\n`);
+
+		if (!!key && (!oldValue || oldValue.length === 0)) {
+			codeEntry.attr('class', 'updated');
+			codeExit.attr('class', 'updated');
+		}
 	} else {
 		const codeEntry = element.append('code').text(`${tab}${keyPrefix}{\n`);
 		Object.entries(value).forEach(([nextKey, nextValue]) => {
-			const nextOldValue = oldValue ? oldValue?.[nextKey] ?? {} : undefined;
+			const nextIsArray = Array.isArray(nextValue);
+			const defaultOldValue = nextIsArray ? [] : {};
+			const nextOldValue = oldValue ? oldValue?.[nextKey] ?? defaultOldValue : undefined;
 			writeChangeJson({
 				value: nextValue,
 				key: nextKey,
@@ -307,18 +316,9 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 			const newKeys = Object.keys(value);
 			const oldKeys = Object.keys(oldValue);
 
-			if (newKeys.length !== oldKeys.length) {
+			if (!!key && (oldKeys.length === 0 || newKeys.length !== oldKeys.length)) {
 				codeEntry.attr('class', 'updated');
 				codeExit.attr('class', 'updated');
-				return;
-			}
-
-			for (const oldKey of oldKeys) {
-				if (!newKeys.includes(oldKey)) {
-					codeEntry.attr('class', 'updated');
-					codeExit.attr('class', 'updated');
-					return;
-				}
 			}
 		}
 	}
