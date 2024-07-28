@@ -68,6 +68,9 @@ window.advanceScene = () => {
 	resetDisplayData();
 
 	try {
+		if (beat?.choices) {
+			throw new Error('You have to use the choice selection buttons to advance a Choice Beat!');
+		}
 		const newBeat = engine.advanceScene({ beatKey: beat?.nextBeat || '' });
 		priorBeat = beat;
 		beat = newBeat;
