@@ -90,12 +90,12 @@ window.completeScene = async () => {
 
 	try {
 		await engine.completeScene();
+		beat = undefined;
+		priorBeat = undefined;
 		scene = undefined;
 		priorScene = undefined;
 		save = undefined;
 		priorSave = undefined;
-		beat = undefined;
-		priorBeat = undefined;
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
@@ -112,6 +112,8 @@ window.restartScene = async () => {
 		beat = await engine.restartScene();
 		priorBeat = undefined;
 		scene = undefined;
+		save = undefined;
+		priorSave = undefined;
 		applySceneData(beat);
 		applySaveData(beat);
 	} catch (error) {
