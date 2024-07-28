@@ -52,7 +52,8 @@ i.e. things the engine provides an interface for, but requires an implementation
 			- most likely, it's a UI trigger that does this
 
 ## Saving
-Autosaves occur when scenes are completed.  Manual saves are designed to be called before or after scenes, but NOT during them.  The save data currently does not contain the data necessary to support this.
+### When to Save
+Autosaves occur when scenes are completed.  Manual saves via `engine.save` are designed to be called before scenes start or after scene complete, but NOT during them.  The save data currently does not contain the data necessary to support mid-scene saves.  The following is missing:
 - Save data does not store the current beat a user is on (necessary to restart partway through a scene).
 - Save data does not store an old copy of its prior state (necessary for rollback).
 Currently, scene restarts are quick rollbacks that use the prior save state stored _in memory_.  The following is an example of what can go wrong if you save midway through a scene:
@@ -65,7 +66,12 @@ Currently, scene restarts are quick rollbacks that use the prior save state stor
 
 Tracking the prior state for save data and the current beat to allow for mid-scene saves and rollbacks is a possible future enhancement.
 
-## Save Data
+### When to load save data manually
+If you have a simple game, you never need to manually call `engine.loadSavedData`.  When starting a scene/chapter on a new engine, save data is automatically loaded or created.  When using the same engine instance across scenes, the engine holds onto an in memory copy of the save data's state before starting the scene and its current state.  The engine sets the prior save data state as a clone of the current save data state upon starting a new scene/chapter to allow for quick scene restarts.
+
+If you have a more complex game where save data changes outside of the engine's local memory and the engine needs to respect these changes, then you want to call `engine.loadSavedData` prior to starting a scene/chapter to make sure the engine has the latest state for the save data.  Note that `loadSavedData` is limited by the same caveat for timing as `save`: it's designed to be called before or after a scene.  Not during a scene.
+
+### Save Data Structure
 - Active Chapters
 	- the queued chapter will be equivalent to the engine's current chapter most of the time
 	- the two disconnect when a final beat dictates what the next scene should be
