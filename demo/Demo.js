@@ -155,11 +155,15 @@ function updateDisplay () {
 		outputElement.html('...');
 	} else if (beat?.choices) {
 		outputElement.html('');
-		beat.choices.forEach((x) =>
-			outputElement.append('button')
+		beat.choices.forEach((x) => {
+			const button = outputElement.append('button')
 				.text(x.text)
 				.attr('type', 'button')
-				.attr('onClick', `advanceScene("${x.nextBeat}")`));
+				.attr('onClick', `advanceScene("${x.nextBeat}")`);
+			if (!x.mayPlay) {
+				button.attr('disabled', 'true');
+			}
+		});
 	} else {
 		outputElement.html(`<b>${beat.speaker}:</b> ${beat.text}`);
 	}
