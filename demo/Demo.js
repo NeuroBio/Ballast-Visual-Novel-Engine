@@ -40,6 +40,7 @@ const engine = new Engine({
 let beat;
 let priorBeat;
 let scene;
+let priorScene;
 let actions = [];
 let errorMessage;
 
@@ -130,18 +131,33 @@ function resetDisplayData () {
 }
 
 function updateDisplay () {
-	d3.select('#error').text(errorMessage || '...');
-	d3.select('#actions').html(actions.join('<br>') || '...');
+	const beatElement = d3.select('#beat');
 	if (!beat) {
-		d3.select('#beat').html('...');
+		beatElement.html('...');
 	} else {
-		d3.select('#beat').html('');
-		writeChangeJson ({ value: beat, oldValue: priorBeat, addSpaces: 4 });
+		beatElement.html('');
+		writeChangeJson ({ value: beat, oldValue: priorBeat, addSpaces: 4, element: beatElement });
 	}
-	d3.select('#scene').text(JSON.stringify(scene, null, 2) || '...');
+
+
+	const sceneElement = d3.select('#scene');
+	if (!scene) {
+		sceneElement.html('...');
+	} else {
+		sceneElement.html('');
+		writeChangeJson ({ value: scene, oldValue: priorScene, addSpaces: 4, element: sceneElement });
+	}
+
+	d3.select('#actions').html(actions.join('<br>') || '...');
+
+	d3.select('#error').text(errorMessage || '...');
 }
 
 function applySceneData (beat) {
+	priorScene = scene ? {
+		characters: { ...scene.characters },
+		background: scene.background,
+	} : undefined;
 	scene ??= {
 		background: '',
 		characters: {},
@@ -184,27 +200,27 @@ function applySceneData (beat) {
 	}
 }
 
-function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, shouldKey = false }) {
+function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, shouldKey = false, element }) {
 	const keyPrefix = shouldKey ? `"${key}": ` : ``;
 	const tab = depth ? new Array(addSpaces * depth).fill(' ').join('') : '';
 	const isArray = Array.isArray(value);
 
 	if (typeof value === 'string') {
-		const code = d3.select('#beat').append('code')
+		const code = element.append('code')
 			.text(`${tab}${keyPrefix}"${value}",\n`);
 		highlightChanges (value, oldValue, code);
 		return;
 	}
 
 	if (typeof value === 'number') {
-		const code = d3.select('#beat').append('code')
+		const code = element.append('code')
 			.text(`${tab}${keyPrefix}${value},\n`);
 		highlightChanges (value, oldValue, code);
 		return;
 	}
 
 	if (isArray && value.length === 0) {
-		const code = d3.select('#beat').append('code')
+		const code = element.append('code')
 			.text(`${tab}${keyPrefix}[],\n`);
 		if (oldValue && oldValue.length !== 0) {
 			code.attr('class', 'updated');
@@ -213,9 +229,9 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 	}
 
 	if (!isArray && Object.keys(value).length === 0) {
-		const code = d3.select('#beat').append('code')
+		const code = element.append('code')
 			.text(`${tab}${keyPrefix}{},\n`);
-		if (Object.keys(oldValue && oldValue).length !== 0) {
+		if (oldValue && Object.keys(oldValue).length !== 0) {
 			code.attr('class', 'updated');
 		}
 		return;
@@ -223,9 +239,10 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 
 
 	if (isArray) {
-		d3.select('#beat').append('code').text(`${tab}${keyPrefix}[\n`);
+		element.append('code').text(`${tab}${keyPrefix}[\n`);
 		Object.entries(value).forEach(([nextKey, nextValue]) => {
-			const nextOldValue = oldValue ? oldValue?.[nextKey] || [] : undefined;
+			console.log(`array: ${nextKey}, ${depth}`);
+			const nextOldValue = oldValue ? oldValue?.[nextKey] ?? [] : undefined;
 			writeChangeJson({
 				value: nextValue,
 				key: nextKey,
@@ -233,13 +250,14 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 				addSpaces,
 				depth: depth + 1,
 				shouldKey: false,
+				element,
 			});
 		});
-		d3.select('#beat').append('code').text(`${tab}],\n`);
+		element.append('code').text(`${tab}],\n`);
 	} else {
-		d3.select('#beat').append('code').text(`${tab}${keyPrefix}{\n`);
+		const codeEntry = element.append('code').text(`${tab}${keyPrefix}{\n`);
 		Object.entries(value).forEach(([nextKey, nextValue]) => {
-			const nextOldValue = oldValue ? oldValue?.[nextKey] || {} : undefined;
+			const nextOldValue = oldValue ? oldValue?.[nextKey] ?? {} : undefined;
 			writeChangeJson({
 				value: nextValue,
 				key: nextKey,
@@ -247,13 +265,39 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 				addSpaces,
 				depth: depth + 1,
 				shouldKey: true,
+				element,
 			});
 		});
-		d3.select('#beat').append('code').text(`${tab}},\n`);
+		const codeExit = element.append('code').text(`${tab}},\n`);
+
+		console.log({
+			oldValue,
+			value,
+			keys: oldValue ? Object.keys(oldValue) : 'none',
+		});
+		if (oldValue) {
+			const newKeys = Object.keys(value);
+			const oldKeys = Object.keys(oldValue);
+
+			if (newKeys.length !== oldKeys.length) {
+				codeEntry.attr('class', 'updated');
+				codeExit.attr('class', 'updated');
+				return;
+			}
+
+			for (const oldKey of oldKeys) {
+				if (!newKeys.includes(oldKey)) {
+					codeEntry.attr('class', 'updated');
+					codeExit.attr('class', 'updated');
+					return;
+				}
+			}
+		}
 	}
 }
 
 function highlightChanges (newData, oldData, element) {
+	console.log(newData, oldData);
 	if (oldData !== undefined && oldData != newData) {
 		element.attr('class', 'updated');
 	}

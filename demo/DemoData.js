@@ -41,6 +41,14 @@ const Beats = [
 			},
 		},
 	},
+	{
+		key: 'C',
+		defaultBehavior: {
+			text: `And one last simple beat.  This one is spoken by a character though.`,
+			nextBeat: 'D',
+			character: CharacterTemplates[0].key,
+		},
+	},
 ];
 
 const Scenes = [
