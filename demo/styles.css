@@ -61,7 +61,7 @@ button:active {
 #main {
 	flex: 0 1 1200px;
 	display: flex;
-	flex-wrap: wrap-reverse;
+	flex-wrap: wrap;
 	column-gap: .5em;
 	row-gap: .5em;
 }
