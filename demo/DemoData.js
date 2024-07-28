@@ -155,7 +155,7 @@ const Beats = [
 		key: 'L',
 		defaultBehavior: {
 			text: 'Unfortunately, all that commotion attracted two more cats...',
-			nextBeat: '',
+			nextBeat: 'O',
 			sceneData: {
 				addCharacters: [
 					{ character: CharacterTemplates[2].key, position: 2, sprite: 'regal' },
@@ -244,6 +244,90 @@ const Beats = [
 					{ character: CharacterTemplates[2].key, position: 2, sprite: 'regal' },
 				],
 			},
+		},
+	},
+	{
+		key: 'O',
+		defaultBehavior: {
+			text: 'All pathways converge here.  However, depending on what your choices where you may or may not have the hunter cat, king cat, and lackey cat.'
+			+ '  The next beat is a multi-response beat.  It will play one response per cat present in a specific order OR play a default response if no cats remain.',
+			nextBeat: 'P',
+		},
+	},
+	{
+		key: 'P',
+		responses: [
+			{
+				character: CharacterTemplates[2].key,
+				text: 'Now, what is this fine specimen?',
+				conditions: [{ type: 'charPresent', character: CharacterTemplates[2].key }],
+			},
+			{
+				character: CharacterTemplates[3].key,
+				text: 'Looks like... a lizard to me, Boss!  Very fine indeed!',
+				conditions: [{ type: 'charPresent', character: CharacterTemplates[3].key }],
+			},
+			{
+				character: CharacterTemplates[1].key,
+				text: 'A stupid little snack if I ever did see one.',
+				conditions: [{ type: 'charPresent', character: CharacterTemplates[1].key }],
+			},
+		],
+		defaultBehavior: {
+			text: 'The lizard was victorious in removing all cats from the game. :)',
+			nextBeat: 'Q',
+			saveData: {
+				unlockedAchievements: ['Cat-Avoidance-To-The-Max'],
+			},
+		},
+	},
+	{
+		key: 'Q',
+		defaultBehavior: {
+			text: 'All pathways align here again.  However, the next beat is a first branch beat.  The engine will play the first branch that has its conditions satisfied.'
+			+ '  In this case, it looks at whether cat king is present and whether the lizard has the cat repellant.',
+			nextBeat: 'R',
+		},
+	},
+	{
+		key: 'R',
+		branches: [
+			{
+				'Fearlessly, the lizard went on with its life.  Eating flies and pushing push-up dances and the like.',
+				nextBeat: 'TheLast',
+				conditions: [{ type: 'charAbsent', character: CharacterTemplates[2].key }]
+			}
+			{
+				character:  CharacterTemplates[2].key,
+				'Compatriot, we have a problem.  The snack has cat repellent.  Unless we want a face full of that stink, we have no choice but to retreat.',
+				nextBeat: 'S',
+				conditions: [{ type: 'itemEqual+', item: 'catRepellant', quantity: 1 }]
+			}
+		]
+		defaultBehavior: {
+			character:  CharacterTemplates[2].key,
+			text: 'And the poor dear doesn\'t event have ay cat repellent.  Such a shame...',
+			nextBeat: 'T',
+		},
+	},
+	{
+		key: 'S',
+		defaultBehavior: {
+			text: 'Disappointed, the cats leave with their tails between their legs.',
+			nextBeat: 'TheLast',
+		},
+		saveData: {
+			unlockedAchievements: ['Well-Stocked'],
+		},
+	},
+	{
+		key: 'T',
+		defaultBehavior: {
+			text: 'The cats pounce on the lizard and devour it.',
+			nextBeat: 'TheLast',
+		},
+		saveData: {
+			unlockedAchievements: ['Snack-izard'],
 		},
 	},
 ];
