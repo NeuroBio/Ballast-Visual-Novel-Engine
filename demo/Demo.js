@@ -239,6 +239,13 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 	const tab = depth ? new Array(addSpaces * depth).fill(' ').join('') : '';
 	const isArray = Array.isArray(value);
 
+	if (typeof value === 'boolean') {
+		const code = element.append('code')
+			.text(`${tab}${keyPrefix}"${value}",\n`);
+		highlightChanges (value, oldValue, code);
+		return;
+	}
+
 	if (typeof value === 'string') {
 		const code = element.append('code')
 			.text(`${tab}${keyPrefix}"${value}",\n`);
