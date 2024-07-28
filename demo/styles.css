@@ -75,3 +75,7 @@ ul {
 li {
 	margin-top: 1em;
 }
+
+.error {
+	color: rgb(255, 108, 34);
+}
