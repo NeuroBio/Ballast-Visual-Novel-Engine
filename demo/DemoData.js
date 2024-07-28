@@ -293,17 +293,17 @@ const Beats = [
 		key: 'R',
 		branches: [
 			{
-				'Fearlessly, the lizard went on with its life.  Eating flies and pushing push-up dances and the like.',
+				text: 'Fearlessly, the lizard went on with its life.  Eating flies and pushing push-up dances and the like.',
 				nextBeat: 'TheLast',
-				conditions: [{ type: 'charAbsent', character: CharacterTemplates[2].key }]
-			}
+				conditions: [{ type: 'charAbsent', character: CharacterTemplates[2].key }],
+			},
 			{
 				character:  CharacterTemplates[2].key,
-				'Compatriot, we have a problem.  The snack has cat repellent.  Unless we want a face full of that stink, we have no choice but to retreat.',
+				text: 'Compatriot, we have a problem.  The snack has cat repellent.  Unless we want a face full of that stink, we have no choice but to retreat.',
 				nextBeat: 'S',
-				conditions: [{ type: 'itemEqual+', item: 'catRepellant', quantity: 1 }]
-			}
-		]
+				conditions: [{ type: 'itemEqual+', item: 'catRepellant', quantity: 1 }],
+			},
+		],
 		defaultBehavior: {
 			character:  CharacterTemplates[2].key,
 			text: 'And the poor dear doesn\'t event have ay cat repellent.  Such a shame...',
