@@ -43,8 +43,7 @@ button:active {
 	border-radius: .5em;
 	padding: .3em;
 	background-color: rgb(54, 54, 54);
-	max-width: 580px;
-	flex: 1 1 350px;
+	flex: 1 1 400px;
 }
 
 .updated {
@@ -57,4 +56,8 @@ button:active {
 	flex-wrap: wrap;
 	column-gap: .5em;
 	row-gap: .5em;
+}
+
+#current-beat {
+	flex: 0 1 1200px;
 }
