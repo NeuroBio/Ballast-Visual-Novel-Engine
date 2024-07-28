@@ -9,6 +9,16 @@ const CharacterTemplates = [
 		key: 'cat',
 		traits: {},
 	},
+	{
+		name: 'Emperor Cat',
+		key: 'king',
+		traits: {},
+	},
+	{
+		name: 'Generic Lackey Cat',
+		key: 'lackey',
+		traits: {},
+	},
 ];
 
 const Beats = [
@@ -65,7 +75,7 @@ const Beats = [
 		key: 'E',
 		defaultBehavior: {
 			text: 'The reptile successfully swiped anti-cat-spray from the cat!  Why did the cat have that in the first place...',
-			nextBeat: 'TheLast',
+			nextBeat: 'G',
 		},
 		saveData: {
 			addedItems: [{ item: 'catRepellant', quantity: 1 }],
@@ -75,7 +85,7 @@ const Beats = [
 		key: 'F',
 		defaultBehavior: {
 			text: 'The reptile lolled its sticky tongue at the cat.  The cat was infuriated',
-			nextBeat: 'TheLast',
+			nextBeat: 'G',
 		},
 		saveData: {
 			unlockedAchievements: ['Snark-izard'],
@@ -85,6 +95,155 @@ const Beats = [
 		key: 'TheLast',
 		defaultBehavior: {
 			text: 'This is the last beat!  You can now click Complete Chapter to finish up and make Start Chapter an available action again.',
+		},
+	},
+	{
+		key: 'G',
+		defaultBehavior: {
+			text: 'Regardless of what you chose, you ended up here.  However, each choice had different effects on the save data.  This will affect the choices available next.',
+			nextBeat: 'H',
+		},
+	},
+	{
+		key: 'H',
+		choices: [
+			{
+				text: 'Use cat repellent',
+				nextBeat: 'I',
+				conditions: [{ type: 'itemEqual+', item: 'catRepellant', quantity: 1 }],
+			},
+			{
+				text: 'Stare at cat with unblinking, slit eyes.',
+				nextBeat: 'J',
+			},
+			{
+				text: 'Stick tongue out further.',
+				nextBeat: 'K',
+				conditions: [{ type: 'itemEqual-', item: 'catRepellant', quantity: 0 }],
+			},
+		],
+	},
+	{
+		key: 'I',
+		defaultBehavior: {
+			text: 'The lizard somehow sprayed the cat repellent all over the cat!  The cat runs off yowling.',
+			nextBeat: 'L',
+			sceneData: {
+				removeCharacters: [{ character: CharacterTemplates[1].key }],
+			},
+		},
+		saveData: {
+			removedItems: [{ item: 'catRepellant', quantity: 1 }],
+		},
+	},
+	{
+		key: 'J',
+		defaultBehavior: {
+			character: CharacterTemplates[1].key,
+			text: 'I can still see you...',
+			nextBeat: 'M1',
+		},
+	},
+	{
+		key: 'K',
+		defaultBehavior: {
+			text: 'The lizard sticks its tongue out further.  And further.  AND FURTHER.  Its tongue got stuck...',
+			nextBeat: 'N1',
+		},
+	},
+	{
+		key: 'L',
+		defaultBehavior: {
+			text: 'Unfortunately, all that commotion attracted two more cats...',
+			nextBeat: '',
+			sceneData: {
+				addCharacters: [
+					{ character: CharacterTemplates[2].key, position: 2, sprite: 'regal' },
+					{ character: CharacterTemplates[3].key, position: 3, sprite: 'such-a-simp' },
+				],
+			},
+		},
+	},
+	{
+		key: 'M1',
+		defaultBehavior: {
+			text: 'The Lizard remains still.',
+			nextBeat: 'M2',
+		},
+	},
+	{
+		key: 'M2',
+		defaultBehavior: {
+			character: CharacterTemplates[1].key,
+			text: 'You cannot trick me!',
+			nextBeat: 'M3',
+		},
+	},
+	{
+		key: 'M3',
+		choices: [
+			{
+				text: 'Remain Still',
+				nextBeat: 'M4',
+			},
+			{
+				text: 'Blep tongue at cat.',
+				nextBeat: 'M5',
+			},
+		],
+	},
+	{
+		key: 'M4',
+		defaultBehavior: {
+			character: CharacterTemplates[1].key,
+			text: 'Did... did it die?  It must be dead...',
+			nextBeat: 'M6',
+		},
+	},
+	{
+		key: 'M5',
+		defaultBehavior: {
+			character: CharacterTemplates[1].key,
+			text: 'YOU SHALL PAY FOR YOUR INSUBORDINATION!',
+			nextBeat: 'O',
+		},
+	},
+	{
+		key: 'M6',
+		defaultBehavior: {
+			character: CharacterTemplates[1].key,
+			text: 'Bored, the cat wanders off without making a racket.',
+			nextBeat: 'O',
+			sceneData: {
+				removeCharacters: [{ character: CharacterTemplates[1].key }],
+			},
+		},
+	},
+	{
+		key: 'N1',
+		defaultBehavior: {
+			text: 'Snorting, the cat covers its face with its paws.',
+			nextBeat: 'N2',
+		},
+	},
+	{
+		key: 'N2',
+		defaultBehavior: {
+			character: CharacterTemplates[1].key,
+			text: 'Boss, come here and get a load of this!',
+			nextBeat: 'N3',
+		},
+	},
+	{
+		key: 'N3',
+		defaultBehavior: {
+			text: 'A regal cat wonders over to investigate.',
+			nextBeat: 'O',
+			sceneData: {
+				addCharacters: [
+					{ character: CharacterTemplates[2].key, position: 2, sprite: 'regal' },
+				],
+			},
 		},
 	},
 ];
