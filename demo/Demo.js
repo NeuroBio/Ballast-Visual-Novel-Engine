@@ -63,15 +63,15 @@ window.startChapter = async () => {
 	updateDisplay();
 };
 
-window.advanceScene = () => {
+window.advanceScene = (nextBeat) => {
 	console.log('advancing');
 	resetDisplayData();
 
 	try {
-		if (beat?.choices) {
+		if (beat?.choices && !nextBeat) {
 			throw new Error('You have to use the choice selection buttons to advance a Choice Beat!');
 		}
-		const newBeat = engine.advanceScene({ beatKey: beat?.nextBeat || '' });
+		const newBeat = engine.advanceScene({ beatKey: nextBeat || beat?.nextBeat || '' });
 		priorBeat = beat;
 		beat = newBeat;
 		applySceneData(beat);
@@ -155,7 +155,8 @@ function updateDisplay () {
 		beat.choices.forEach((x) =>
 			outputElement.append('button')
 				.text(x.text)
-				.attr('type', 'button'));
+				.attr('type', 'button')
+				.attr('onClick', `advanceScene("${x.newBeat}")`));
 	} else {
 		outputElement.html(`${beat.speaker}: ${beat.text}`);
 	}
