@@ -54,6 +54,7 @@ window.startChapter = async () => {
 	try {
 		beat = await engine.startChapter({ chapterKey: DemoData.Chapters[0].key });
 		applySceneData(beat);
+		applySaveData(beat);
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
@@ -71,6 +72,7 @@ window.advanceScene = () => {
 		priorBeat = beat;
 		beat = newBeat;
 		applySceneData(beat);
+		applySaveData(beat);
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
@@ -105,6 +107,7 @@ window.restartScene = async () => {
 		priorBeat = undefined;
 		scene = undefined;
 		applySceneData(beat);
+		applySaveData(beat);
 	} catch (error) {
 		console.error(error.message);
 		errorMessage = error.message;
@@ -155,7 +158,7 @@ function updateDisplay () {
 		saveElement.html('...');
 	} else {
 		saveElement.html('');
-		writeChangeJson ({ value: save, oldValue: priorSave, addSpaces: 4, element: sceneElement });
+		writeChangeJson ({ value: save, oldValue: priorSave, addSpaces: 4, element: saveElement });
 	}
 
 	d3.select('#actions').html(actions.join('<br>') || '...');
@@ -207,6 +210,25 @@ function applySceneData (beat) {
 	if (addCharacters) {
 		addCharacters.forEach(x =>
 			scene.characters[x.character] = { position: x.position, sprite: x.sprite });
+	}
+}
+
+function applySaveData () {
+	priorSave = save ? {
+		unlockedChapters: [...save.unlockedChapters],
+		unlockedAchievements: [...save.unlockedAchievements],
+		inventory: { ...save.inventory },
+		characterUpdates: { ...save.characterUpdates },
+	} : undefined;
+	save ??= {
+		unlockedChapters: [],
+		unlockedAchievements: [],
+		inventory: {},
+		characterUpdates: { },
+	};
+	const saveData = beat.saveData;
+	if (!saveData) {
+		return;
 	}
 }
 

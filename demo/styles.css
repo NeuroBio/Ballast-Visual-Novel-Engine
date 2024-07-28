@@ -61,3 +61,17 @@ button:active {
 #current-beat {
 	flex: 0 1 1200px;
 }
+
+pre {
+    white-space: pre-wrap;
+}
+
+ul {
+	max-width: 600px;
+	font-size: 11pt;
+	line-height: 1.5;
+}
+
+li {
+	margin-top: 1em;
+}
