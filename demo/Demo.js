@@ -158,7 +158,7 @@ function updateDisplay () {
 				.attr('type', 'button')
 				.attr('onClick', `advanceScene("${x.nextBeat}")`));
 	} else {
-		outputElement.html(`${beat.speaker}: ${beat.text}`);
+		outputElement.html(`<b>${beat.speaker}:</b> ${beat.text}`);
 	}
 
 

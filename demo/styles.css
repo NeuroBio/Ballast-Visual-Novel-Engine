@@ -91,3 +91,7 @@ li {
 #current-beat-choices {
 	flex: 20 1 150px;
 }
+
+b {
+	font-size: 12pt;
+}
