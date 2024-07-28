@@ -201,7 +201,9 @@ export class Engine {
 
 	#playBeatOrThrow (beat: Beat): DisplayData {
 		if (!beat) {
-			throw this.#currentScene!.hasBeatReference()
+			const beatIsReal = this.#currentScene!.hasBeatReference();
+			this.#currentScene!.rollBack();
+			throw beatIsReal
 				? new Error ('Requested Beat is missing from the Scene data.')
 				: new Error (`Requested Beat isn't a real beat.`);
 		}

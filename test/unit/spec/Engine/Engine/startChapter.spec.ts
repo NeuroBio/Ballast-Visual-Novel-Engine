@@ -104,6 +104,7 @@ fdescribe(`Engine.startChapter`, () => {
 
 			await expect(async () => await engine.startChapter({ chapterKey }))
 				.rejects.toThrow(Error.NONSENSE_BEAT);
+			expect(scene.rollBack).toHaveBeenCalled();
 		});
 	});
 	describe(`next best doesn't exist and is referenced by scene`, () => {
@@ -118,6 +119,7 @@ fdescribe(`Engine.startChapter`, () => {
 
 			await expect(async () => await engine.startChapter({ chapterKey }))
 				.rejects.toThrow(Error.UNDEFINED_BEAT);
+			expect(scene.rollBack).toHaveBeenCalled();
 		});
 	});
 	describe(`trying to start a chapter while a chapter is already in progress`, () => {

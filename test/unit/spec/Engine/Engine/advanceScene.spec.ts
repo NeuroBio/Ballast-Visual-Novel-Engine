@@ -188,6 +188,7 @@ describe(`Engine.advanceScene`, () => {
 			const engine = await _createEngine();
 			scene.hasBeatReference.mockReturnValueOnce(false);
 			expect(() => engine.advanceScene({ beatKey })).toThrow(Error.NONSENSE_BEAT);
+			expect(scene.rollBack).toHaveBeenCalled();
 		});
 	});
 	describe(`next best doesn't exist and is referenced by scene`, () => {
@@ -196,6 +197,7 @@ describe(`Engine.advanceScene`, () => {
 			const engine = await _createEngine();
 			scene.hasBeatReference.mockReturnValueOnce(true);
 			expect(() => engine.advanceScene({ beatKey })).toThrow(Error.UNDEFINED_BEAT);
+			expect(scene.rollBack).toHaveBeenCalled();
 		});
 	});
 });
