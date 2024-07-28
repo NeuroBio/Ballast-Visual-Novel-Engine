@@ -84,7 +84,7 @@ const Beats = [
 	{
 		key: 'F',
 		defaultBehavior: {
-			text: 'The reptile lolled its sticky tongue at the cat.  The cat was infuriated',
+			text: 'The reptile lolled its sticky tongue at the cat.  The cat was infuriated.',
 			nextBeat: 'G',
 		},
 		saveData: {
@@ -240,7 +240,7 @@ const Beats = [
 	{
 		key: 'N3',
 		defaultBehavior: {
-			text: 'A regal cat wonders over to investigate.',
+			text: 'A regal cat wanders over to investigate.',
 			nextBeat: 'O',
 			sceneData: {
 				addCharacters: [
@@ -252,7 +252,7 @@ const Beats = [
 	{
 		key: 'O',
 		defaultBehavior: {
-			text: 'All pathways converge here.  However, depending on what your choices where you may or may not have the hunter cat, king cat, and lackey cat.'
+			text: 'All pathways converge here.  However, depending on what your choices were, you may or may not have the hunter cat, king cat, and lackey cat present.'
 			+ '  The next beat is a multi-response beat.  It will play one response per cat present in a specific order OR play a default response if no cats remain.',
 			nextBeat: 'P',
 		},
@@ -267,7 +267,7 @@ const Beats = [
 			},
 			{
 				character: CharacterTemplates[3].key,
-				text: 'Looks like... a lizard to me, Boss!  Very fine indeed!',
+				text: 'Looks like... a lizard, Boss!  Very fine indeed!',
 				conditions: [{ type: 'charPresent', character: CharacterTemplates[3].key }],
 			},
 			{
