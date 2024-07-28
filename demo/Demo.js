@@ -68,6 +68,7 @@ window.advanceScene = (nextBeat) => {
 	resetDisplayData();
 
 	try {
+		console.log(nextBeat);
 		if (beat?.choices && !nextBeat) {
 			throw new Error('You have to use the choice selection buttons to advance a Choice Beat!');
 		}
@@ -156,7 +157,7 @@ function updateDisplay () {
 			outputElement.append('button')
 				.text(x.text)
 				.attr('type', 'button')
-				.attr('onClick', `advanceScene("${x.newBeat}")`));
+				.attr('onClick', `advanceScene("${x.nextBeat}")`));
 	} else {
 		outputElement.html(`${beat.speaker}: ${beat.text}`);
 	}
@@ -261,13 +262,14 @@ function applySaveData () {
 
 	if (saveData.addedItems) {
 		saveData.addedItems.forEach((x) => {
+			console.log(x);
 			save.inventory[x.item] ??= 0;
 			save.inventory[x.item] += x.quantity;
 		});
 	}
 
 	if (saveData.removedItems) {
-		saveData.addedItems.forEach((x) => {
+		saveData.removedItems.forEach((x) => {
 			save.inventory[x.item] ??= 0;
 			save.inventory[x.item] -= x.quantity;
 		});

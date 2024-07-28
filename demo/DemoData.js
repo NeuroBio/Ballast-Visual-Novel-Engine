@@ -61,6 +61,24 @@ const Beats = [
 			},
 		],
 	},
+	{
+		key: 'E',
+		defaultBehavior: {
+			text: 'The reptile successfully swiped anti-cat-spray from the cat!  Why did the cat have that in the first place...',
+		},
+		saveData: {
+			addedItems: [{ item: 'catRepellant', quantity: 1 }],
+		},
+	},
+	{
+		key: 'F',
+		defaultBehavior: {
+			text: 'The reptile lolled its sticky tongue at the cat.  The cat was infuriated',
+		},
+		saveData: {
+			unlockedAchievements: ['Snark-izard'],
+		},
+	},
 ];
 
 const Scenes = [
