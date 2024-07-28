@@ -1,8 +1,12 @@
 body {
 	background-color: rgb(36, 36, 36);
 	color: whitesmoke;
-	max-width: 600px;
 	font-family: Arial, Helvetica, sans-serif;
+	max-width: 1200px;
+}
+
+header {
+	max-width: 600px;
 }
 
 h2 {
@@ -19,7 +23,7 @@ p {
 
 button {
 	padding: .3em;
-	margin: 0 .2em;
+	margin: .15em .2em;
 	cursor: pointer;
 	border-radius: .5em;
 	font-family:Verdana, Geneva, Tahoma, sans-serif;
@@ -35,12 +39,22 @@ button:active {
 }
 
 .output {
-	margin: 1em 0;
+	/* margin: 1em 0; */
 	border-radius: .5em;
 	padding: .3em;
-	background-color: rgb(54, 54, 54);;
+	background-color: rgb(54, 54, 54);
+	max-width: 580px;
+	flex: 1 1 350px;
 }
 
 .updated {
 	color:rgb(60, 154, 255);
+}
+
+#all-outputs {
+	margin-top: .5em;
+	display: flex;
+	flex-wrap: wrap;
+	column-gap: .5em;
+	row-gap: .5em;
 }
