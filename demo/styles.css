@@ -40,3 +40,7 @@ button:active {
 	padding: .3em;
 	background-color: rgb(73, 73, 73);;
 }
+
+.updated {
+	color:rgb(31, 210, 255);
+}
