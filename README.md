@@ -51,6 +51,20 @@ i.e. things the engine provides an interface for, but requires an implementation
 		- after that, it will not play another beat until told to
 			- most likely, it's a UI trigger that does this
 
+## Saving
+Autosaves occur when scenes are completed.  Manual saves are designed to be called before or after scenes, but NOT during them.  The save data currently does not contain the data necessary to support this.
+- Save data does not store the current beat a user is on (necessary to restart partway through a scene).
+- Save data does not store an old copy of its prior state (necessary for rollback).
+Currently, scene restarts are quick rollbacks that use the prior save state stored _in memory_.  The following is an example of what can go wrong if you save midway through a scene:
+
+- Player gain an item in a scene.
+- Player to manually saves
+- Player quits and reloads the game
+- The scene restarts at beat 1
+- The player begins the scene from the start with the item the obtained from partial play-through in their inventory.
+
+Tracking the prior state for save data and the current beat to allow for mid-scene saves and rollbacks is a possible future enhancement.
+
 ## Save Data
 - Active Chapters
 	- the queued chapter will be equivalent to the engine's current chapter most of the time
