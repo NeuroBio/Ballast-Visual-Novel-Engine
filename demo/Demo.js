@@ -41,6 +41,8 @@ let beat;
 let priorBeat;
 let scene;
 let priorScene;
+let save;
+let priorSave;
 let actions = [];
 let errorMessage;
 
@@ -148,7 +150,14 @@ function updateDisplay () {
 		writeChangeJson ({ value: scene, oldValue: priorScene, addSpaces: 4, element: sceneElement });
 	}
 
-	d3.select('#save').text('...');
+	const saveElement = d3.select('#save');
+	if (!save) {
+		saveElement.html('...');
+	} else {
+		saveElement.html('');
+		writeChangeJson ({ value: save, oldValue: priorSave, addSpaces: 4, element: sceneElement });
+	}
+
 	d3.select('#actions').html(actions.join('<br>') || '...');
 
 	d3.select('#error').text(errorMessage || '...');
