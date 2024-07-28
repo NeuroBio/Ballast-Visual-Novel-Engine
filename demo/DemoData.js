@@ -65,6 +65,7 @@ const Beats = [
 		key: 'E',
 		defaultBehavior: {
 			text: 'The reptile successfully swiped anti-cat-spray from the cat!  Why did the cat have that in the first place...',
+			nextBeat: 'TheLast',
 		},
 		saveData: {
 			addedItems: [{ item: 'catRepellant', quantity: 1 }],
@@ -74,9 +75,16 @@ const Beats = [
 		key: 'F',
 		defaultBehavior: {
 			text: 'The reptile lolled its sticky tongue at the cat.  The cat was infuriated',
+			nextBeat: 'TheLast',
 		},
 		saveData: {
 			unlockedAchievements: ['Snark-izard'],
+		},
+	},
+	{
+		key: 'TheLast',
+		defaultBehavior: {
+			text: 'This is the last beat!  You can now click Complete Chapter to finish up and make Start Chapter an available action again.',
 		},
 	},
 ];
