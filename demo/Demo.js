@@ -270,11 +270,6 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 		});
 		const codeExit = element.append('code').text(`${tab}},\n`);
 
-		console.log({
-			oldValue,
-			value,
-			keys: oldValue ? Object.keys(oldValue) : 'none',
-		});
 		if (oldValue) {
 			const newKeys = Object.keys(value);
 			const oldKeys = Object.keys(oldValue);
@@ -297,7 +292,6 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 }
 
 function highlightChanges (newData, oldData, element) {
-	console.log(newData, oldData);
 	if (oldData !== undefined && oldData != newData) {
 		element.attr('class', 'updated');
 	}
