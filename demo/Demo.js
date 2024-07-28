@@ -91,6 +91,9 @@ window.completeScene = async () => {
 	try {
 		await engine.completeScene();
 		scene = undefined;
+		priorScene = undefined;
+		save = undefined;
+		priorSave = undefined;
 		beat = undefined;
 		priorBeat = undefined;
 	} catch (error) {
