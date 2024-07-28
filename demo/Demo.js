@@ -147,6 +147,19 @@ function updateDisplay () {
 		writeChangeJson ({ value: beat, oldValue: priorBeat, addSpaces: 4, element: beatElement });
 	}
 
+	const outputElement = d3.select('#beat-output');
+	if (!beat) {
+		outputElement.html('...');
+	} else if (beat?.choices) {
+		outputElement.html('');
+		beat.choices.forEach((x) =>
+			outputElement.append('button')
+				.text(x.text)
+				.attr('type', 'button'));
+	} else {
+		outputElement.html(`${beat.speaker}: ${beat.text}`);
+	}
+
 
 	const sceneElement = d3.select('#scene');
 	if (!scene) {

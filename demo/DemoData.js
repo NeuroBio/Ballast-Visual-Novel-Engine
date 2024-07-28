@@ -5,7 +5,7 @@ const CharacterTemplates = [
 		traits: {},
 	},
 	{
-		name: 'A Cat Behind A Window',
+		name: 'Terrible Hunter Cat',
 		key: 'cat',
 		traits: {},
 	},
@@ -22,7 +22,7 @@ const Beats = [
 	{
 		key: 'B',
 		defaultBehavior: {
-			text: `Another simple beat.  This one includes data to set the scene.`,
+			text: `Another simple beat.  This one includes data to set the scene.  We now have a reptile (you) in the backyard teasing a cat (not you) that cannot reach it.`,
 			nextBeat: 'C',
 			sceneData: {
 				addCharacters: [
@@ -44,7 +44,7 @@ const Beats = [
 	{
 		key: 'C',
 		defaultBehavior: {
-			text: `Let's get into some logic.  The next beat is a Choice beat, which drives immediate user-decision story branching.`,
+			text: `Let's get into some logic.  The next beat is a Choice beat, which drives immediate, user-decision story branching.`,
 			nextBeat: 'D',
 		},
 	},
