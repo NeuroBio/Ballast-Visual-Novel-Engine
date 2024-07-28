@@ -32,6 +32,12 @@ export class Scene {
 		}
 		return this.#isReferenced();
 	}
+	rollBack () {
+		if (this.#priorBeatKey) {
+			this.#currentBeatKey = this.#priorBeatKey;
+			this.#currentBeat = this.#beats[this.#currentBeatKey];
+		}
+	}
 	#getCurrentBeatToPlay () {
 		this.#currentBeat = this.#beats[this.#currentBeatKey];
 		return this.#currentBeat;

@@ -11,6 +11,7 @@ interface SceneParams {
 export class Scene {
 	#beats: { [key: string]: Beat};
 	#firstBeatKey: string;
+	#priorBeatKey: string;
 	#currentBeatKey: string;
 	#currentBeat: Beat;
 	#key: string;
@@ -38,6 +39,7 @@ export class Scene {
 	}
 
 	next (beatKey: string): Beat {
+		this.#priorBeatKey = this.#currentBeatKey;
 		this.#currentBeatKey = beatKey;
 		return this.#getCurrentBeatToPlay();
 	}
@@ -48,6 +50,13 @@ export class Scene {
 		}
 
 		return this.#isReferenced();
+	}
+
+	rollBack (): void {
+		if (this.#priorBeatKey) {
+			this.#currentBeatKey = this.#priorBeatKey;
+			this.#currentBeat = this.#beats[this.#currentBeatKey];
+		}
 	}
 
 	#getCurrentBeatToPlay () {
