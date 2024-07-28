@@ -241,7 +241,6 @@ function writeChangeJson ({ value, key = '', oldValue, addSpaces, depth = 0, sho
 	if (isArray) {
 		element.append('code').text(`${tab}${keyPrefix}[\n`);
 		Object.entries(value).forEach(([nextKey, nextValue]) => {
-			console.log(`array: ${nextKey}, ${depth}`);
 			const nextOldValue = oldValue ? oldValue?.[nextKey] ?? [] : undefined;
 			writeChangeJson({
 				value: nextValue,
