@@ -165,7 +165,7 @@ function updateDisplay () {
 
 	errorMessage
 		? d3.select('#error').text(errorMessage).attr('class', 'error')
-		: d3.select('#error').text('...');
+		: d3.select('#error').text('...').attr('class', '');
 }
 
 function applySceneData (beat) {
