@@ -2,6 +2,7 @@ import { FinalBeat } from '../Beat/FinalBeat.js';
 export class Scene {
 	#beats;
 	#firstBeatKey;
+	#priorBeatKey;
 	#currentBeatKey;
 	#currentBeat;
 	#key;
@@ -23,6 +24,7 @@ export class Scene {
 		return this.#getCurrentBeatToPlay();
 	}
 	next (beatKey) {
+		this.#priorBeatKey = this.#currentBeatKey;
 		this.#currentBeatKey = beatKey;
 		return this.#getCurrentBeatToPlay();
 	}
