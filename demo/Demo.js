@@ -243,11 +243,34 @@ function applySaveData () {
 		unlockedChapters: [],
 		unlockedAchievements: [],
 		inventory: {},
-		characterUpdates: { },
 	};
 	const saveData = beat.saveData;
 	if (!saveData) {
 		return;
+	}
+
+	if (saveData.unlockedChapters) {
+		saveData.unlockedChapters.forEach((x) =>
+			save.unlockedChapters.push(x));
+	}
+
+	if (saveData.unlockedAchievements) {
+		saveData.unlockedAchievements.forEach((x) =>
+			save.unlockedAchievements.push(x));
+	}
+
+	if (saveData.addedItems) {
+		saveData.addedItems.forEach((x) => {
+			save.inventory[x.item] ??= 0;
+			save.inventory[x.item] += x.quantity;
+		});
+	}
+
+	if (saveData.removedItems) {
+		saveData.addedItems.forEach((x) => {
+			save.inventory[x.item] ??= 0;
+			save.inventory[x.item] -= x.quantity;
+		});
 	}
 }
 
