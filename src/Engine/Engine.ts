@@ -47,8 +47,8 @@ export class Engine {
 
 	#originalSave: SavedData;
 	#currentSave: SavedData;
-	#currentChapter: Chapter;
-	#currentScene: Scene;
+	#currentChapter: Chapter | undefined;
+	#currentScene: Scene | undefined;
 	#sceneState: SceneState;
 
 	constructor (params: EngineParams) {
@@ -170,11 +170,11 @@ export class Engine {
 		this.#clearSceneState();
 		this.#currentSave = this.#originalSave.clone();
 		this.#currentSave.startNewChapter({
-			chapterKey: this.#currentChapter.key,
+			chapterKey: this.#currentChapter!.key,
 			sceneKey: this.#currentScene.key,
 		});
 
-		this.#currentScene = await this.#findSceneElseThrow(this.#currentChapter.start());
+		this.#currentScene = await this.#findSceneElseThrow(this.#currentChapter!.start());
 		return this.#playBeatOrThrow(this.#currentScene.start());
 	}
 
@@ -187,19 +187,21 @@ export class Engine {
 			throw new Error('You cannot call complete scene while the scene is in progress.');
 		}
 
-		const nextScene = this.#currentSave.getQueuedSceneForChapter(this.#currentChapter.key);
+		const nextScene = this.#currentSave.getQueuedSceneForChapter(this.#currentChapter!.key);
 		if (this.#currentScene.key === nextScene || nextScene === '') {
-			this.#currentSave.completeChapter(this.#currentChapter.key);
+			this.#currentSave.completeChapter(this.#currentChapter!.key);
 		}
 
 		await this.#savedDataRepo.autosave(this.#currentSave);
 		this.#refreshSave(this.#currentSave);
 		this.#clearSceneState();
+		this.#currentChapter = undefined;
+		this.#currentScene = undefined;
 	}
 
 	#playBeatOrThrow (beat: Beat): DisplayData {
 		if (!beat) {
-			throw this.#currentScene.hasBeatReference()
+			throw this.#currentScene!.hasBeatReference()
 				? new Error ('Requested Beat is missing from the Scene data.')
 				: new Error (`Requested Beat isn't a real beat.`);
 		}

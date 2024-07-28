@@ -125,6 +125,8 @@ export class Engine {
 		await this.#savedDataRepo.autosave(this.#currentSave);
 		this.#refreshSave(this.#currentSave);
 		this.#clearSceneState();
+		this.#currentChapter = undefined;
+		this.#currentScene = undefined;
 	}
 	#playBeatOrThrow (beat) {
 		if (!beat) {

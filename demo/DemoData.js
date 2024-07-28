@@ -77,6 +77,7 @@ const Chapters = [
 		key: 'chap1',
 		name: 'The First Chapter',
 		locked: false,
+		allowReplay: true,
 		firstSceneKey: Scenes[0].key,
 		sceneKeys: Scenes.map(x => x.key),
 	},
