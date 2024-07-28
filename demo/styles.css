@@ -58,8 +58,12 @@ button:active {
 	row-gap: .5em;
 }
 
-#current-beat {
+#main {
 	flex: 0 1 1200px;
+	display: flex;
+	flex-wrap: wrap-reverse;
+	column-gap: .5em;
+	row-gap: .5em;
 }
 
 pre {
@@ -78,4 +82,12 @@ li {
 
 .error {
 	color: rgb(255, 108, 34);
+}
+
+#current-beat {
+	flex: 80 1 400px;
+}
+
+#current-beat-choices {
+	flex: 20 1 150px;
 }
