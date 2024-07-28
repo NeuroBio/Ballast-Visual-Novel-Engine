@@ -340,7 +340,7 @@ const Beats = [
 			nextBeat: 'TheLast',
 		},
 		saveData: {
-			unlockedAchievements: ['Snack-izard'],
+			unlockedAchievements: ['Snac-izard'],
 		},
 	},
 ];
