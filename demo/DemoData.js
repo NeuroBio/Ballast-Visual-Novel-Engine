@@ -96,6 +96,9 @@ const Beats = [
 		defaultBehavior: {
 			text: 'This is the last beat!  You can now click Complete Chapter to finish up and make Start Chapter an available action again.',
 		},
+		saveData: {
+			removedItems: [{ item: 'catRepellant', quantity: 1 }],
+		},
 	},
 	{
 		key: 'G',
@@ -269,7 +272,7 @@ const Beats = [
 			},
 			{
 				character: CharacterTemplates[1].key,
-				text: 'A stupid little snack if I ever did see one.',
+				text: 'Stupid, filthy little snack!',
 				conditions: [{ type: 'charPresent', character: CharacterTemplates[1].key }],
 			},
 		],
@@ -285,7 +288,7 @@ const Beats = [
 		key: 'Q',
 		defaultBehavior: {
 			text: 'All pathways align here again.  However, the next beat is a first branch beat.  The engine will play the first branch that has its conditions satisfied.'
-			+ '  In this case, it looks at whether cat king is present and whether the lizard has the cat repellant.',
+			+ '  In this case, it looks at which cats are present and whether the lizard has the cat repellant.',
 			nextBeat: 'R',
 		},
 	},
@@ -295,7 +298,17 @@ const Beats = [
 			{
 				text: 'Fearlessly, the lizard went on with its life.  Eating flies and pushing push-up dances and the like.',
 				nextBeat: 'TheLast',
-				conditions: [{ type: 'charAbsent', character: CharacterTemplates[2].key }],
+				conditions: [
+					{ type: 'charAbsent', character: CharacterTemplates[2].key },
+					{ type: 'charAbsent', character: CharacterTemplates[1].key },
+				],
+			},
+			{
+				text: 'Try as it might, the cat never did manage to reach the lizard...',
+				nextBeat: 'TheLast',
+				conditions: [
+					{ type: 'charAbsent', character: CharacterTemplates[2].key },
+				],
 			},
 			{
 				character:  CharacterTemplates[2].key,
@@ -306,7 +319,7 @@ const Beats = [
 		],
 		defaultBehavior: {
 			character:  CharacterTemplates[2].key,
-			text: 'And the poor dear doesn\'t event have ay cat repellent.  Such a shame...',
+			text: 'And the poor dear doesn\'t event have any cat repellent.  Such a shame...',
 			nextBeat: 'T',
 		},
 	},
