@@ -1,6 +1,6 @@
 {
     "name": "@neurobio/ballast-visual-novel-engine",
-    "version": "1.0.0",
+    "version": "1.0.2",
     "author": "Stray",
     "description": "A standalone visual novel engine in typescript.  No UI attached.",
     "keywords": [
