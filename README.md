@@ -6,7 +6,7 @@ This part of the project is JUST the story engine.  Eventually, there will be a 
 [Working Minimal Demo](https://neurobio.github.io/Ballast-Visual-Novel-Engine/)
 
 - Authenticate to `https://npm.pkg.github.com`
-- run `npm install @neurobio/ballast-visual-novel-engine --registry=https://npm.pkg.github.com `
+- run `npm install @neurobio/ballast-visual-novel-engine --registry=https://npm.pkg.github.com --omit=dev`
 
 
 # Design Decisions
