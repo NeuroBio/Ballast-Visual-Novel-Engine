@@ -446,3 +446,9 @@ Listed in order of how the sister ui package (Ballast-VN-UI) will apply changes.
 	- simple data structures that can be loaded directly from files if desired
 	- creating a editor for easy of story writing is highly desired.  It may be out of scope for this repo, but it will live somewhere.
 - a process for more invasive mods (custom characters, and locations) will have to be full game specific and it's feasibility is pending building out the UI tools repo an starting a game repo.
+
+# Potential Phase 2 Work
+- Tracking the prior state for save data and the current beat to allow for mid-scene saves and rollbacks is a possible future enhancement.
+- Currently, conditions are only checks the FIRST time a multi-response beat is called.  So if a condition becomes untrue by the next call the response will still show.  Changing behavior to recheck conditionals each call is a possible future enhancement.
+- Currently, the reason _why_ a choice may not be played is NOT returned, but this would be a possible future enhancement.
+- Explicitly support OR logic with conditionals.
