@@ -9,6 +9,8 @@
 		"skipLibCheck": true,
 		"strictPropertyInitialization": false,
 		"outDir": "dist",
+		"declaration": true,
+		"declarationMap": true,
 	},
 	"include": [
     	"src/**/*"

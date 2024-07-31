@@ -1,4 +1,26 @@
 {
+    "name": "ballast-vn-engine",
+    "version": "1.0.0",
+    "author": "Stray",
+    "description": "A standalone visual novel engine in typescript.  No UI attached.",
+    "keywords": [
+        "game",
+        "visual novel",
+        "engine",
+        "text-based"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/NeuroBio/Ballast-Visual-Novel-Engine.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com/@neurobio"
+    },
     "scripts": {
         "test": "jest --config \"test/jest.config.js\"",
         "lint": "npx eslint --fix",
