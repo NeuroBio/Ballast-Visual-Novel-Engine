@@ -452,3 +452,16 @@ Listed in order of how the sister ui package (Ballast-VN-UI) will apply changes.
 - Currently, conditions are only checks the FIRST time a multi-response beat is called.  So if a condition becomes untrue by the next call the response will still show.  Changing behavior to recheck conditionals each call is a possible future enhancement.
 - Currently, the reason _why_ a choice may not be played is NOT returned, but this would be a possible future enhancement.
 - Explicitly support OR logic with conditionals.
+	- start with within conditional ORs
+	- any are true
+	- any are false
+- Templating
+	- allow user input beat
+	- create template data in save data ([key: string]: string)
+	- allow update template data (not add/remove)
+	- add conditionals based on template = or =/=
+	- update text wrangling to search for template keys and replace them with the template value
+- Small name enhancement
+	- name remains default
+	- prefer display name (saved data)
+	- on creation fall back to name when no display name
