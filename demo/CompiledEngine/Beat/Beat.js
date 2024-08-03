@@ -13,14 +13,14 @@ export class Beat {
     constructor(params) {
         const { key, saveData } = params;
         this.key = key;
-        this.#queuedScenes = saveData?.queuedScenes || [];
-        this.#unlockedChapters = saveData?.unlockedChapters || [];
-        this.#unlockedAchievements = saveData?.unlockedAchievements || [];
-        this.#addedItems = saveData?.addedItems || [];
-        this.#removedItems = saveData?.removedItems || [];
-        this.#addedMemories = saveData?.addedMemories || [];
-        this.#removedMemories = saveData?.removedMemories || [];
-        this.#updatedCharacterTraits = saveData?.updatedCharacterTraits || [];
+        this.#queuedScenes = saveData.queuedScenes;
+        this.#unlockedChapters = saveData.unlockedChapters;
+        this.#unlockedAchievements = saveData.unlockedAchievements;
+        this.#addedItems = saveData.addedItems;
+        this.#removedItems = saveData.removedItems;
+        this.#addedMemories = saveData.addedMemories;
+        this.#removedMemories = saveData.removedMemories;
+        this.#updatedCharacterTraits = saveData.updatedCharacterTraits;
     }
     createSaveDataSideEffects() {
         return {
