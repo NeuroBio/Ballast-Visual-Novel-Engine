@@ -40,7 +40,7 @@ describe(`SaveData.addInventoryItem`, () => {
 			}));
 		});
 	});
-	fdescribe(`qty change is too precise`, () => {
+	describe(`qty change is too precise`, () => {
 		it(`warns quietly but has no other effects`, () => {
 			const item = 'item';
 			const originalQuantity = 5;
@@ -56,7 +56,7 @@ describe(`SaveData.addInventoryItem`, () => {
 
 			savedData.addInventoryItem({ item, quantity });
 			expect(savedData.toDto()).toEqual(expect.objectContaining({
-				inventory: { [item]: originalQuantity + .001 },
+				inventory: { [item]: originalQuantity + 0.001 },
 			}));
 			expect(console.warn).toHaveBeenCalled();
 		});

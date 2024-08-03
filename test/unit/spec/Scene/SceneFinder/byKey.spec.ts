@@ -13,4 +13,14 @@ describe(`SceneFinder.byKey`, () => {
 			expect(scene instanceof Scene).toBe(true);
 		});
 	});
+	describe(`failed to load scene`, () => {
+		it(`returns nothing`, async () => {
+			const sceneKey = 'sceneKey';
+			const sceneFinder = new SceneFinder({
+				findData: () => Promise.resolve([]),
+			});
+			const scene = await sceneFinder.byKey(sceneKey);
+			expect(scene).toBe(undefined);
+		});
+	});
 });
