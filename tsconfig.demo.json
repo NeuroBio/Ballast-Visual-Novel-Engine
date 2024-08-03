@@ -12,6 +12,10 @@
 		// "declaration": true,
 		// "declarationMap": true,
 	},
+	"tsc-alias": {
+		"verbose": false,
+		"resolveFullPaths": true,
+	},
 	"include": [
     	"src/**/*"
   	]

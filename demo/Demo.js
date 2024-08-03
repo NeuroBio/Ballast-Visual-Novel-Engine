@@ -1,7 +1,7 @@
-import { Engine } from './CompiledEngine/Engine/Engine.js';
+import { VNEngine } from './CompiledEngine/Engine/VNEngine.js';
 import { DemoData } from './DemoData.js';
 
-const engine = new Engine({
+const engine = VNEngine.create({
 	findChapterData: async () => {
 		actions.push('• Find Chapter');
 		return DemoData.Chapters;

@@ -25,7 +25,7 @@
         "test": "jest --config \"test/jest.config.js\"",
         "lint": "npx eslint --fix",
         "build": "tsc --build tsconfig.json",
-        "build-demo": "tsc --build tsconfig.demo.json",
+        "build-demo": "tsc --build tsconfig.demo.json && tsc-alias -p tsconfig.demo.json",
         "start": "http-server . -a localhost -p 8000 -c-1",
         "deploy": "npm publish"
     },
@@ -42,5 +42,8 @@
         "jest-standard-reporter": "^2.0.0",
         "ts-jest": "^29.1.5",
         "typescript-eslint": "^7.15.0"
+    },
+    "dependencies": {
+        "tsc-alias": "^1.8.10"
     }
 }
