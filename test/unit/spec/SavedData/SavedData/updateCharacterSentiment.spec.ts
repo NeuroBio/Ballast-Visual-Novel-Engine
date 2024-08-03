@@ -57,6 +57,41 @@ describe(`SaveData.updateCharacterTrait`, () => {
 	});
 	describe(`
 		character is in save data
+		trait exists in data
+		change is tto precise
+	`, () => {
+		it(`increases specified trait the correct amount for the correct character`, () => {
+			const character = 'char';
+			const trait = 'like-ity-ness';
+			const originalValue = 0.009;
+			const change = 0.001007;
+			const savedData = new SavedData({
+				activeChapters: { },
+				unlockedChapters: [],
+				completedChapters: [],
+				inventory: {},
+				achievements: [],
+				characters: [{
+					name: 'some dude',
+					key: character,
+					traits: {
+						[trait]: originalValue,
+					},
+					memories: [],
+				}],
+			});
+
+			savedData.updateCharacterTrait({ character, trait, change });
+			expect(savedData.toDto()).toEqual(expect.objectContaining({
+				characters: expect.arrayContaining([
+					expect.objectContaining({ traits: { [trait]: 0.010 } }),
+				]),
+			}));
+			expect(console.warn).toHaveBeenCalled()
+		});
+	});
+	describe(`
+		character is in save data
 		trait does not exist in data
 	`, () => {
 		it(`sets specified trait to the correct amount for the correct character`, () => {

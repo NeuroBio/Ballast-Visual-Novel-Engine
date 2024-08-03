@@ -40,4 +40,25 @@ describe(`SaveData.addInventoryItem`, () => {
 			}));
 		});
 	});
+	fdescribe(`qty change is too precise`, () => {
+		it(`warns quietly but has no other effects`, () => {
+			const item = 'item';
+			const originalQuantity = 5;
+			const quantity = 0.00107;
+			const savedData = new SavedData({
+				activeChapters: { },
+				unlockedChapters: [],
+				completedChapters: [],
+				inventory: { [item]: originalQuantity },
+				achievements: [],
+				characters: [],
+			});
+
+			savedData.addInventoryItem({ item, quantity });
+			expect(savedData.toDto()).toEqual(expect.objectContaining({
+				inventory: { [item]: originalQuantity + .001 },
+			}));
+			expect(console.warn).toHaveBeenCalled();
+		});
+	});
 });
