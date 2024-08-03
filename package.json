@@ -24,7 +24,8 @@
     "scripts": {
         "test": "jest --config \"test/jest.config.js\"",
         "lint": "npx eslint --fix",
-        "build": "tsc --build",
+        "build": "tsc --build tsconfig.package.json",
+        "build-demo": "tsc --build tsconfig.demo.json",
         "start": "./node_modules/.bin/http-server -a localhost -p 8000 -c-1",
         "deploy": "npm publish"
     },
