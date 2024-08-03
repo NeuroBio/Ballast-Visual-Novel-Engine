@@ -1,6 +1,5 @@
 {
     "compilerOptions": {
-		/* Visit https://aka.ms/tsconfig to read more about this file */
 		"target": "es2022",
 		"module": "ES2022",
 		"esModuleInterop": true,
@@ -9,8 +8,6 @@
 		"skipLibCheck": true,
 		"strictPropertyInitialization": false,
 		"outDir": "demo/CompiledEngine",
-		// "declaration": true,
-		// "declarationMap": true,
 	},
 	"tsc-alias": {
 		"verbose": false,
