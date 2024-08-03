@@ -1,6 +1,6 @@
 import { SavedDataRepo } from '../../../../../src/SavedData/SaveDataRepo';
 import { SavedData } from '../../../../../src/SavedData/SavedData';
-import { SavedDataData } from '../../../FakeData/TestData';
+import { SavedDataData } from '../../../../fake-data/TestData';;
 
 describe(`SavedDataRepo.findOrCreate`, () => {
 	describe(`requesting valid save data`, () => {

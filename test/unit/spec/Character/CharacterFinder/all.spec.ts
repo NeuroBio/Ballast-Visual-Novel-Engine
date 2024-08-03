@@ -1,5 +1,5 @@
 import { CharacterTemplateFinder } from '../../../../../src/Character/CharacterTemplateFinder';
-import { CharacterTemplateData } from '../../../FakeData/TestData';
+import { CharacterTemplateData } from '../../../../fake-data/TestData';
 
 describe(`CharacterTemplateFinder.all`, () => {
 	it(`loads all characters from data`, async () => {

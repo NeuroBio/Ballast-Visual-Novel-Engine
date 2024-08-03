@@ -1,5 +1,5 @@
 import { Engine } from '../../../../../src/Engine/Engine';
-import { ChapterData, CharacterData, SavedDataData, SceneData } from '../../../FakeData/TestData';
+import { ChapterData, CharacterData, SavedDataData, SceneData } from '../../../../fake-data/TestData';
 import { Scene } from '../../../fakes/Scene';
 import { Fakes } from '../../../fakes/index';
 

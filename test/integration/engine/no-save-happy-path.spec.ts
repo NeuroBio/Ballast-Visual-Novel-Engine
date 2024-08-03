@@ -1,6 +1,6 @@
 import { NARRATOR } from '../../../src/Beat/Beat';
 import { Engine } from '../../../src/Engine/Engine';
-import { BeatData, ChapterData, CharacterData, SceneData } from '../../unit/FakeData/TestData';
+import { BeatData, ChapterData, CharacterData, SceneData } from '../../fake-data/TestData';
 
 describe(`playing through the test data without save data`, () => {
 	const engine = new Engine({

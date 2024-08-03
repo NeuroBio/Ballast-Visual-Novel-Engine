@@ -1,7 +1,7 @@
 import { Fakes } from '../../../fakes/index';
 import { NARRATOR } from '../../../../../src/Beat/Beat';
 import { Engine } from '../../../../../src/Engine/Engine';
-import { CharacterData, SavedDataData } from '../../../FakeData/TestData';
+import { CharacterData, SavedDataData } from '../../../../fake-data/TestData';
 
 describe(`Engine.restart`, () => {
 	const Error = Object.freeze({

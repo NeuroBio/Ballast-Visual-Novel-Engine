@@ -1,7 +1,7 @@
 import { NARRATOR } from '../../../../../src/Beat/Beat';
 import { FirstFitBranchBeat } from '../../../../../src/Beat/FirstFitBranchBeat';
 import { Character } from '../../../../../src/Character/Character';
-import { CharacterData } from '../../../FakeData/TestData';
+import { CharacterData } from '../../../../fake-data/TestData';
 
 describe(`FirstFitBranchBeat.play`, () => {
 	const keyedCharacters = CharacterData.reduce((keyed: { [key: string]: Character}, char) => {

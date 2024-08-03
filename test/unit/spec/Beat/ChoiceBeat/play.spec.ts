@@ -1,6 +1,6 @@
 import { ChoiceBeat } from '../../../../../src/Beat/ChoiceBeat';
 import { Character } from '../../../../../src/Character/Character';
-import { CharacterData } from '../../../FakeData/TestData';
+import { CharacterData } from '../../../../fake-data/TestData';
 
 describe(`ChoiceBeat.play`, () => {
 	const keyedCharacters = CharacterData.reduce((keyed: { [key: string]: Character}, char) => {

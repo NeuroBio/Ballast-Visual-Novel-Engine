@@ -1,6 +1,6 @@
 import { CharacterDto } from '../../../../../src/Character/Character';
 import { SavedData } from '../../../../../src/SavedData/SavedData';
-import { CharacterTemplateData } from '../../../FakeData/TestData';
+import { CharacterTemplateData } from '../../../../fake-data/TestData';
 
 describe(`SaveData.toDto`, () => {
 	describe(`all characters already in save data`, () => {

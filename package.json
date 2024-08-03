@@ -23,6 +23,7 @@
     },
     "scripts": {
         "test": "jest --config \"test/jest.config.js\"",
+        "test-coverage": "jest --config \"test/jest.config.js\" --coverage",
         "lint": "npx eslint --fix",
         "build": "tsc --build tsconfig.json",
         "build-demo": "tsc --build tsconfig.demo.json && tsc-alias -p tsconfig.demo.json",

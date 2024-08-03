@@ -1,6 +1,6 @@
 import { Scene } from '../../../../../src/Scene/Scene';
 import { SceneFinder } from '../../../../../src/Scene/SceneFinder';
-import { SceneData } from '../../../FakeData/TestData';
+import { SceneData } from '../../../../fake-data/TestData';
 
 describe(`SceneFinder.byKey`, () => {
 	describe(`loading a valid scene`, () => {

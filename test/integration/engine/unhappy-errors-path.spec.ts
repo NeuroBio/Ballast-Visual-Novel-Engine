@@ -1,5 +1,5 @@
 import { Engine } from '../../../src/Engine/Engine';
-import { ChapterData, CharacterData, SceneData } from '../../unit/FakeData/TestData';
+import { ChapterData, CharacterData, SceneData } from '../../fake-data/TestData';
 
 describe(`taking actions to generate errors`, () => {
 	const Error = Object.freeze({

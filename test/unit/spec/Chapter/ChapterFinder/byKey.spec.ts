@@ -1,6 +1,6 @@
 import { Chapter } from '../../../../../src/Chapter/Chapter';
 import { ChapterFinder } from '../../../../../src/Chapter/ChapterFinder';
-import { ChapterData } from '../../../FakeData/TestData';
+import { ChapterData } from '../../../../fake-data/TestData';
 
 describe(`ChapterFinder.byKey`, () => {
 	it(`loads chapter from data`, async () => {

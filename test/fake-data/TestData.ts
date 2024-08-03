@@ -1,8 +1,8 @@
-import { BeatDto, CrossConditionType, SingleConditionType } from '../../../src/Beat/BeatFactory';
-import { ChapterDto } from '../../../src/Chapter/ChapterFinder';
-import { CharacterTemplate } from '../../../src/Character/CharacterTemplateFinder';
-import { SavedDataDto } from '../../../src/SavedData/SaveDataRepo';
-import { SceneDto } from '../../../src/Scene/SceneFinder';
+import { BeatDto, CrossConditionType, SingleConditionType } from '../../src/Beat/BeatFactory';
+import { ChapterDto } from '../../src/Chapter/ChapterFinder';
+import { CharacterTemplate } from '../../src/Character/CharacterTemplateFinder';
+import { SavedDataDto } from '../../src/SavedData/SaveDataRepo';
+import { SceneDto } from '../../src/Scene/SceneFinder';
 
 export const ChapterData: ChapterDto[] = [
 	{

@@ -1,7 +1,7 @@
 import { NARRATOR } from '../../../../../src/Beat/Beat';
 import { SimpleBeat } from '../../../../../src/Beat/SimpleBeat';
 import { Character } from '../../../../../src/Character/Character';
-import { CharacterData } from '../../../FakeData/TestData';
+import { CharacterData } from '../../../../fake-data/TestData';
 
 describe(`SimpleBeat.play`, () => {
 	const keyedCharacters = CharacterData.reduce((keyed: { [key: string]: Character}, char) => {
