@@ -1,7 +1,7 @@
 import { Character } from '../../../../../src/Character/Character';
 import { SavedData } from '../../../../../src/SavedData/SavedData';
 
-describe(`SaveData.getters`, () => {
+describe(`SaveData getters`, () => {
 	const saveDataParams = {
 		activeChapters: { },
 		unlockedChapters: [],

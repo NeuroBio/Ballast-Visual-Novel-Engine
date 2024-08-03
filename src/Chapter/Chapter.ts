@@ -15,7 +15,7 @@ export class Chapter {
 		this.#sceneKeys = new Set(sceneKeys);
 		this.#locked = locked ?? true;
 		this.#firstSceneKey = firstSceneKey;
-		this.#currentSceneKey = firstSceneKey;
+		this.#currentSceneKey = this.#firstSceneKey;
 		this.#allowReplay = allowReplay ?? false;
 	}
 
