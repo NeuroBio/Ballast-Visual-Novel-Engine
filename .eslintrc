@@ -3,7 +3,8 @@
 		"node": true,
 		"es6": true,
 		"es2022": true,
-		"amd": true
+		"amd": true,
+		"sourceType": "module"
 	},
 	"root": true,
 	"extends": [

@@ -26,7 +26,7 @@
         "lint": "npx eslint --fix",
         "build": "tsc --build tsconfig.json",
         "build-demo": "tsc --build tsconfig.demo.json",
-        "start": "./node_modules/.bin/http-server -a localhost -p 8000 -c-1",
+        "start": "http-server . -a localhost -p 8000 -c-1",
         "deploy": "npm publish"
     },
     "devDependencies": {
