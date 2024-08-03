@@ -47,7 +47,7 @@ export class Character {
     clone() {
         return new Character(this.toDto());
     }
-    #correctMaths (n) {
+    #correctMaths(n) {
         return Math.round(n * 1000) / 1000;
     }
     #warnIfTooPrecise(change) {

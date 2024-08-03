@@ -125,7 +125,7 @@ export class SavedData {
         return Math.round(n * 1000) / 1000;
     }
     #warnIfTooPrecise(change) {
-        const numberOfDecimals = `${change}`.split('.').length;
+        const numberOfDecimals = `${change}`.split('.')[1]?.length;
         if (numberOfDecimals > 3) {
             console.warn(`Math precision is only guaranteed to 3 decimal places.  Doing math on a number with ${numberOfDecimals} places`);
         }
