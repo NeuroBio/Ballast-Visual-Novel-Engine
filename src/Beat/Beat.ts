@@ -13,6 +13,8 @@ export interface StandardBeatDisplay {
 }
 
 interface ChoiceBehavior {
+	text: string;
+	nextBeat: string;
 	mayPlay: boolean;
 }
 
