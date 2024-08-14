@@ -1,6 +1,6 @@
 {
     "name": "@neurobio/ballast-visual-novel-engine",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "author": "Stray",
     "description": "A standalone visual novel engine in typescript.  No UI attached.",
     "keywords": [
@@ -28,7 +28,7 @@
         "build": "tsc --build tsconfig.json",
         "build-demo": "tsc --build tsconfig.demo.json && tsc-alias -p tsconfig.demo.json",
         "start": "http-server . -a localhost -p 8000 -c-1",
-        "deploy": "npm publish"
+        "deploy": "tsc --build tsconfig.json && npm publish"
     },
     "devDependencies": {
         "@eslint/js": "^9.6.0",
