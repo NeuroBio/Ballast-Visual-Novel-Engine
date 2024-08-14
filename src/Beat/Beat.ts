@@ -12,7 +12,7 @@ export interface StandardBeatDisplay {
 	sceneData: DisplaySideEffects;
 }
 
-interface ChoiceBehavior {
+export interface ChoiceBehavior {
 	text: string;
 	nextBeat: string;
 	mayPlay: boolean;
